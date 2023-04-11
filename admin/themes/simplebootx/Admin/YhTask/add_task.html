@@ -1,0 +1,316 @@
+<admintpl file="header" />
+</head>
+<style>
+	input{
+		width: 500px;
+	}
+	.radio_type{
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid lightgray;
+		border-radius: 5px;
+		margin-right: 15px;
+		padding: 6px 15px;
+		cursor: pointer;
+	}
+	.active_radio{
+		background-color: #2c3e50;
+		color: white;
+	}
+	.radio_type input{
+		width: 0px;
+	}
+	.img_div{
+		display: inline-block;
+		width: 506px;
+		border: 2px solid #dce4ec;
+		height: 36px;
+		line-height: 36px;
+		border-radius: 3px;
+		padding: 0px 2px;
+	}
+	.img_div input{
+		float: left;
+		width: 447px;
+		vertical-align: middle;
+		background: none;
+		border: 0px;
+	}
+	.img_div .upload_btn{
+		padding: 1px 14px;
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid gray;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/YhTask/add_task')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">任务名称</label>
+					<div class="controls">
+						<input type="text" name="name" value="" required oninput="if(this.value.length>20)this.value=this.value.slice(0,20)" placeholder="请输入">&nbsp;&nbsp;<span>最多不能超过20字</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">任务描述</label>
+					<div class="controls">
+						<input type="text" name="description" oninput="if(this.value.length>20)this.value=this.value.slice(0,20)" placeholder="请输入">&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">生效时间</label>
+					<div class="controls">
+						<input type="text" name="start_time" required class="js-datetime date" placeholder="请输入">&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">失效时间</label>
+					<div class="controls">
+						<input type="text" name="end_time" required class="js-datetime date" placeholder="请输入">&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">客户端</label>
+					<div class="controls">
+						<input type="checkbox" onclick="client_all(this)" value="0" required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">全部</span>
+						<input type="checkbox" name="client[1]" value="1" required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">PC</span>
+						<input type="checkbox" name="client[2]" value="2" required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">H5</span>
+						<input type="checkbox" name="client[3]" value="3" required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">Android</span>
+						<input type="checkbox" name="client[4]" value="4" required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">iOS</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">任务分类</label>
+					<div class="controls">
+						<select name="classification" style="height: 36px;">
+							<option value=""></option>
+							<volist name="classification_list" id="vo">
+								<option value="{$vo.id}" >{$vo.name}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">任务价格</label>
+					<div class="controls">
+						<input type="text" name="price" data-oval="" onblur="check_isnumber(this)" min="0" max="10000" placeholder="请输入" required>&nbsp;&nbsp;<span>如果配置，要接受此任务需要付多少钻石</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">排序</label>
+					<div class="controls">
+						<input type="number" name="sort" required min="1" max="999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>3)this.value=this.value.slice(0,3)" placeholder="请输入">&nbsp;&nbsp;<span>1至999数字越小，展示的优先级越高</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">图片地址</label>
+					<div class="controls">
+						<div class="img_div">
+							<input type="text" name="img" placeholder="请上传" required>
+							<span class="upload_btn cust-upload-img" data-name="img" data-showimgclass="img_show" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+						</div>
+						&nbsp;&nbsp;<span>任务图标，根据上传的图标前端做出展示</span>
+						<img src="{$info.img}" alt="" class="img_show" style="max-height: 70px;max-width: 100px;padding: 0px;margin: 0px 0px 0px 15px;display: inline-block;">
+					</div>
+				</div>
+				<!--<div class="control-group">
+					<label class="control-label">奖励类型</label>
+					<div class="controls">
+						<div style="display: inline-block;width: 506px;padding: 6px 6px 12px 0px;border: 2px;">
+							<input type="radio" name="reward_type" value="1" checked required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">金额</span>
+							<input type="radio" name="reward_type" value="2" required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">转盘次数</span>
+						</div>
+					</div>
+				</div>-->
+				<div class="control-group">
+					<label class="control-label">完成奖励1</label>
+					<div class="controls">
+						<input type="text" name="reward1" data-oval="" onblur="check_isnumber(this)" required min="0" max="9999"  placeholder="请输入金额">&nbsp;&nbsp;<span>完成任务奖励钻石</span>
+					</div>
+				</div>
+				<!--<div class="control-group">
+					<label class="control-label">完成奖励2</label>
+					<div class="controls">
+						<div style="display: inline-block;width: 506px;padding: 6px 6px 12px 0px;border: 2px;">
+							<span>是否升级VIP等级</span>&nbsp;&nbsp;
+							<input type="radio" name="reward2_upgrade_vip" value="1" required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">是</span>
+							<input type="radio" name="reward2_upgrade_vip" value="0" required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">否</span>
+						</div>
+						&nbsp;&nbsp;<span>如果配置为是，则直接无需要购买，升级为下一级VIP等级</span>
+					</div>
+				</div>-->
+				<div class="control-group">
+					<label class="control-label">完成奖励3</label>
+					<div class="controls">
+						<input type="text" name="reward1_number" data-oval="" onblur="check_isnumber(this)" required min="0" max="9999"  placeholder="请输入">&nbsp;&nbsp;<span>完成任务奖励转盘次数</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">人工审核</label>
+					<div class="controls">
+						<div style="display: inline-block;width: 506px;padding: 6px 6px 12px 0px;border: 2px;">
+							<input type="radio" name="is_manual_check" value="1" required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">是</span>
+							<input type="radio" name="is_manual_check" value="0" checked required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">否</span>
+						</div>
+						&nbsp;&nbsp;<span>如果否，则直接赠送奖励1和奖励2，如果是需要人工后台审核后，再赠送奖励1和奖励2</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">是否需要上一级任务完成</label>
+					<div class="controls">
+						<div style="display: inline-block;width: 506px;padding: 6px 6px 12px 0px;border: 2px;">
+							<input type="radio" name="is_upleveltask" value="1" required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">是</span>
+							<input type="radio" name="is_upleveltask" value="0" checked required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">否</span>
+						</div>
+						&nbsp;&nbsp;<span>如果否，则不管上一级任务是否完成都可以进行此等级任务。</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">任务策略</label>
+					<div class="controls">
+						<div style="display: inline-block;width: 506px;padding: 6px 6px 12px 0px;border: 2px;">
+							<input type="radio" name="only_one" value="0" checked required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">失效时间内，仅能完成一次</span><br><br>
+							<input type="radio" name="only_one" value="1"  required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">失效时间内，每天都能完成一次</span>
+						</div>
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">任务详情说明</label>
+					<div class="controls task_details">
+						<div style="width: 500px;padding: 6px 6px 12px 0px;border: 2px;">
+							<input type="radio" name="task_details_type" value="0" checked required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">富文本</span>
+							<input type="radio" name="task_details_type" value="1" required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">网页</span>
+						</div>
+						<div class="task_details_wang_editor_div" style="width: 500px;">
+							<p></p>
+						</div>
+						<input type="hidden" name="task_details" class="task_details_wang_editor_input">
+						<input type="text" class="task_details_input" style="width: 500px;display: none;">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">任务状态</label>
+					<div class="controls">
+						<div style="display: inline-block;width: 506px;padding: 6px 6px 12px 0px;border: 2px;">
+							<input type="radio" name="status" value="1" checked required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">生效</span>
+							<input type="radio" name="status" value="0" required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">失效</span>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+				<a class="btn" href="{:U('index')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript" src="__PUBLIC__/js/wangeditor/wangEditor.min.js"></script> <!--富文本编辑器-->
+
+<script type="text/javascript">
+	/*
+	* 富文本编辑
+	* */
+	const E = window.wangEditor
+	const editor = new E(".task_details_wang_editor_div");
+	// 或者 const editor = new E(document.getElementById('div1'))
+	// 配置菜单栏，设置不需要的菜单
+	editor.config.excludeMenus = ['video'];
+	// 设置编辑区域高度为 500px
+	// editor.config.height = 500;
+	// 配置 onchange 回调函数
+	editor.config.onchange = function (newHtml) {
+		$(".task_details_wang_editor_input").val(newHtml);
+		var height = $(".task_details_wang_editor_div").children(".w-e-text-container").children(".w-e-text").height();
+		var scrollTop = $(".task_details_wang_editor_div").children(".w-e-text-container").children(".w-e-text").scrollTop();
+		var window_height = $(window).height();
+		var task_details_height = (height+scrollTop);
+		task_details_height = task_details_height>700 ? 700 : task_details_height;
+		task_details_height = task_details_height>window_height ? window_height : task_details_height;
+		$(".task_details_wang_editor_div").children(".w-e-text-container").css('height',task_details_height);
+	};
+	// 配置 server 接口地址
+	editor.config.uploadImgServer = '{:U("Upload/wang_editor_img_upload")}';
+	editor.config.uploadImgMaxLength = 1; // 一次最多上传 5 个图片
+	editor.config.showLinkImg = false; //即可隐藏插入网络图片的功能，即只保留上传本地图片。
+	editor.config.uploadFileName = 'image';
+	// editor.config.uploadImgAccept = ['jpg', 'jpeg', 'png'];
+	editor.config.uploadImgTimeout = 5 * 1000; // 即上传接口等待的最大时间，默认是 10 秒钟，可以自己修改。
+	editor.config.uploadImgHooks = {
+		// 上传图片之前
+		before: function(xhr) {},
+		// 图片上传并返回了结果，图片插入已成功
+		success: function(xhr) {},
+		// 图片上传并返回了结果，但图片插入时出错了
+		fail: function(xhr, editor, resData) {},
+		// 上传图片出错，一般为 http 请求的错误
+		error: function(xhr, editor, resData) {},
+		// 上传图片超时
+		timeout: function(xhr) {},
+		// 图片上传并返回了结果，想要自己把图片插入到编辑器中
+		// 例如服务器端返回的不是 { errno: 0, data: [...] } 这种格式，可使用 customInsert
+		customInsert: function(insertImgFn, result) {
+			// result 即服务端返回的接口
+			// insertImgFn 可把图片插入到编辑器，传入图片 src ，执行函数即可
+			insertImgFn(result['info'].data[0])
+			custshowmsg('上传图片成功');
+		}
+	};
+	editor.create();
+
+	function client_all(obj){
+		if($(obj).attr('checked') == 'checked'){
+			$(obj).parent().children("input").attr('checked',true);
+		}else{
+			$(obj).parent().children("input").attr('checked',false);
+		}
+	}
+
+	$(".radio_type").on('click',function (){
+		$(".radio_type").removeClass('active_radio');
+		$(this).addClass('active_radio');
+		$(this).children("input").attr('checked',true);
+
+		var type = $("input[name='type']:checked").val();
+		$.post("{:U('YhTask/get_classification_with_type')}", {type:type}, function(res) {
+			if(res.status == 1){
+				var html = '<option value=""></option>';
+				$.each(res.info,function (i,val){
+					html += '<option value="'+val['id']+'">'+val['name']+'</option>';
+				})
+				$("select[name='classification']").html('').append(html);
+			}
+		});
+	})
+
+	$("input[name='task_details_type']").click(function (){
+		if($(this).val() == 1){
+			$(".task_details_wang_editor_div").css('display','none');
+			$(".task_details_wang_editor_input").removeAttr('name');
+			$(".task_details_input").attr('name','task_details').css('display','inline-block');
+		}else{
+			$(".task_details_wang_editor_div").css('display','inline-block');
+			$(".task_details_wang_editor_input").attr('name','task_details');
+			$(".task_details_input").removeAttr('name').css('display','none');
+		}
+	});
+
+	/*$("input[name='reward_type']").click(function (){
+		if($(this).val() == 1){
+			$(".reward1_number").css('display','none');
+			$(".reward1").css('display','inline-block');
+		}else{
+			$(".reward1_number").css('display','inline-block');
+			$(".reward1").css('display','none');
+		}
+	});*/
+
+</script>

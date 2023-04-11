@@ -1,0 +1,334 @@
+<admintpl file="header" />
+<link href="__PUBLIC__/colpick/colpick.css" rel="stylesheet" type="text/css">
+</head>
+<style>
+	.img_div{
+		display: inline-block;
+		width: 506px;
+		border: 2px solid #dce4ec;
+		height: 36px;
+		line-height: 36px;
+		border-radius: 3px;
+		padding: 0px 2px;
+	}
+	.img_div input{
+		float: left;
+		width: 447px;
+		vertical-align: middle;
+		background: none;
+		border: 0px;
+	}
+	.img_div .upload_btn{
+		padding: 1px 14px;
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid gray;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+	.exclu_car .control-label,.special_effect .control-label{
+		float: none !important;
+		text-align: left !important;
+		margin-top: 10px;
+	}
+	.exclu_car .controls,.special_effect .controls{
+		margin-left: 0px !important;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Noble/add')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('add')}">
+			<fieldset>
+				<if condition="$role_id == 1">
+					<div class="control-group">
+						<label class="control-label">*租户</label>
+						<div class="controls">
+							<select name="tenant_id" onchange="change_tenant_id(this)">
+								<volist name="tenant_list" id="vo">
+									<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+								</volist>
+							</select>
+							<span class="form-required"></span>
+						</div>
+					</div>
+				</if>
+				<div class="control-group">
+					<label class="control-label">*名称</label>
+					<div class="controls">
+						<input type="text" name="name" required>
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">名称颜色</label>
+					<div class="controls">
+						<input type="text" name="name_color" value="{$info.name_color}" id="picker">
+						<input id="colour_block" style="width:50px;height:20px;background:{$info.name_color};" disabled/>
+						<span class="form-required">填写十六进制代码若不填，前端默认白色，填写规则如灰色 #AAAAAA</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">贵族勋章</label>
+					<div class="controls">
+						<div class="img_div">
+							<input type="text" name="medal" placeholder="请上传" required>
+							<span class="upload_btn cust-upload-img" data-name="medal" data-showimgclass="img_show_medal" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+						</div>
+						<img src="" alt="" class="img_show_medal" style="max-height: 70px;max-width: 100px;padding: 0px;margin: 0px 0px 0px 15px;">
+					</div>
+				</div>
+                <div class="control-group">
+					<label class="control-label">爵位牌</label>
+					<div class="controls">
+						<div class="img_div">
+							<input type="text" name="knighthoodcard" placeholder="请上传" required>
+							<span class="upload_btn cust-upload-img" data-name="knighthoodcard" data-showimgclass="img_show_knighthoodcard" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+						</div>
+						<img src="" alt="" class="img_show_knighthoodcard" style="max-height: 70px;max-width: 100px;padding: 0px;margin: 0px 0px 0px 15px;">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">开通特效</label>
+					<div class="controls special_effect">
+						<div>
+							<label class="radio inline"><input type="radio" value="1" name="special_effect" onchange="change_special_effect(this)" required>是</label>
+							<label class="radio inline"><input type="radio" value="0" name="special_effect" onchange="change_special_effect(this)" required>否</label>
+						</div>
+						<div>
+							<div class="controls" style="height: 50px;">
+								<label class="control-label"></label>
+								<div class="img_div">
+									<input type="text" name="special_effect_swf" placeholder="请上传" required>
+									<span class="upload_btn cust-upload-img" data-name="special_effect_swf" data-accept="*" data-showimgclass="img_show_special_effect_swf" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+								</div>
+								<img src="" alt="" data-changefunc="check_imfsrc" class="img_show_special_effect_swf" style="max-height: 70px;max-width: 300px;padding: 0px;margin: 0px 0px 0px 15px;vertical-align: top;">
+							</div>
+						</div>
+						<div>
+							<label class="control-label">动画时长</label>
+							<div class="controls">
+								<input type="text" name="special_effect_swftime" required>
+								<span class="form-required">秒</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">进房金光</label>
+					<div class="controls">
+						<label class="radio inline"><input type="radio" value="1" name="golden_light" required>是</label>
+						<label class="radio inline"><input type="radio" value="0" name="golden_light" required>否</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">专属客服</label>
+					<div class="controls">
+						<label class="radio inline"><input type="radio" value="1" name="exclu_custsevice" required>是</label>
+						<label class="radio inline"><input type="radio" value="0" name="exclu_custsevice" required>否</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">头像框</label>
+					<div class="controls">
+						<div class="img_div">
+							<input type="text" name="avatar_frame" placeholder="请上传" required>
+							<span class="upload_btn cust-upload-img" data-name="avatar_frame" data-showimgclass="img_show_avatar_frame" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+						</div>
+						<img src="" alt="" class="img_show_avatar_frame" style="max-height: 70px;max-width: 100px;padding: 0px;margin: 0px 0px 0px 15px;">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">升级加速</label>
+					<div class="controls">
+						<input type="number" name="upgrade_speed" min="0" max="100">
+						<span class="form-required">%，输入0则无加速</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">开通广播</label>
+					<div class="controls">
+						<label class="radio inline"><input type="radio" value="1" name="broadcast" required>是</label>
+						<label class="radio inline"><input type="radio" value="0" name="broadcast" required>否</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">公聊背景皮肤</label>
+					<div class="controls">
+						<input type="text" name="pubchat_bgskin" class="cust-color-select" data-blockid="block_bgskin" data-width="218" data-colorlist="{$skin_list_json}">
+						<input id="block_bgskin" style="width:25px;height:25px;" disabled/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">进场隐身</label>
+					<div class="controls">
+						<label class="radio inline"><input type="radio" value="1" name="enter_stealth" required>是</label>
+						<label class="radio inline"><input type="radio" value="0" name="enter_stealth" required>否</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">专属座驾</label>
+					<div class="controls exclu_car">
+						<div>
+							<label class="radio inline"><input type="radio" value="1" name="exclu_car" required>是</label>
+							<label class="radio inline"><input type="radio" value="0" name="exclu_car" required>否</label>
+						</div>
+						<div>
+							<label class="control-label">贵族内图标</label>
+							<div class="controls">
+								<div class="img_div">
+									<input type="text" name="exclu_car_nobleicon" placeholder="请上传" required>
+									<span class="upload_btn cust-upload-img" data-name="exclu_car_nobleicon" data-showimgclass="img_show_exclu_car_nobleicon" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+								</div>
+								<img src="" alt="" class="img_show_exclu_car_nobleicon" style="max-height: 70px;max-width: 100px;padding: 0px;margin: 0px 0px 0px 15px;">
+							</div>
+						</div>
+						<div>
+							<label class="control-label">坐骑</label>
+							<div class="controls">
+								<select name="car_id" >
+									<option value=""></option>
+									<volist name="car_list" id="vo">
+										<if condition="$vo.type == 1">
+										<option value="{$vo.id}" >{$vo.name}</option>
+										</if>
+									</volist>
+								</select>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="control-group">
+					<label class="control-label">榜单隐身</label>
+					<div class="controls">
+						<label class="radio inline"><input type="radio" value="1" name="ranking_stealth" required>是</label>
+						<label class="radio inline"><input type="radio" value="0" name="ranking_stealth" required>否</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">防禁言</label>
+					<div class="controls">
+						<label class="radio inline"><input type="radio" value="1" name="prevent_mute" required>是</label>
+						<label class="radio inline"><input type="radio" value="0" name="prevent_mute" required>否</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">开通价格</label>
+					<div class="controls" style="display: inline-block;margin-left: 15px;">
+						<input type="text" name="price" required>
+						<span class="form-required">/月</span>
+					</div>
+					<label class="control-label" style="display: inline-block;width:auto;float: none;margin-left: 15px;">开通赠送</label>
+					<div class="controls" style="display: inline-block;margin-left: 10px;">
+						<input type="text" name="handsel" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">续费价格</label>
+					<div class="controls" style="display: inline-block;margin-left: 15px;">
+						<input type="text" name="renewal_price" required>
+						<span class="form-required">/月</span>
+					</div>
+					<label class="control-label" style="display: inline-block;width:auto;float: none;margin-left: 15px;">续费赠送</label>
+					<div class="controls" style="display: inline-block;margin-left: 10px;">
+						<input type="text" name="renewal_handsel" required>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('ADD')},waittime:1000}">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script src="__PUBLIC__/colpick/colpick.js"></script>
+<script src="__PUBLIC__/js/svgaplayerweb/svga.min.js"></script>
+<script>
+	$('#picker').colpick({
+		layout:'hex',
+		submit:0,
+		colorScheme:'dark',
+		onChange:function(hsb,hex,rgb,el,bySetColor) {
+			$("#colour_block").css('background','#'+hex);
+			// Fill the text box just if the color was set using the picker, and not the colpickSetColor function.
+			if(!bySetColor) $(el).val('#'+hex);
+		}
+	}).keyup(function(){
+		$(this).colpickSetColor(this.value);
+	});
+
+	$("input[name='special_effect']").on('click',function () {
+		console.log($(this).val())
+		if($(this).val() == 1){
+			$("input[name='special_effect_swf']").attr('required',"true");
+			$("input[name='special_effect_swftime']").attr('required',"true");
+		}else{
+			$("input[name='special_effect_swf']").removeAttr('required');
+			$("input[name='special_effect_swftime']").removeAttr('required');
+		}
+	});
+
+	function check_imfsrc(obj){
+		var src = $(obj).attr('src');
+		if(!src){
+			return ;
+		}
+		var class_name = $(obj).attr('class');
+		var arr = src.split('.');
+		var end_str = arr[arr.length - 1];
+		var html = '<div id="'+class_name+'" style="max-height: 150px;max-width: 150px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;display: inline-block;vertical-align: top;"></div>';
+		$("#"+class_name).remove();
+		if(end_str.toLowerCase() == 'svga'){
+			$(obj).after(html);
+			var player =new SVGA.Player('#'+class_name);
+			var parser =new SVGA.Parser('#'+class_name);
+			parser.load(src, function(videoItem) {
+				player.setVideoItem(videoItem);
+				player.startAnimation();
+			})
+		}else{
+			$(obj).parent().parent().children("input[name='special_effect_swf']").val('');
+		}
+		return;
+	}
+
+	$("input[name='exclu_car']").on('click',function () {
+		if($(this).val() == 1){
+			$("input[name='exclu_car_nobleicon']").attr('required',"true");
+		}else{
+			$("input[name='exclu_car_nobleicon']").removeAttr('required');
+		}
+	});
+
+	function change_tenant_id(obj) {
+		var tenant_id = $(obj).val();
+		$.get("{:U('Car/get_car_list')}?tenant_id="+tenant_id, {}, function(res) {
+			var html = '<option ></option>';
+			$.each(res.info,function (index,val) {
+				if(val.type == 1){
+					html += '<option value="'+val.id+'">'+val.name+'</option>';
+				}
+			})
+			$("select[name='car_id']").html(html);
+		});
+		$.get("{:U('noble/get_noble_skin_list_json')}?tenant_id="+tenant_id, {}, function(res) {
+			$("input[name='pubchat_bgskin']").attr('data-colorlist',res.info);
+		});
+	}
+
+	function change_special_effect(obj) {
+		if($(obj).val() == 1){
+			$("input[name='special_effect_swf']").attr('required',"true");
+			$("input[name='special_effect_swftime']").attr('required',"true");
+		}else{
+			$("input[name='special_effect_swf']").removeAttr('required');
+			$("input[name='special_effect_swftime']").removeAttr('required');
+		}
+	}
+
+</script>

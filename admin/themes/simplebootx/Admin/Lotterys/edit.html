@@ -1,0 +1,73 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+
+        {:getTableMenu($_GET['menuid'],'Admin/Lotterys/edit')}
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('edit_post')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">租户</label>
+                <div class="controls">
+                    <select class="select_1" name="tenantinfo" readonly="readonly">
+                        <foreach name="tenant" item="vo">
+                            <if condition="$info['tenant_id'] eq $vo['id']">
+                                <option value="{$vo.id}_{$vo.game_tenant_id}" selected>{$vo.name}</option>
+                            </if>
+                        </foreach>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">彩种名称</label>
+                <div class="controls">
+                    <input type="text" name="play_cname" value="{$info['play_cname']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">彩种简称名称</label>
+                <div class="controls">
+                    <input type="text" name="play_name" value="{$info['play_name']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">upper_id</label>
+                <div class="controls">
+                    <input type="text" name="upper_id" value="{$info['upper_id']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">play_id</label>
+                <div class="controls">
+                    <input type="text" name="play_id" value="{$info['play_id']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">状态</label>
+                <div class="controls">
+                    <label class="radio inline" for="status_1">
+                        <input type="radio" name="status" value="1" id="status_1"<if condition="$info.status eq '1'">checked</if>>启用</label>
+                    <label class="radio inline" for="status_2"><input type="radio" name="status" value="0" id="status_2" <if condition="$info.status eq '0'">checked</if>  >禁用</label>
+
+                </div>
+            </div>
+            <div class="form-actions">
+                <input type="hidden" name="id" value="{$info['id']}" >
+                <button type="submit" class="btn btn-primary js-ajax-submit">{:L('EDIT')}</button>
+                <a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+            </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+</script>
+</body>
+</html>

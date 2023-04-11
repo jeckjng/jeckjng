@@ -1,0 +1,112 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li class="active"><a >充值记录</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/agent/agent_list')}
+		</ul>
+		<form class="well form-search" name="form1" method="post"  action="">
+			<div style="">
+				<if condition="$role_id == 1">
+					<div class="search-box">
+						租户：
+						<select class="select_2 width-200" name="tenant_id" id="tenant_id">
+							<volist name="tenant_list" id="vo">
+								<option value="{$vo['id']}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo['name']}</option>
+							</volist>
+						</select>
+					</div>
+				</if>
+				<div class="search-box">
+					代理ID：
+					<input type="text" name="uid" class="width-200" value="{$param.uid}" placeholder="请输入代理ID">
+				</div>
+				<div class="search-box">
+					代理账号：
+					<input type="text" name="user_login" class="width-200" value="{$param.user_login}" placeholder="请输入代理账号">
+				</div>
+			</div>
+			<div>
+				<div class="search-box">
+					<input type="submit" class="btn btn-primary" value="搜索" onclick="form1.action='{:U(\'agent_list\')}';form1.submit();"/>
+				</div>
+			</div>
+		</form>	
+    	
+		<form method="post" class="cust-js-ajax-form" style="white-space: nowrap;overflow-x: auto;" >
+			<div class="table-actions">
+				<button type="button" class="btn btn-success btn-small cust-filter-column" data-table_id="list_content" data-page_name="{:U('red_list')}">列展示</button>
+			</div>
+			<table class="table table-hover table-bordered" id="list_content">
+				<thead>
+					<tr>
+						<th data-field="id" class="align-center-i">代理ID</th>
+						<th data-field="user_login" class="align-center-i">代理账号</th>
+						<th data-field="child_count" class="align-center-i">下級数量</th>
+						<th data-field="addtime" class="align-center-i">注册时间</th>
+						<th data-field="invitation_code" class="align-center-i">邀请码</th>
+						<th data-field="status_name" class="align-center-i">状态</th>
+						<th data-field="user_type_name" class="align-center-i">类型</th>
+                        <th data-field="view_parent_child" class="align-center-i">查看上下级</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="list" item="vo">
+					<tr>
+						<td data-field="id" class="align-center-i">{$vo.uid}</td>
+						<td data-field="user_login" class="align-center-i">{$vo['user_login']}</td>
+						<td data-field="child_count" class="align-center-i">{$vo['child_count']}</td>
+						<td data-field="addtime" class="align-center-i">{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+						<td data-field="invitation_code" class="align-center-i">{$vo['invitation_code']}</td>
+						<td data-field="status_name" class="align-center-i">{$vo['status_name']}</td>
+						<td data-field="user_type_name" class="align-center-i">{$vo['user_type_name']}</td>
+                        <td data-field="view_parent_child" class="align-center-i">
+							<a href="{:U('agent_parent_child', array('tenant_id'=>$vo['tenant_id'], 'uid'=>$vo['uid'], 'view_type'=>'parent', 'puid'=>$vo['one_uid']))}" style="">查看上级</a>
+							<a href="{:U('agent_parent_child', array('tenant_id'=>$vo['tenant_id'], 'uid'=>$vo['uid'], 'view_type'=>'child'))}" class="color-orange">查看下级</a>
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/md5/jquery.md5.js"></script>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script>
+
+	$(document).ready(function (){
+		// 筛选列，是否有隐藏的，如果有则隐藏不显示
+		var cust_filter_column_obj = $('.cust-filter-column');
+		var cust_filter_column_key = "cust-filter-column-" + $.md5($(cust_filter_column_obj).attr('data-page_name'));
+		var checked_no_json = window.localStorage.getItem(cust_filter_column_key)
+		if(checked_no_json){
+			checked_no_list = JSON.parse(checked_no_json);
+			var table_id = $(cust_filter_column_obj).attr('data-table_id');
+			$.each(checked_no_list, function (index, val){
+				data_field = val
+				$('#'+table_id).children('thead').find("[data-field='" + data_field + "']").addClass('filter-checked-no').removeClass('filter-checked-yes').css('display', 'none');
+				$('#'+table_id).children('tbody').find("[data-field='" + data_field + "']").addClass('filter-checked-no').removeClass('filter-checked-yes').css('display', 'none');
+			})
+		}
+
+		// 根据菜单权限是否显示按钮
+		var auth_access_json = '{$auth_access_json}';
+		var role_id = '{$role_id}';
+		var auth_access_list = JSON.parse(auth_access_json)
+		$(".auth_access").each(function (index,val){
+			var rule_name = $(this).attr('data-auth_access');
+			rule_name = rule_name.replace(/^\//g, '').toLowerCase();
+			var hash_key = $.md5(role_id+rule_name+'admin_url');
+			if(auth_access_list.hasOwnProperty(hash_key) == true){
+				$(this).css('display','');
+			}else{
+				$(this).css('display','none');
+			}
+		});
+	});
+
+</script>

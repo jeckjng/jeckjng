@@ -1,0 +1,139 @@
+<admintpl file="header" />
+</head>
+<style>
+	.controls input{
+		width: 500px;
+	}
+	label{
+		width: 230px !important;
+	}
+	.controls{
+		margin-left: 250px !important;
+	}
+	.cust input{
+		width: 120px;
+	}
+	.cust label{
+		width: auto !important;
+	}
+	.cust{
+		margin-left: 10px;
+		display: inline-block;
+	}
+	.cust .controls{
+		display: inline-block;
+		margin-left: 5px !important;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/WithdrawFeeConfig/index')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('index')}">
+			<fieldset>
+				<if condition="$role_id == 1">
+					<div class="cust mar-bottom-15">
+						<label class="control-label">*租户</label>
+						<div class="controls">
+							<select name="tenant_id" onchange="change_tenant_id(this)">
+								<volist name="tenant_list" id="vo">
+									<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+								</volist>
+							</select>
+							<span class="form-required"></span>
+						</div>
+					</div>
+				</if>
+				<foreach name="list" item="vo">
+				<div class="control-group reward" data-sort_num="{:($key+1)}">
+					<input type="hidden" name="data[{$key}][id]" value="{$vo.id}">
+
+					<div class="cust">
+						<label class="control-label" style="margin-right: 30px">提现手续费{:($key+1)}：</label>
+						<label class="control-label" style="">金额</label>
+						<div class="controls">
+							<input type="text" name="data[{$key}][amount]" value="{$vo.amount}" data-oval="{$vo.amount}" onblur="check_isnumber(this)" required  placeholder="金额">
+						</div>
+					</div>
+					<div class="cust">
+						<label class="control-label">类型</label>
+						<div class="controls">
+							<select name="data[{$key}][type]" id="" class="width-100">
+								<option	value="1" <if condition="$vo['type'] eq 1">selected</if> >百分比</option>
+								<option	value="2" <if condition="$vo['type'] eq 2">selected</if> >固定值</option>
+							</select>
+						</div>
+					</div>
+					<div class="cust">
+						<label class="control-label">手续费/手续费比例</label>
+						<div class="controls">
+							<input type="text" name="data[{$key}][fee]" value="{$vo.fee}" data-oval="{$vo.fee}"  class="width-100" onblur="check_isnumber(this)" required placeholder="手续费/手续费比例">
+						</div>
+						<span></span>
+					</div>
+					<div class="cust">
+						<button type="button" class="btn btn-primary" onclick="remove(this)">移除</button>
+					</div>
+				</div>
+				</foreach>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+				<button type="button" class="btn btn-primary add-line" onclick="add(this)" style="margin-left: 15px">新增 +</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+	function change_tenant_id(obj) {
+		var tenant_id = $(obj).val();
+		window.location.href = "{:U('index',array('menuid'=>$param['menuid']))}/tenant_id/"+tenant_id;
+	}
+
+	function add(obj){
+		var sort_num = parseInt($(obj).parent().parent().children('fieldset').children("div:last-child").data("sort_num"));
+		var length = $(obj).parent().parent().children('fieldset').children("div").length;
+		var next_sort_num = sort_num ? sort_num+1 : 1;
+		var html = '<div class="control-group reward" data-sort_num="'+next_sort_num+'">\n' +
+					'\t\t\t\t\t<div class="cust">\n' +
+					'\t\t\t\t\t\t<label class="control-label" style="margin-right: 30px">提现手续费'+next_sort_num+'：</label>\n' +
+					'\t\t\t\t\t\t<label class="control-label" style="">金额</label>\n' +
+					'\t\t\t\t\t\t<div class="controls">\n' +
+					'\t\t\t\t\t\t\t<input type="text" name="data['+next_sort_num+'][amount]" value="0" data-oval="0" onblur="check_isnumber(this)" required  placeholder="金额">\n' +
+					'\t\t\t\t\t\t</div>\n' +
+					'\t\t\t\t\t</div>\n' +
+					'\t\t\t\t\t<div class="cust">\n' +
+					'\t\t\t\t\t\t<label class="control-label">类型</label>\n' +
+					'\t\t\t\t\t\t<div class="controls">\n' +
+				    '\t\t\t\t\t\t\t<select name="data['+next_sort_num+'][type]" id="" class="width-100">\n' +
+					'\t\t\t\t\t\t\t\t<option	value="1" selected >百分比</option>\n' +
+					'\t\t\t\t\t\t\t\t<option	value="2"  >固定值</option>\n' +
+					'\t\t\t\t\t\t\t</select>\n' +
+					'\t\t\t\t\t\t</div>\n' +
+					'\t\t\t\t\t</div>\n' +
+					'\t\t\t\t\t<div class="cust">\n' +
+					'\t\t\t\t\t\t<label class="control-label">手续费/手续费比例</label>\n' +
+					'\t\t\t\t\t\t<div class="controls">\n' +
+					'\t\t\t\t\t\t\t<input type="text" name="data['+next_sort_num+'][fee]" value="0" data-oval="0" class="width-100" onblur="check_isnumber(this)" required  placeholder="赠送观影时长">\n' +
+					'\t\t\t\t\t\t</div>\n' +
+					'\t\t\t\t\t\t<span></span>\n' +
+					'\t\t\t\t\t</div>\n' +
+					'\t\t\t\t\t<div class="cust">\n' +
+					'\t\t\t\t\t\t<button type="button" class="btn btn-primary" onclick="remove(this)">移除</button>\n' +
+					'\t\t\t\t\t</div>'
+				'\t\t\t\t</div>';
+		$(obj).parent().parent().children('fieldset').append(html);
+		if(length>=9){
+			$(obj).attr('disabled','disabled');
+		}
+	}
+
+	function remove(obj){
+		$(obj).parent().parent().remove();
+		$("button.add-line").removeAttr('disabled');
+	}
+</script>

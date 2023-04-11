@@ -1,0 +1,37 @@
+
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+
+    </ul>
+    <form method="post" class="js-ajax-form">
+
+        <table class="table table-hover table-bordered table-list">
+            <thead>
+            <tr>
+                <th  style="font-size: 20px" width="50">ID</th>
+                <th style="font-size: 20px ;width: 100px" >表名</th>
+                <th style="font-size: 20px" >查看</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="lists"  item="vo" key="key">
+                <tr>
+                    <td style="font-size: 20px" >{$key}</td>
+                    <td style="font-size: 20px">{$vo.name}</td>
+                    <td>  <a href="{:U('dict/info',array('name'=>$vo['tables_in_cs88_dev'],'title'=>'详情'))}" class="cust-iframe-pop" data-iframe="{width:1000px,height:80%,top:10%}">查看</a>&nbsp;</td>
+                </tr>
+            </foreach>
+            </tbody>
+            <tfoot>
+
+        </table>
+
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

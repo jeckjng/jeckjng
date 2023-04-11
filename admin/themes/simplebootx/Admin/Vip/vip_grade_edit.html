@@ -1,0 +1,53 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:U('Vip/vip_grade')}">列表</a></li>
+        <td><if condition="$id">
+            <li class="active"><a >编辑</a></li>
+
+            <else/>
+            <li class="active"><a >添加</a></li>
+        </if></td>
+
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Vip/vip_grade_add_post')}">
+        <fieldset>
+
+
+            <div class="control-group">
+                <label class="control-label">vip名称</label>
+                <div class="controls">
+                    <input type="text" name="name" value="{$vip_grade_info.name}"    >
+
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">vip等级</label>
+                <div class="controls">
+                    <input type="text" name="vip_grade" value="{$vip_grade_info.vip_grade}" disabled   >
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">是否是超级会员</label>
+                <div class="controls">
+                    <label class="radio inline" for="status_1"><input type="radio" name="is_super_member" value="1" id="status_1">是</label>
+                    <label class="radio inline" for="status_0"><input type="radio" name="is_super_member" value="0" id="status_0" checked="">否</label>
+
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <input type="hidden" name="id" value="{$id}"   >
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+            <a class="btn" href="{:U('vip_grade/index')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

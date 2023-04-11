@@ -1,0 +1,64 @@
+<admintpl file="header" />
+</head>
+<style>
+    .top-nav{
+        color: #333;
+        font: 14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+        height: 43px;
+        line-height: 43px;
+        padding: 0 20px;
+    }
+    form{
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+</style>
+<body>
+<div class="">
+    <div class="top-nav well" style="text-align: center;">
+        <span class="cust-title" style="">{$param.title}</span>
+        <span class="" style="float: right;cursor: pointer;" onclick="$('#cust-js-iframe',window.parent.document).toggle();">
+				<i class="fa fa-times" aria-hidden="true"></i>
+			</span>
+    </div>
+    <form class="form-horizontal cust-js-ajax-form" method="post"  action="">
+        <table class="table table-bordered innertable">
+            <tbody>
+            <tr>
+                <td style="text-align: center;width: 150px;">用户id</td>
+                <td style="text-align: left;"><input name="uid"></td>
+            </tr>
+
+            <tr>
+                <td style="text-align: center;width: 150px;">* 详细描述</td>
+                <td style="text-align: left;"><textarea name="desc" cols="30" rows="3" style="width: 96%;"  ></textarea></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;width: 150px;">颜值评分</td>
+                <td style="text-align: left;"><input name="face_value">分数值为0 - 10</td>
+            </tr>
+
+            <tr>
+                <td style="text-align: center;width: 150px;">技术评分</td>
+                <td style="text-align: left;"><input name="technology_value">分数值为0 - 10</td>
+            </tr>
+
+            <tr>
+                <td style="text-align: center;width: 150px;">环境评分</td>
+                <td style="text-align: left;"><input name="surroundings_value">分数值为0 - 10</td>
+            </tr>
+
+
+        </table>
+        <div class="" style="padding: 20px 0px;text-align: center;background-color: #dde4e6;margin-top: 15px;">
+            <input type="hidden" name="id" value="{$id}">
+            <button type="submit" class="btn btn-primary js-ajax-submit" data-option="{confirm:true,msg:{:L('SUBMIT')},waittime:1000}" >{:L('SUBMIT')}</button>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

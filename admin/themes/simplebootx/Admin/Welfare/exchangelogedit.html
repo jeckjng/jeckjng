@@ -1,0 +1,71 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:U('Welfare/exchangelog')}">福利兑换记录</a></li>
+        <li class="active"><a >编辑</a></li>
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Welfare/edit_post')}">
+        <fieldset>
+
+            <div class="control-group">
+                <label class="control-label">福利名称</label>
+                <div class="controls">
+                    <input type="text" name="" value="{$info['welfare_name']}"  readonly>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">所需积分</label>
+                <div class="controls">
+                    <input type="text" name="integral" value="{$info['integral']}" readonly>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">手机号码</label>
+                <div class="controls">
+                    <input type="text" name="phone"  value="{$info['phone']}" readonly>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">收货地址</label>
+                <div class="controls">
+                    <input type="text" name="address"  value="{$info['address']}" readonly>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">快递单号</label>
+                <div class="controls">
+                    <input type="text" name="express_order"   >
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+
+
+            <div class="control-group">
+                <label class="control-label">审核状态</label>
+                <div class="controls">
+                    <label class="radio inline" for="status_2"><input type="radio" name="status" value="2" id="status_2" <if condition="$info['status'] eq '2'">checked</if>>通过</label>
+                    <label class="radio inline" for="status_3"><input type="radio" name="status" value="3" id="status_3" <if condition="$info['status'] eq '3'">checked</if>>驳回</label>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <input type="hidden" name="id" value="{$info['id']}">
+            <input type="hidden" name="welfare_id" value="{$info['welfare_id']}">
+            <input type="hidden" name="uid" value="{$info['uid']}">
+            <input type="hidden" name="integral" value="{$info['integral']}">
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('EDIT')}</button>
+            <a class="btn" href="{:U('Userauth/index')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

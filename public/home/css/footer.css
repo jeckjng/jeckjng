@@ -1,0 +1,71 @@
+.bottom-banner {
+  background: #729DBF;
+  box-sizing: border-box;
+  padding: 0 15px;
+  width: 100%;
+  color: #fff;
+  font-family: "宋体", "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 40px;
+}
+
+.bottom-banner a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.bottom-banner .fl {
+  float: left;
+  padding-right: 20px;
+}
+.bottom-banner .fr {
+  float: right;
+}
+
+
+#page {
+
+text-align:center;
+padding-top:10px;
+ clear:both;
+ margin-top:10px;
+height:50px;
+line-height:50px;		
+ 
+}
+
+#page a{
+padding:2px 5px;
+border:1px solid #666;
+margin:0 2px;
+}
+
+#page a:hover,#page span.me{
+    color:#fff;
+	border:1px solid #000;
+	background:#000;
+	text-decoration:none;
+}
+
+#page span.disabled {
+padding:2px 5px;
+border:1px solid #ccc;
+margin:0 2px;
+color:#ccc;
+}
+
+
+#page span.me{
+padding:2px 5px;
+margin:0 2px;
+}
+
+#page select.select {
+width:120px;
+background:#fff;
+border:1px solid #ccc;
+}
+
+#page select.select optgroup{
+   font-style:normal;
+}

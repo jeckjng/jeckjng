@@ -1,0 +1,39 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+
+
+    </ul>
+    <form class="well form-search"  enctype="multipart/form-data" name="form1" method="post" action="{:U('Shotvideo/index')}">
+
+    <div class="search-box">
+        <div style="margin:0  auto;width: 1200px;">
+            <input type="button" class="btn btn-primary exports" style="background-color: #1dccaa;" value="下载模板" onclick="form1.action='/Admin/Shotvideo/export';form1.submit();">
+
+            <p style="margin-top: 20px"></p>
+            <input type="file" name="file" style="width: 180px;">
+            <input type="button" class="btn btn-primary" style="background-color: #1dccaa;" value="导入" onclick="form1.action='/Admin/Shotvideo/import';form1.submit();">
+        </div>
+
+            </div>
+
+
+    </form>
+
+
+
+
+</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/md5/jquery.md5.js"></script>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script src="__PUBLIC__/js/socket.io.js"></script>
+<script type="text/javascript">
+
+
+
+
+</script>

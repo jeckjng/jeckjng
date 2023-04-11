@@ -1,0 +1,45 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li class="active"><a href="{:U('Ads/sort_index')}">分类列表</a></li>
+			<li><a href="{:U('Ads/sort_add')}">分类添加</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Ads/sort_index')}
+		</ul>
+		<form method="post" class="js-ajax-form" action="{:U('Ads/sort_listorders')}">
+		<!--  <div class="table-actions">
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+			</div>-->
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th align="center">ID</th>
+						<th>分类名称</th>
+						<th>发布时间</th>
+						<th align="center">{:L('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td align="center">{$vo.id}</td>
+						<td>{$vo['sortname']}</td>
+						<td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+						<td align="center">	
+								<a href="{:U('Ads/sort_edit',array('id'=>$vo['id']))}" >编辑</a>
+
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+			<!--	<div class="table-actions">
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+			</div>-->
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

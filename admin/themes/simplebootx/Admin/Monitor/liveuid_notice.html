@@ -1,0 +1,148 @@
+<admintpl file="header" />
+</head>
+<style>
+	.top-nav{
+		color: #333;
+		font: 14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+		height: 43px;
+		line-height: 43px;
+		padding: 0 0 0 20px;
+	}
+	form{
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+	table tr>td>.star{
+		color: red;
+	}
+	input,textarea{
+		width: 80%;
+	}
+	.radio_type{
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid lightgray;
+		border-radius: 5px;
+		margin-right: 25px;
+		padding: 6px 25px;
+		cursor: pointer;
+	}
+	.active_radio{
+		background-color: #2c3e50;
+		color: white;
+	}
+	.radio_type input{
+		width: 0px;
+	}
+	.img_div{
+		display: inline-block;
+		width: 80%;
+		border: 2px solid #dce4ec;
+		height: 36px;
+		line-height: 36px;
+		border-radius: 3px;
+		padding: 0px 5px;
+	}
+	.img_div input{
+		float: left;
+		width: 480px;
+		vertical-align: middle;
+		background: none;
+		border: 0px;
+	}
+	.img_div .upload_btn{
+		padding: 1px 14px;
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid gray;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+</style>
+<body>
+<div class="">
+	<div >
+		<div class="control-group mar-top-15">
+			<label class="control-label" style="display: inline-block;margin: 5px;font-weight: 600;vertical-align: top;">输入警告内容</label>
+			<div class="controls" style="display: inline-block;width: 370px;">
+				<textarea name="" id="liveuid_notice_ct" cols="30" rows="5" placeholder="请输入警告内容，不超过50个字" required></textarea>
+			</div>
+		</div>
+
+		<div style="float: right;margin: 15px;">
+			<input type="hidden" value="{$config['chatserver']}" id="socket_url" />
+			<input type="hidden" value="{$config['socket_type']}" id="socket_type" />
+			<button class="btn" onclick="$('#cust-js-iframe',window.parent.document).toggle();">取消</button>
+			<button class="btn btn-primary" onclick="liveuidNotice({$uid})">确定</button>
+		</div>
+	</div>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script src="__PUBLIC__/js/socket.io.js"></script>
+<script type="text/javascript">
+	/*
+	* 弹窗警告
+	* */
+	function liveuidNotice(uid){
+		var ct = $("#liveuid_notice_ct").val();
+		var socket_type = $("#socket_type").val();
+		if(!ct){
+			custalert('请输入警告内容');
+			return ;
+		}
+		if(ct.length > 50){
+			custalert('警告内容，不能超过50个字');
+			return ;
+		}
+		custconfirm('弹窗警告【'+uid+'】',function () {
+			if(socket_type == 1 || socket_type == 2){
+				var socket_url = $("#socket_url ").val();
+				var socket = io(socket_url);
+				ct = ct.replaceAll("\n","<br>"); // 换行处理
+				socket.on('connect', function(){
+					console.log('connect success')
+					setTimeout(function () {
+						var data = '{"uid":' + uid + ',"ct":"'+ct+'"}';
+						console.log("发送内容："+data)
+						socket.emit('liveuid_notice', data);
+					},500)
+				});
+				socket.on('broadcastingListen', function (msg) {
+					console.log(msg);
+					if(msg){
+						custshowmsg('弹窗警告成功')
+						// 记录警告信息
+						$.ajax({
+							url:"{:U('liveuid_notice')}",
+							data:{"uid": uid, "content":ct, "type":"log"},
+							type:'POST',
+							dataType:'json',
+							success:function(data){}
+						})
+						setTimeout(function () {
+							$('#cust-js-iframe',window.parent.document).toggle();
+						},3000)
+					}
+					socket.disconnect();  // 关闭连接
+				});
+			}else if(socket_type == 3){
+				$.ajax({
+					url:"{:U('liveuid_notice')}",
+					data:{"uid": uid, "content":ct, "type":"send"},
+					type:'POST',
+					dataType:'json',
+					success:function(data){
+						if(data.status==1){
+							custshowmsg('弹窗警告成功')
+							setTimeout(function () {
+								$('#cust-js-iframe',window.parent.document).toggle();
+							},3000)
+						}else{
+							custalert(data.info);
+						}
+					}
+				})
+			}
+		});
+	}
+</script>

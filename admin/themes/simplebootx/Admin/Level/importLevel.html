@@ -1,0 +1,40 @@
+<admintpl file="header" />
+<link href="__PUBLIC__/colpick/colpick.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Level/importLevel')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('importLevel')}">
+			<fieldset>
+				<if condition="$role_id == 1">
+					<div class="control-group">
+						<label class="control-label">租户</label>
+						<div class="controls">
+							<select name="tenant_id" >
+								<volist name="tenant_list" id="vo">
+									<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+								</volist>
+							</select>
+							<span class="form-required">*</span>
+						</div>
+					</div>
+				</if>
+				<div class="control-group">
+					<label class="control-label">等级excel</label>
+					<div class="controls">
+						<input type="file" name="level_excel" required>
+						<span>将会清除之前的数据</span>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >保存</button>
+				<a class="btn" href="{:U('experlevel_index')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js"></script>

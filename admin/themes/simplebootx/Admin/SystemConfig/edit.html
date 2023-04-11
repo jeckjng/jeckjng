@@ -1,0 +1,47 @@
+<admintpl file="header" />
+<link href="__PUBLIC__/colpick/colpick.css" rel="stylesheet" type="text/css">
+</head>
+<style>
+
+</style>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/SystemConfig/edit')}
+	</ul>
+	<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('edit')}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">键名</label>
+				<div class="controls">
+					<input type="text" readonly value="{$info.key}" required style="width: 600px;">
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">值</label>
+				<div class="controls">
+					<textarea cols="2" rows="5" name="val" required style="width: 600px;">{$info.val}</textarea>
+					<span class="form-required">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">描述</label>
+				<div class="controls">
+					<textarea cols="2" rows="5" name="desc" style="width: 600px;">{$info.desc}</textarea>
+				</div>
+			</div>
+		</fieldset>
+		<div class="form-actions">
+			<input type="hidden" name="id" value="{$info.id}">
+			<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}">{:L('SAVE')}</button>
+			<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script>
+
+</script>

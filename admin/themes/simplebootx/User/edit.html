@@ -1,0 +1,144 @@
+﻿<admintpl file="header"/>
+<style>
+ .controls img{
+     max-width:200px;
+ }
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#">编辑</a></li>
+		</ul>
+		<form class="form-horizontal cust-js-ajax-form" action="{:U('edit_post')}" method="post">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">用户ID</label>
+					<div class="controls">
+						<input type="text" value="{$userinfo['id']}"  readonly/>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">用户名</label>
+					<div class="controls">
+						<input type="text" value="{$userinfo['user_login']}"  readonly/>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">昵称</label>
+					<div class="controls">
+						<input type="text" name="user_nicename" value="{$userinfo['user_nicename']}" required/>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">邀请码</label>
+					<div class="controls">
+						<input type="text" name="code" value="{$userinfo['code']}"  onkeyup="this.value= this.value.match(/[0-9a-zA-Z]{0,6}?/) ? this.value.match(/[0-9a-zA-Z]{0,6}/)[0] : ''" id="code" required/>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">上级用户id</label>
+					<div class="controls">
+						<input type="text" name="pid" value="{$userinfo['pid']}" onkeyup="this.value= this.value.match(/\d+/) ? this.value.match(/\d+/)[0] : ''" id="pid"/>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<!--<div class="control-group">
+					<label class="control-label">经验值</label>
+					<div class="controls">
+						<input type="text" name="consumption" value="{$userinfo['consumption']}" id="consumption"/> 控制用户等级（消费总额）
+						<span class="form-required">*</span>
+					</div>
+				</div>-->
+				<div class="control-group">
+					<label class="control-label">头像/封面</label>
+					<div class="controls">
+								<div >
+									<input type="hidden" name="avatar" id="thumb" value="{$userinfo['avatar']}">
+									<a href="javascript:void(0);" onclick="flashuploadcut('thumb_images', '附件上传','thumb',thumb_images,'1,jpg|jpeg|gif|png|bmp,1,,,1','','','');return false;">
+									  <if condition="$userinfo['avatar'] neq ''">
+												<img src="{$userinfo['avatar']}" id="thumb_preview" width="135" style="cursor: hand" />
+										<else/>
+										    <img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb_preview" width="135" style="cursor: hand" />
+										</if>
+									</a>
+									<input type="button" class="btn btn-small" onclick="$('#thumb_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;" value="取消图片">
+								</div>
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">性别</label>
+					<div class="controls">
+						<label class="radio inline" for="sex_1"><input type="radio" name="sex" value="1" id="sex_1" <if condition="$userinfo['sex'] eq '1'">checked</if> />男</label>
+						<label class="radio inline" for="sex_2"><input type="radio" name="sex" value="2" id="sex_2" <if condition="$userinfo['sex'] eq '2'">checked</if> >女</label>
+					</div>
+				</div>								
+				
+				<div class="control-group">
+					<label class="control-label">个性签名</label>
+					<div class="controls">
+						<textarea name="signature" rows="2" cols="20" id="signature" class="inputtext" style="height: 100px; width: 500px;">{$userinfo['signature']}</textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">粉丝数</label>
+					<div class="controls">
+						<input type="text" name="fans" value="{$userinfo['fans']}" id="fans"/>
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">关注数</label>
+					<div class="controls">
+						<input type="text" name="follows" value="{$userinfo['follows']}" id="follows"/>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">是否为官方蓝V账号</label>
+					<div class="controls">
+						<label class="radio inline" for="is_certification_true"><input type="radio" name="is_certification" value="1"  id="is_certification_true" <if condition="$userinfo['is_certification'] eq '1'">checked</if> />是</label>
+						<label class="radio inline" for="is_certification_false"><input type="radio" name="is_certification" value="0"  id="is_certification_false" <if condition="$userinfo['is_certification'] eq '0'">checked</if> />否</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">官方蓝V账号名称</label>
+					<div class="controls">
+						<input type="text" name="certification_name" value="{$userinfo['certification_name']}" id="certification_name"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">{:L('STATUS')}</label>
+					<div class="controls">
+						<label class="radio inline" for="active_true"><input type="radio" name="user_status" value="1" id="active_true" <if condition="$userinfo['user_status'] eq '1'">checked</if> />{:L('ENABLED')}</label>
+						<label class="radio inline" for="active_false"><input type="radio" name="user_status" value="0" id="active_false" <if condition="$userinfo['user_status'] eq '0'">checked</if> />{:L('DISABLED')}</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">用户类型</label>
+					<div class="controls">
+						<label class="radio inline" ><input type="radio" name="user_type" value="2" <if condition="$userinfo['user_type'] eq '2'">checked</if> />真实用户</label>
+						<label class="radio inline" style="display: none;"><input type="radio" name="user_type" value="3" <if condition="$userinfo['user_type'] eq '3'">checked</if> />虚拟用户</label>
+						<label class="radio inline" style="display: none;"><input type="radio" name="user_type" value="4" <if condition="$userinfo['user_type'] eq '4'">checked</if> />游客</label>
+						<label class="radio inline" ><input type="radio" name="user_type" value="5" <if condition="$userinfo['user_type'] eq '5'">checked</if> />包装用户</label>
+						<label class="radio inline" ><input type="radio" name="user_type" value="6" <if condition="$userinfo['user_type'] eq '6'">checked</if> />代管账号</label>
+						<label class="radio inline" ><input type="radio" name="user_type" value="7" <if condition="$userinfo['user_type'] eq '7'">checked</if> />测试账号</label>
+					</div>
+				</div>
+
+			</fieldset>
+			<div class="form-actions">
+				<input type="hidden" name="id" value="{$userinfo['id']}" id="id"/>
+				<button type="submit" class="btn btn-primary js-ajax-submit">编辑</button>
+				<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>

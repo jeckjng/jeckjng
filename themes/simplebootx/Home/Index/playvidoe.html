@@ -1,0 +1,202 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" async="" src="__PUBLIC__/home/js/analytics.js"></script>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="cache-control" content="no-siteapp">
+    <title>《{$videoInfo.title}》高清完整版在线观看 - 电影 - 游鱼直播</title>
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/home/css/movie.css">
+    <script type="text/javascript" src="__PUBLIC__/home/js/jquery.js"></script>
+    <meta name="referrer" content="same-origin">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv"></script>
+    <![endif]-->
+    <script src="//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.2.0.js" charset="utf-8"></script>
+    <script type="text/javascript" src="__PUBLIC__/home/js/jquery.qrcode.min.js"></script>
+    <style>
+        #jHgxq {
+            position: fixed;
+            top: 715px;
+            left: 0px;
+            border-radius: 15px;
+            border-left: solid 3px red;
+            border-right: solid 3px green;
+            border-top: solid 3px blue;
+            border-bottom: solid 3px yellow;
+            background: url({$ads.thumb});
+            background-size: 75% 100%;
+            background-repeat: no-repeat;
+            width: 500px;
+            height: 100px;
+            z-index: 2147483647;
+        }
+
+        .jHgxq_g {
+            background-image: url(https://qw.ronyaodailian.cn/gb/di.png);
+            background-size: 20px 20px;
+            position: fixed;
+            z-index: 2147483647;
+            right: 2px;
+            color: rgb(255, 255, 255);
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            top: 700px;
+        }
+    </style>
+</head>
+<body class="searchon m-nav-full info">
+<header class="header">
+    <div class="container"><h1 class="logo"><a href="#" title="游鱼直播"><img
+            src="/logo_top.png" alt="游鱼直播"><span>游鱼直播</span></a></h1><span
+            class="searchstart-on"><i class="fa"></i></span><span class="searchstart-off"><i class="fa"></i></span>
+        <form method="get" action="/Index/pc_info" class="searchform">
+            <button tabindex="3" class="sbtn" type="submit" onclick=""><i class="fa"></i></button>
+            <input tabindex="2" name="video_name" class="sinput" type="text" placeholder="搜索"></form>
+        <div class="nav">
+            <ul>
+                <li><a href="/Index/pchome">首页</a></li>
+                <foreach name="label_list" item="vo" key="k">
+                    <li
+                    <if condition="$vo.label eq  $class"> class="current-menu-item"</if>
+                    ><a href="/Index/pc_info/class/{$vo.label}">{$vo.label}</a></li>
+                </foreach>
+            </ul>
+        </div>
+        <span class="nav-on"><i class="fa"></i></span><span class="nav-mask"></span></div>
+</header>
+<div class="container">
+    <div class="article-container">
+        <article class="article-content">
+            <div style="display:flex;justify-content: center;">
+                <div id="id_test_video" style="height:auto;margin:auto;"></div>
+            </div>
+        </article>
+        <div id="ddz"></div>
+        <div class="playlists" id="slider">
+            <!--        <header>
+                        <dl>
+                            <dt class="on">努努资源</dt>
+                            <dt class="">红牛资源</dt>
+                        </dl>
+                        <div style="float: right;">倍速 : <select id="selRate">
+                            <option value="2">2.0X</option>
+                            <option value="1.5">1.5X</option>
+                            <option value="1.25">1.25X</option>
+                            <option value="1" selected="">1.0X</option>
+                            <option value="0.75">0.75X</option>
+                            <option value="0.5">0.5X</option>
+                        </select></div>
+                    </header>
+                    <div class="tempWrap" style="overflow:hidden; position:relative;">
+                        <div class="bd"
+                             style="width: 1432px; position: relative; overflow: hidden; padding: 0px; margin: 0px; transition-duration: 0ms; transform: translate(-358px, 0px) translateZ(0px);">
+                            <div class="playlist clearfix" style="display: table-cell; vertical-align: top; width: 358px;">
+                                <ul>
+                                    <li><a href="javascript:;" onclick="play(1,0);">正片</a></li>
+                                </ul>
+                            </div>
+                            <div class="playlist clearfix" style="display: table-cell; vertical-align: top; width: 358px;">
+                                <ul>
+                                    <li><a href="javascript:;" onclick="play(0,0);">HD</a></li>
+                                </ul>
+                            </div>
+                            <div class="playlist clearfix" style="display: table-cell; vertical-align: top; width: 358px;">
+                                <ul>
+                                    <li><a href="javascript:;" onclick="play(1,0);">正片</a></li>
+                                </ul>
+                            </div>
+                            <div class="playlist clearfix" style="display: table-cell; vertical-align: top; width: 358px;">
+                                <ul>
+                                    <li><a href="javascript:;" onclick="play(0,0);">HD</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>-->
+            <div class="article-actions clearfix">
+                <div class="shares">
+                    <strong>分享到：</strong>
+                    <a href="javascript:;" class="share-weixin" title="分享到微信"><i class="fa"></i><span
+                            class="share-popover"><span class="share-popover-inner" id="weixin-qrcode"></span></span></a>
+                    <a etap="share" data-share="qzone" class="share-qzone" title="分享到QQ空间"><i class="fa"></i></a>
+                    <a etap="share" data-share="weibo" class="share-tsina" title="分享到新浪微博"><i class="fa"></i></a>
+                    <a etap="share" data-share="qq" class="share-sqq" title="分享到QQ好友"><i class="fa"></i></a>
+                    <a etap="share" data-share="douban" class="share-douban" title="分享到豆瓣网"><i class="fa"></i></a>
+                    <a etap="share" data-share="facebook" class="share-facebook" title="分享到Facebook"><i class="fa"></i></a>
+                    <a etap="share" data-share="twitter" class="share-twitter" title="分享到Twitter"><i
+                            class="fa"></i></a><a etap="share" data-share="linkedin" class="share-linkedin"
+                                                   title="分享到Linkedin"><i class="fa"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lists lists-thumb-top lists-title-lines-1 list-like">
+        <header><h3>猜你喜欢</h3></header>
+        <div class="lists-content">
+            <ul>
+                <foreach name="video_list" item="vo" key="k">
+                    <li><a href="/Index/playvidoe/class/{$vo.label}/id/{$vo.id}" class="thumbnail"><img
+                            referrerpolicy="no-referrer" src="{$vo.thumb}" style="width: 100%;height: 250px;"
+                            class="thumb">
+                        <div class="note"><span>高清</span></div>
+                    </a>
+                        <h2><a href="/Index/playvidoe/class/{$vo.label}/id/{$vo.id}">{$vo.title}</a></h2>
+                    </li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+</div>
+<footer class="footer">
+    <div class="container">© 2018-2021 <a href="#">游鱼直播</a></div>
+</footer>
+<script type="text/javascript" src="__PUBLIC__/home/js/s2t.js"></script>
+<script type="text/javascript" src="__PUBLIC__/home/js/qrcode.js"></script>
+<script src="__PUBLIC__/home/js/p2p-media-loader-core.min.js"></script>
+<script src="__PUBLIC__/home/js/p2p-media-loader-hlsjs.min.js"></script>
+<script src="__PUBLIC__/home/js/hls.js"></script>
+<script type="text/javascript" src="__PUBLIC__/home/js/runtime.js"></script>
+<script type="text/javascript" src="__PUBLIC__/home/js/movie.js"></script>
+<script type="text/javascript" src="__PUBLIC__/home/js/TouchSlide.js"></script>
+<script>rating = 1;
+// videojs 简单使用
+var player = new TcPlayer('id_test_video', {
+    "m3u8": "{$videoInfo.href}",
+
+    "width": '1200',//视频的显示宽度，请尽量使用视频分辨率宽度
+    "height": '420',//视频的显示高度，请尽量使用视频分辨率高度
+    'margin': 'auto'
+});
+
+</script>
+
+<jhgxq id="jHgxq" style="display:none" class=""></jhgxq>
+<jhgxq class="jHgxq_g" style="display:none" classname="jHgxq_g"></jhgxq>
+
+<script>
+    $(function () {
+        var if_pc = "{$if_pc}";
+        if (if_pc == 2) {
+            $("#jHgxq").show();
+            $(".jHgxq_g").show();
+        }
+    });
+
+    $("#jHgxq,.jHgxq_g").click(function () {
+        window.location.href = "{$ads.url}";
+    });
+
+    $('#weixin-qrcode').qrcode({width: 80,height: 80,text: window.location.href})
+</script>
+
+<div class="rollbar">
+    <div class="rollbar-item rollbar-item-top" etap="to_top" title="回顶部" style="display: none;"><i class="fa"></i>
+    </div>
+</div>
+</body>
+</html>

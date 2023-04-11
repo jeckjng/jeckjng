@@ -1,0 +1,186 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li ><a href="{:U('Liveing/index')}">列表</a></li>
+        <li class="active"><a >添加</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Lotterys/livesetting_add')}
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('livesetting_addpost')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">会员ID</label>
+                <div class="controls">
+                    <input type="text" name="uid">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">是否默认模板</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="is_template" checked="checked">是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="is_template">否</label>
+                    <span class="form-required" style="color:red;font-size: 15px;" >*默认模板针对租户设置，如果没有加直播间设置的房间号，则默认使用该模板的设置内容</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">租户选择</label>
+                <div class="controls">
+                    <select name="tenamtinfo" id="tenant">
+                        <foreach name="tenant" item="vo">
+                            <option value="{$vo.id}_{$vo.game_tenant_id}_{$vo.name}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+                        </foreach>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">游戏列表</label>
+                <div class="controls" >
+                    <foreach name="lottery_config" item="vo">
+                        <label class="checkbox inline"><input type="checkbox"  value="{$vo.play_id}_{$vo.play_name}_{$vo.play_cname}"  name="game_list[]" >{$vo.play_cname}</label>
+                    </foreach>
+                </div>
+            </div>-
+            <div class="control-group">
+                <label class="control-label">推荐游戏</label>
+                <div class="controls"  >
+                        <foreach name="lottery_config" item="vo">
+                            <!--<label class="checkbox inline"><input type="checkbox"  value="{$vo.play_id}_{$vo.play_name}_{$vo.play_cname}" name="game_recommend[]" >{$vo.play_cname}</label>-->
+                            <label class="radio inline"><input type="radio"  value="{$vo.play_id}_{$vo.play_name}_{$vo.play_cname}" name="game_recommend">{$vo.play_cname}</label>
+                        </foreach>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">游戏入口(手柄)</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_open" checked="checked">是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_open">否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">显示优惠活动</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_discount" checked="checked">是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_discount">否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">显示长龙助手</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_longbet" checked="checked">是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_longbet">否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">开启举报有奖</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_rewards" checked="checked">是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_rewards">否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">启用跟投</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_follow" checked="checked">是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_follow">否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">分享投注</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_sharebet" checked="checked">是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_sharebet">否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">是否有效</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_iswork" checked="checked">是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_iswork">否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">半屏游戏</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="0" name="game_halfscreen" checked="checked">不显示</label>
+                    <label class="radio inline"><input type="radio" value="1" name="game_halfscreen">百家乐</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_halfscreen">龙虎斗</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">开始时间</label>
+                <div class="controls">
+                    <input type="datetime-local" value="{$nowtime}" name="time_start" min="2010-01-01T00:00" max="2100-01-01T00:00"/>
+            </div><br/>
+            <div class="control-group">
+                <label class="control-label">结束时间</label>
+                <div class="controls">
+                    <input type="datetime-local"  value="{$nowtime}" name="time_end"   min="2010-01-01T00:00" max="2100-01-01T00:00"/>
+                </div>
+            </div>
+
+
+
+
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+            <a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script>
+    (function(){
+        $("#cdn label.radio").on('click',function(){
+            var v=$("input",this).val();
+            var b=$("#cdn_switch_1");
+            if(v==0){
+                b.hide();
+                $("#type_val").val('');
+            }else{
+                b.show();
+            }
+        })
+    })()
+</script>
+<script>
+    (function(){
+        $("#cdns label.radio").on('click',function(){
+            var v=$("input",this).val();
+            var b=$("#cdns_switch_1");
+            var t=$("#thumb_host");
+            if(v==0){
+                b.hide();
+                t.show();
+                $("#thumb").val('');
+            }else{
+                b.show();
+
+                t.hide();
+            }
+        })
+    })()
+</script>
+<script>
+    (function(){
+        $("#cdn label.radio").on('click',function(){
+            var v=$("input",this).val();
+
+            var t=$("#cdn_switch_3");
+            if(v==0){
+                t.hide();
+                $("#tryWatchTime").val('');
+            }else{
+                t.show();
+
+
+            }
+        })
+    })()
+</script>
+</body>
+</html>

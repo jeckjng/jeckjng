@@ -1,0 +1,99 @@
+<admintpl file="header" />
+<style>
+	table td{
+		min-width: 70px;
+	}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li class="active"><a >直播记录</a></li>
+			<li><a href="{:U('Liveing/add')}">新增直播</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Livepushpull/index')}
+		</ul>
+		
+		<form class="well form-search" method="post" action="{:U('index')}">
+			线路名称：
+			<input type="text" name="name" class="mar-right-15" style="width: 200px;" value="{$param.name}" placeholder="请输入名称">
+			推拉流服务商：
+			<select name="code" class="mar-right-15" style="width: 120px;">
+				<option value="">全部</option>
+				<volist name="pushpull_list" id="vo">
+					<option value="{$key}" <if condition="$param.code eq $key">selected</if> >{$vo}</option>
+				</volist>
+			</select>
+			线路分类：
+			<select name="ct_type" class="mar-right-15" style="width: 120px;">
+				<option value="">全部</option>
+				<volist name="ct_type_list" id="vo">
+					<option value="{$key}" <if condition="$param.ct_type eq $key">selected</if> >{$vo}</option>
+				</volist>
+			</select>
+			状态：
+			<select name="status" class="mar-right-15" style="width: 120px;">
+				<option value="100">全部</option>
+				<volist name="status_list" id="vo">
+					<option value="{$key}" <if condition="$param['status'] eq $key">selected</if> >{$vo}</option>
+				</volist>
+			</select>
+			<input type="submit" class="btn btn-primary" value="搜索">
+			<a href="{:U('add')}" class="btn btn-primary" style="background-color: #1abc9c;float: right;">新增</a>
+		</form>
+		<form method="post" class="js-ajax-form" action="{:U('change_weight')}" style="white-space: nowrap;overflow-x: auto;">
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>线路名称<br>累积使用次数<br>今日使用次数</th>
+						<th>推拉流服务商</th>
+						<th>线路分类</th>
+						<th>推流域名/推流地址</th>
+						<th>播流域名/播流地址</th>
+						<th>状态</th>
+						<th>分流比例</th>
+						<th>操作人</th>
+						<th>创建时间<br>更新时间</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td style="width: 80px;">{$vo.id}</td>
+						<td style="width: 120px;">{$vo.name}<br>{$vo.usenum}<br>{$vo.today_usenum}</td>
+						<td style="width: 120px;">{$pushpull_list[$vo['code']]}</td>
+						<td style="width: 80px;">{$ct_type_list[$vo['ct_type']]}</td>
+						<td style="width: 220px;">{:($vo['push'] ? $vo['push'] : $vo['push_url'])}</td>
+						<td style="width: 100px;">
+							<textarea name="pull" readonly rows="{$vo.play_url_rows}" style="min-width: 300px;">{$vo.play_url}</textarea>
+						</td>
+						<td style="width: 80px;">
+							<if condition="$vo.status eq 1">
+								<span class="color-green">{$vo.status_name}</span>
+								<else/>
+								<span class="color-red">{$vo.status_name}</span>
+							</if>
+						</td>
+						<td style="width: 100px;">{$vo.bypass_ratio}%</td>
+						<td style="width: 120px;">{$vo.act_uid}</td>
+						<td style="width: 160px;">{$vo.ctime|date="Y-m-d H:i:s",###}<br>{$vo.mtime|date="Y-m-d H:i:s",###}</td>
+						<td style="width: 120px;">
+							<a href="{:U('edit',array('id'=>$vo['id']))}" >编辑</a>
+							|
+							<a href="{:U('del',array('id'=>$vo['id'],'name'=>$vo['name']))}" class="cust-js-ajax del_color" data-msg="您确定要删除吗？">删除</a>
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>\
+<script type="text/javascript">
+
+
+</script>

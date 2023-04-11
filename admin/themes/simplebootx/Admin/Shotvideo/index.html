@@ -1,0 +1,367 @@
+<admintpl file="header" />
+<style>
+	.table img{
+		max-width:100px;
+		max-height:100px;
+	}
+	.textArea textarea{
+		width:90%;padding:3%;height:80%;margin:0 auto;margin-top:30px;
+		margin-left: 2%;
+	}
+	.textArea_btn{
+		text-align: right;
+		margin-top: 30px;
+	}
+	.textArea_btn input{
+		margin-right: 30px;
+	}
+	.img-zoom-wrapper .img-zoom-view{
+		height: 500px;
+	}
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+		<!--<li class="active"><a >待审核列表</a></li>
+		 <li><a href="{:U('Video/add')}">视频添加</a></li> -->
+		{:getTableMenu($_GET['menuid'],'Admin/Shotvideo/index')}
+	</ul>
+
+	<form class="well form-search" method="post" action="{:U('index')}">
+		<div style="">
+			<div class="search-box">
+				<input type="text" name="start_time" class="js-date date" id="start_time" value="{$param.start_time}" style="width: 80px;" autocomplete="off" placeholder="创建时间">
+			</div>
+			<div class="search-box">
+				<input type="button" data-time_type="today" class="btn btn-primary cust-time-select {:$param['time_type']=='today' ? '' : 'bg-color-white color-black'}" value="今日" data-time_start="{:explode(' ',$time_se['today_start'])[0]}" data-time_end="{:explode(' ',$time_se['today_end'])[0]}" />
+			</div>
+			<div class="search-box">
+				<input type="button" data-time_type="tweek" class="btn btn-primary cust-time-select {:$param['time_type']=='tweek' ? '' : 'bg-color-white color-black'}" value="本周" data-time_start="{:explode(' ',$time_se['tweek_start'])[0]}" data-time_end="{:explode(' ',$time_se['tweek_end'])[0]}" />
+			</div>
+			<div class="search-box">
+				<input type="button" data-time_type="tmonth" class="btn btn-primary cust-time-select {:$param['time_type']=='tmonth' ? '' : 'bg-color-white color-black'}" value="本月" data-time_start="{:explode(' ',$time_se['tmonth_start'])[0]}" data-time_end="{:explode(' ',$time_se['tmonth_end'])[0]}" />
+			</div>
+			<if condition="$role_id == 1">
+				<div class="search-box">
+					<select class="select_2 width-140" name="tenant_id" id="tenant_id">
+						<volist name="tenant_list" id="vo">
+							<option value="{$vo['id']}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo['name']}</option>
+						</volist>
+					</select>
+				</div>
+			</if>
+			<div class="search-box">
+				<select class="select_2 width-140" name="user_type">
+					<option value="-1" <if condition="$param['user_type'] eq '-1'">selected</if>>用户类型（全部）</option>
+					<volist name="user_type_list" id="vo">
+						<option value="{$vo.type}" <if condition="$param['user_type'] eq $vo['type']">selected</if> >{$vo['name']}</option>
+					</volist>
+				</select>
+			</div>
+			<div class="search-box">
+				<input type="text" name="user_login" class="width-160 " value="{$param.user_login}" placeholder="用户账号">
+			</div>
+			<div class="search-box">
+				<input type="text" name="user_id" class="width-120 " value="{$param.user_id}" placeholder="用户ID">
+			</div>
+			<div class="search-box">
+				<input type="text" name="id" class="width-120 " value="{$param.id}" placeholder="视频ID">
+			</div>
+		</div>
+		<div style="">
+			<div class="search-box">
+				<input type="text" class="js-date date" name="end_time" id="end_time" value="{$param.end_time}" style="width: 80px;" autocomplete="off" placeholder="创建时间">
+			</div>
+			<div class="search-box">
+				<input type="button" data-time_type="ytoday" class="btn btn-primary cust-time-select {:$param['time_type']=='ytoday' ? '' : 'bg-color-white color-black'}" value="昨日" data-time_start="{:explode(' ',$time_se['ytoday_start'])[0]}" data-time_end="{:explode(' ',$time_se['ytoday_end'])[0]}" />
+			</div>
+			<div class="search-box">
+				<input type="button" data-time_type="yweek" class="btn btn-primary cust-time-select {:$param['time_type']=='yweek' ? '' : 'bg-color-white color-black'}" value="上周" data-time_start="{:explode(' ',$time_se['yweek_start'])[0]}" data-time_end="{:explode(' ',$time_se['yweek_end'])[0]}" />
+			</div>
+			<div class="search-box">
+				<input type="button" data-time_type="ymonth" class="btn btn-primary cust-time-select {:$param['time_type']=='ymonth' ? '' : 'bg-color-white color-black'}" value="上月" data-time_start="{:explode(' ',$time_se['ymonth_start'])[0]}" data-time_end="{:explode(' ',$time_se['ymonth_end'])[0]}" />
+			</div>
+			<div class="search-box">
+				<select class="select_1 width-140" name="origin">
+					<option value="">来源（全部）</option>
+					<option value="1" <if condition="$param.origin eq '1'">selected</if> >前台上传</option>
+					<option value="2" <if condition="$param.origin eq '2'">selected</if> >后台上传</option>
+					<option value="3" <if condition="$param.origin eq '3'">selected</if> >后台手动添加链接</option>
+				</select>
+			</div>
+			<div class="search-box">
+				<select class="width-140" name="is_downloadable">
+					<option value="-1" <if condition="$param.is_downloadable eq '-1'">selected</if>>上传状态（全部）</option>
+					<volist name="is_downloadable_list" id="vo">
+						<option value="{$key}" <if condition="$param['is_downloadable'] eq strval($key)">selected</if> >{$vo['name']}</option>
+					</volist>
+				</select>
+			</div>
+			<div class="search-box">
+				<select class="width-140" name="status">
+					<option value="">审核状态（全部）</option>
+					<volist name="status_list" id="vo">
+						<option value="{$key}" <if condition="$param['status'] eq $key">selected</if> >{$vo['name']}</option>
+					</volist>
+				</select>
+			</div>
+			<div class="search-box">
+				<select class="width-140" name="classify">
+					<option value="">视频分类（全部）</option>
+					<foreach name="classify" item="vo">
+						<option value="{$vo.classify}" <if condition="$param.classify eq $vo['classify']">selected</if> >{$vo.classify}</option>
+					</foreach>
+				</select>
+			</div>
+			<div class="search-box">
+				<select class="select_2 width-140" name="top">
+					<option value="-1" <if condition="$param.top eq '-1'">selected</if> >置顶（全部）</option>
+					<option value="1" <if condition="$param.top eq '1'">selected</if> >是</option>
+					<option value="0" <if condition="$param.top eq '0'">selected</if> >否</option>
+				</select>
+			</div>
+			<div class="search-box">
+				<select class="select_2 width-140" name="is_advertise">
+					<option value="-1" <if condition="$param.is_advertise eq '-1'">selected</if> >是否广告（全部）</option>
+					<option value="1" <if condition="$param.is_advertise eq '1'">selected</if> >是</option>
+					<option value="0" <if condition="$param.is_advertise eq '0'">selected</if> >否</option>
+				</select>
+			</div>
+		</div>
+		<div>
+			<div class="search-box">
+				<input type="hidden" name="time_type" id="time_type" value="{$param['time_type']}"/>
+			</div>
+			<div class="search-box">
+				<input type="submit" class="btn btn-primary" value="搜索">
+			</div>
+		</div>
+	</form>
+
+	<form name="formcontent" method="post" class="cust-js-ajax-form" action="">
+		<div class="table-actions">
+			<button type="button" class="btn btn-success btn-small cust-filter-column" data-table_id="list_content" data-page_name="{:U('index')}">列展示</button>
+			<button type="submit" class="btn btn-success btn-small" onclick="batch_check(this, formcontent, '{:U(\'batchPass\')}')" data-option="{confirm:true,msg:'批量审核通过',waittime:1000}">批量审核通过</button>
+			<button type="submit" class="btn btn-warning btn-small" onclick="batch_check(this, formcontent, '{:U(\'batchFail\')}')" data-option="{confirm:true,msg:'批量不通过',waittime:1000}">批量不通过</button>
+			<button type="submit" class="btn btn-danger btn-small" onclick="batch_check(this, formcontent, '{:U(\'batchDel\')}')" data-option="{confirm:true,msg:'批量删除',waittime:1000}">批量删除</button>
+<!--			<button type="submit" class="btn btn-danger btn-small" onclick="batch_check(this, formcontent, '{:U(\'setting/clearcache\', array(\'action\'=>\'video\'))}')" data-option="{confirm:true,msg:'清除视频缓存',waittime:1000}">清除视频缓存</button>-->
+		</div>
+		<table class="table table-hover table-bordered table-list" id="list_content" style="white-space: nowrap;overflow-x: auto;">
+			<thead>
+			<tr>
+				<th data-field="checkbox" class="align-center-i"><input style="margin-bottom: 5px" type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x">全选</th>
+
+				<th data-field="id" class="align-center-i">ID</th>
+				<th data-field="video" class="" style="max-width: 250px;">视频信息</th>
+				<th data-field="label-classify" class="align-center-i" style="max-width: 300px;">标签/分类</th>
+				<th data-field="thumb" class="align-center-i">封面</th>
+				<th data-field="user" class="-i">作者</th>
+				<th data-field="create_time_date" class="align-center-i">创建时间<br>更新时间</th>
+				<th data-field="check_date" class="align-center-i">审核时间</th>
+				<th data-field="is_downloadable_name" class="align-center-i">上传状态</th>
+				<th data-field="status_name" class="align-center-i">审核状态</th>
+				<th data-field="action" class="" >{:L('ACTIONS')}</th>
+				<th data-field="operated_by" class="align-center-i">操作人</th>
+				<th data-field="remark" class="align-center-i">备注</th>
+			</tr>
+			</thead>
+			<tbody>
+			<foreach name="lists" item="vo">
+				<tr>
+					<td data-field="checkbox" class="align-center-i" data-field="id">
+						<if condition="$vo['is_downloadable'] eq 1" >
+							<input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]" value="{$vo.id}">
+						</if>
+					</td>
+<!--					<td data-field="sort" class="align-center-i"><input type="text" size="3"  name="sort[{$vo['id']}]" value="{$vo['sort']}" class="input input-order" ></td>-->
+					<td data-field="id" class="align-center-i" >{$vo.id}</td>
+					<td data-field="video" class="overflow-x-auto" style="max-width: 200px;">
+						标题: <?php if(strlen($vo['title'])>10){echo mb_substr($vo['title'],0,10)."...";}else{ echo $vo['title']; } ?><br/>
+						时长: {$vo['duration']}<br/>
+						播放次数: {$vo['watchtimes']}<br/>
+						喜欢数量: {$vo['likes']}<br/>
+						评论数量: {$vo['comments']}<br/>
+					</td>
+					<td data-field="label-classify" class="align-center-i">
+						标签: {$vo['label']}<br/><br/>
+						分类: {$vo['classify']}
+					</td>
+					<td data-field="thumb" class="thumb_{$key} align-center-i" data-imgload="{$vo['thumb']}" data-origin="{$vo['origin']}"></td>
+					<td data-field="user" class="overflow-x-auto" style="max-width: 200px;">
+						来源：{$vo['origin_name']}<br/>
+						作者：{$vo['user_nicename']}<br/>
+						用户ID：{$vo['uid']}<br/>
+						用户账号：{$vo['user_login']}<br/>
+					</td>
+					<td data-field="create_time_date" class="align-center-i">
+						{$vo.create_time_date}<br>
+						{$vo.update_time_date}
+					</td>
+					<td data-field="check_date" class="align-center-i">{$vo.check_date}</td>
+					<td data-field="is_downloadable_name" class="align-center-i">
+						<if condition="$vo['is_downloadable'] == '0'">
+							<if condition="!$vo['filestorekey']">
+								<if condition="$vo['origin'] == 1">
+									(前台)
+									<else/>
+									(后台)
+								</if>
+								<else/>
+								(服务端)
+							</if>
+						</if>
+						{$vo['is_downloadable_name']}
+					</td>
+					<td data-field="status_name" class="align-center-i">{$vo['status_name']}</td>
+					<td data-field="action" class="" data-filestorekey="{$vo.filestorekey}" data-download_address="{$vo.download_address}">
+						<if condition="$vo['status'] neq 4">
+							<div class="mar-bottom-5">
+								<if condition="$vo['is_downloadable'] eq '1' && $vo['status'] neq 2">
+									<a href="{:U('pass',array('id'=>$vo['id'], 'pass'=>2, 'title'=>'审核通过'))}" class="cust-iframe-pop mar-bottom-5 mar-right-10 auth_access" data-auth_access="{:U('pass')}" data-iframe="{width:500px,height:450px,top:10%,left:none;}" >审核通过</a>
+								</if>
+								<if condition="$vo['status'] neq 3">
+									<a href="{:U('Shotvideo/pass',array('id'=>$vo['id'],'pass'=>3, 'title'=>'审核不通过'))}" class="cust-iframe-pop mar-right-10 auth_access" data-auth_access="{:U('pass')}" data-iframe="{width:500px,height:450px,top:10%,left:none;}" data-msg="您确定审核不通过吗？">审核不通过</a>
+								</if>
+							</div>
+							<div class="mar-bottom-5">
+								<if condition="$vo['href']">
+									<div  style="color: blue;display: inline-block;cursor: pointer;" onclick="videoZoom('{$vo[\'href\']}')" src="{$vo['href']}"  class="video-zoom mar-right-10 mar-right-5" width="25" height="25" >预览</div>
+								</if>
+								<if condition="$vo['top']==0" >
+									<a href="{:U('update_top',array('id'=>$vo['id'],'top'=>1))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('update_top')}" confirm="您确定置顶吗？">置顶</a>
+									<else/>
+									<a href="{:U('update_top',array('id'=>$vo['id'],'top'=>0))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('update_top')}" confirm="您确定取消置顶吗？" style="color:red;">取消置顶</a>
+								</if>
+								<if condition="$vo['is_advertise']==0" >
+									<a href="{:U('update_is_advertise',array('id'=>$vo['id'],'is_advertise'=>1))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('update_is_advertise')}" confirm="您确定置顶吗？">设为广告</a>
+									<else/>
+									<a href="{:U('update_is_advertise',array('id'=>$vo['id'],'is_advertise'=>0))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('update_is_advertise')}" confirm="您确定取消置顶吗？" style="color:red;">取消广告</a>
+								</if>
+							</div>
+							<a href="{:U('Shotvideo/add_address',array('id'=>$vo['id']))}" class="mar-right-5 auth_access" data-auth_access="{:U('add_address')}">编辑</a>
+							<a href="{:U('Shotvideo/del_viode',array('id'=>$vo['id']))}" class="cust-js-ajax del_color auth_access" data-auth_access="{:U('del_viode')}" confirm="您确定要删除吗？">删除</a>
+						</if>
+					</td>
+					<td data-field="operated_by" class="align-center-i">{$vo['operated_by']}</td>
+					<td data-field="remark" class="align-center-i overflow-x-auto" style="max-width: 140px;">{$vo.remark}</td>
+				</tr>
+			</foreach>
+			</tbody>
+		</table>
+		<div class="pagination">{$page}</div>
+		<div class="table-actions">
+			<button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+		</div>
+	</form>
+</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script src="__PUBLIC__/js/imgzoom/imgzoom.js"></script>
+<script src="__PUBLIC__/js/vcplayer/TcPlayer-2.2.0.js" charset="utf-8"></script>
+<script>
+	new ImgZoom();
+
+	$(function(){
+		$('td[data-imgload]').each(function (item,i) {
+			var url = $(i).attr('data-imgload');
+			var origin = $(i).attr('data-origin');
+			if(!url){
+				return ;
+			}
+			if (origin != '3'){
+				var xhr = new XMLHttpRequest();
+				xhr.open('GET', url, true);
+				xhr.responseType = 'arraybuffer';
+				xhr.onload = function(e) {
+					buffer = xhr.response;
+					var img_ct = decode_img_ct({data: buffer})
+					var img  = '<img src="'+img_ct+'">'
+					$('.thumb_'+item).append(img);
+				};
+				xhr.send();
+			}else {
+				var img  = '<img src="'+url+'">'
+				$('.thumb_'+item).append(img);
+			}
+		})
+	})
+
+	function decode_img_ct(dataBuffer){
+		try {
+			const _arrayBufferToBase64 = (buffer) => {
+				let binary = ''
+				let bytes = new Uint8Array(buffer)
+				let len = bytes.byteLength
+				for (let i = 0; i < len; i++) {
+					binary += String.fromCharCode(bytes[ i ])
+				}
+				return window.btoa(binary)
+			}
+			const data = dataBuffer.data
+			const dataView = new DataView(data)
+			// 解密
+			for (let i = 0; i < dataView.byteLength; i++) {
+				dataView.setInt8(i, dataView.getInt8(i) ^ 123)
+			}
+			return 'data:image/png;base64,' + _arrayBufferToBase64(data)
+		}catch (e) {
+			return 'imgDecrypt Error'
+		}
+	}
+
+	$(document).ready(function (){
+		// 筛选列，是否有隐藏的，如果有则隐藏不显示
+		var cust_filter_column_obj = $('.cust-filter-column');
+		var cust_filter_column_key = "cust-filter-column-" + $.md5($(cust_filter_column_obj).attr('data-page_name'));
+		var checked_no_json = window.localStorage.getItem(cust_filter_column_key)
+		if(checked_no_json){
+			checked_no_list = JSON.parse(checked_no_json);
+			var table_id = $(cust_filter_column_obj).attr('data-table_id');
+			$.each(checked_no_list, function (index, val){
+				data_field = val
+				$('#'+table_id).children('thead').find("[data-field='" + data_field + "']").addClass('filter-checked-no').removeClass('filter-checked-yes').css('display', 'none');
+				$('#'+table_id).children('tbody').find("[data-field='" + data_field + "']").addClass('filter-checked-no').removeClass('filter-checked-yes').css('display', 'none');
+			})
+		}
+
+		// 根据菜单权限是否显示按钮
+		var auth_access_json = '{$auth_access_json}';
+		var role_id = '{$role_id}';
+		var auth_access_list = JSON.parse(auth_access_json)
+		$(".auth_access").each(function (index,val){
+			var rule_name = $(this).attr('data-auth_access');
+			rule_name = rule_name.replace(/^\//g, '').toLowerCase();
+			var hash_key = $.md5(role_id+rule_name+'admin_url');
+			if(auth_access_list.hasOwnProperty(hash_key) == true){
+				$(this).css('display','');
+			}else{
+				$(this).css('display','none');
+			}
+		});
+	});
+
+	function videoZoom(url){
+		let dom = $('<div class="img-zoom-wrapper"><div class="img-zoom-view" style="transform: translate(-50%, -50%) scale(1);">' +
+				'<div id="id_test_video" style="height:auto;margin:auto;"></div></div></div>')
+		$(document.body).append(dom)
+		dom.click(function(el){
+
+			this === el.target && $(this).remove()
+			player = null
+		})
+		var player = new TcPlayer('id_test_video', {
+			"m3u8": url,
+			"height": '420',//视频的显示高度，请尽量使用视频分辨率高度
+			'margin': 'auto',
+			'width': '1200'
+		});
+	}
+
+	function batch_check(btnobj, formcontentobj, uri){
+		$(formcontentobj).attr('action', uri).find("button[type='submit']").removeClass('cust-js-ajax-submit');
+		$(btnobj).addClass('cust-js-ajax-submit');
+	}
+</script>

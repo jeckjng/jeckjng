@@ -1,0 +1,27 @@
+<html>
+
+<script>
+    var wsServer = 'wss://livedev.jxmm168.com/php-socket-test/';
+    var websocket = new WebSocket(wsServer);
+    websocket.onopen = function (evt) {
+        console.log("Connected to WebSocket server.");
+        websocket.send('send to client...  ');
+    };
+
+    websocket.onclose = function (evt) {
+        console.log("Disconnected");
+    };
+
+    websocket.onmessage = function (evt) {
+        console.log('Retrieved data from server: ' + evt.data);
+    };
+
+    websocket.onerror = function (evt, e) {
+        console.log('Error occured: ' + evt.data);
+    };
+</script>
+<body>
+
+<p>Swoole test!</p>
+</body>
+</html>

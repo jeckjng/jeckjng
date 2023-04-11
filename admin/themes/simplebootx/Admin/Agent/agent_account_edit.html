@@ -1,0 +1,54 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        {:getTableMenu($_GET['menuid'],'Admin/agent/agent_account_edit')}
+    </ul>
+    <form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('agent/agent_account_edit')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">用户名</label>
+                <div class="controls">
+                    <input type="text" value="{$info.user_login}" readonly>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">{:L('PASSWORD')}</label>
+                <div class="controls">
+                    <input type="password" name="user_pass" value="" placeholder="******">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">昵称</label>
+                <div class="controls">
+                    <input type="text" name="user_nicename" value="{$info.user_nicename}" required>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+
+
+
+            <div class="control-group">
+                <label class="control-label">{:L('ROLE')}</label>
+                <div class="controls">
+                    <foreach name="roles" item="vo">
+                        <label class="radio inline">
+                            <php>$role_id_checked=in_array($vo['id'],$role_ids)?"checked":"";</php>
+                            <input value="{$vo.id}" type="radio" name="role_id[]" {$role_id_checked} required>{$vo.name}
+                        </label>
+                    </foreach>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <input type="hidden" name="id" value="{$info.id}" />
+            <button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}">{:L('SAVE')}</button>
+            <a class="btn" href="{:U('agent/agent_account')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

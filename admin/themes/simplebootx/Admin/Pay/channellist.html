@@ -1,0 +1,121 @@
+<admintpl file="header" />
+<style>
+    .table img{
+        max-width:100px;
+        max-height:100px;
+    }
+    .textArea textarea{
+        width:90%;padding:3%;height:80%;margin:0 auto;margin-top:30px;
+        margin-left: 2%;
+    }
+    .textArea_btn{
+        text-align: right;
+        margin-top: 30px;
+    }
+    .textArea_btn input{
+        margin-right: 30px;
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li class="active"><a >渠道管理</a></li>
+        <li><a href="{:U('Pay/channeladd')}">渠道添加</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Pay/channellist')}
+    </ul>
+
+    <form class="well form-search" method="post" action="{:U('Pay/channellist')}">
+        <div>
+            <if condition="$role_id == 1">
+                <div class="search-box">
+                    租户
+                    <select name="tenant_id" style="width: 120px;margin-right: 15px;">
+                        <volist name="tenant_list" id="vo">
+                            <option value="{$vo.id}" <if condition="$param.tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+                        </volist>
+                    </select>
+                </div>
+            </if>
+            <div class="search-box">
+                状态：
+                <select name="status" style="width: 120px;margin-right: 15px;">
+                    <option value="-1" <if condition="$param.status eq '-1' ">selected</if> >全部</option>
+                    <volist name="status_list" id="vo">
+                        <option value="{$key}" <if condition="$param.status eq $key">selected</if> >{$vo}</option>
+                    </volist>
+                </select>
+            </div>
+        </div>
+        <div>
+            <div class="search-box">
+                <input type="submit" class="btn btn-primary" value="搜索">
+            </div>
+        </div>
+    </form>
+
+    <form method="post" class="js-ajax-form">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th align="center">ID</th>
+                <th style="max-width: 300px;">渠道名称</th>
+                <th style="max-width: 300px;">编号</th>
+                <th style="max-width: 300px;">币种名称</th>
+                <th style="max-width: 300px;">币种简称</th>
+                <th style="max-width: 300px;">汇率</th>
+                <th style="max-width: 300px;">类型</th>
+                <th>状态</th>
+                <th>操作</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td align="center">{$vo['id']}</td>
+                    <td>{$vo['channel_name']}</td>
+                    <td>{$vo['code']}</td>
+                    <td>{$vo['currency_name']}</td>
+                    <td>{$vo['currency_code']}</td>
+                    <td>{$vo['rate']}</td>
+                    <td>
+                        <if condition="$vo['type'] eq 1">
+                            <span style="color: green">线上</span>
+                            <else />
+                            <span style="color: green">线下</span>
+                        </if>
+                    </td>
+
+                    <td>
+                        <if condition="$vo['status'] eq 1">
+                            <span style="color: green">开启</span>
+                            <else />
+                            <span style="color: red">关闭</span>
+                        </if>
+                    </td>
+                    <td>
+                        <if condition="$vo['status'] eq 1">
+                            <a href="{:U('Pay/upstatus',array('id'=>$vo['id'],'status' =>0 ))}" class="js-ajax-dialog-btn del_color">设为禁用</a>
+                            <else />
+                            <a href="{:U('Pay/upstatus',array('id'=>$vo['id'],'status' =>1))}" class="js-ajax-dialog-btn success_color" >设为启用</a>
+                        </if>
+                        <a href="{:U('Pay/channeledit',array('id'=>$vo['id']))}" class="success_color">编辑</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/layer/layer.js"></script>
+<script type="text/javascript">
+
+</script>
+
+<script type="text/javascript">
+</script>
+</body>
+</html>

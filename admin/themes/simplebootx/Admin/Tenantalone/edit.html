@@ -1,0 +1,147 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li ><a href="{:U('Tenantalone/index')}">列表</a></li>
+			<li class="active"><a >编辑</a></li>-->
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('Tenantalone/edit_post')}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">租户ID</label>
+					<div class="controls">
+						<input type="text" value="{$info['id']}" class="width-400" readonly>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">租户名称</label>
+					<div class="controls">
+						<input type="text" name="name" value="{$info['name']}" class="width-400" >
+						<span class="form-required">*</span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">租户域名</label>
+					<div class="controls">
+						<input type="text" name="site" value="{$info['site']}" class="width-400">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">直播系统租户id</label>
+					<div class="controls">
+						<input type="text" name="game_tenant_id" value="{$info['game_tenant_id']}" class="width-400">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">收款银行卡</label>
+					<div class="controls">
+						<input type="text" name="bank_card" value="{$info['bank_card']}" class="width-400">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">户名</label>
+					<div class="controls">
+						<input type="text" name="account_name" value="{$info['account_name']}" class="width-400">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">开户行</label>
+					<div class="controls">
+						<input type="text" name="account_bank" value="{$info['account_bank']}" class="width-400">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">NFT接口地址</label>
+					<div class="controls">
+						<input type="text" name="balance_nft_url" value="{$info['balance_nft_url']}" class="width-400">
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">商城接口地址</label>
+					<div class="controls">
+						<input type="text" name="shop_url" value="{$info['shop_url']}" class="width-400">
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">代发接口地址</label>
+					<div class="controls">
+						<input type="text" name="daifu_url" value="{$info['daifu_url']}" class="width-400">
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">彩票租户id</label>
+					<div class="controls">
+						<input type="text" name="lottery_id" value="{$info['lottery_id']}" class="width-400">
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">彩票租户地址</label>
+					<div class="controls">
+						<input type="text" name="lottery_url" value="{$info['lottery_url']}" class="width-400">
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">租户appKey</label>
+					<div class="controls">
+						<input type="text" name="appkey" value="{$info['appkey']}" class="width-400">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">是否开启直播权限</label>
+					<div class="controls" id="live_jurisdiction">
+						<label class="radio inline"><input type="radio" value="0" name="live_jurisdiction" <if condition="$info['live_jurisdiction'] eq 0">checked="checked"</if>>关闭</label>
+						<label class="radio inline"><input type="radio" value="1" name="live_jurisdiction" <if condition="$info['live_jurisdiction'] eq 1">checked="checked"</if>>启用</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">租户状态</label>
+					<div class="controls" id="cdn">
+						<label class="radio inline"><input type="radio" value="0" name="status" <if condition="$info['status'] eq 0">checked="checked"</if> >禁用</label>
+						<label class="radio inline"><input type="radio" value="1" name="status" <if condition="$info['status'] eq 1">checked="checked"</if> >启用</label>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<input type="hidden" name="id" value="{$info['id']}">
+				<input type="hidden" name="appid" value="{$info['appid']}">
+				<input type="hidden" name="app_id" value="{$info['app_id']}">
+				<input type="hidden" name="app_key" value="{$info['app_key']}">
+				<input type="hidden" name="is_trying" value="{$info['is_trying']}">
+				<input type="hidden" name="trying_exp" value="{$info['trying_exp']}">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('EDIT')},waittime:1000}">{:L('EDIT')}</button>
+				<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script>
+	(function(){
+		$("#cdn label.radio").on('click',function(){
+			var v=$("input",this).val();
+			var b=$("#cdn_switch_1");
+			if(v==0){
+				b.hide();
+				$("#type_val").val('');
+			}else{
+				b.show();
+			}
+		})
+	})()
+	</script>
+</body>
+</html>

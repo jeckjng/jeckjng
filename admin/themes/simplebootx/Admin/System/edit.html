@@ -1,0 +1,114 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!-- <li ><a href="{:U('System/index')}">消息列表</a></li> -->
+			<!--<li class="active"><a >发送消息</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/System/index')}
+		</ul>
+
+			<fieldset>
+
+				<div class="control-group">
+					<label class="control-label">消息内容</label>
+					<div class="controls">
+						<input type="text" name="content"  value="" id="content">
+						<span class="form-required" style="color: red;">*发送的系统消息将显示在聊天公屏区域, 多条消息请用 ;; 分割</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">租户选择</label>
+					<div class="controls">
+						<select name="tenant_id" id="tenant_id">
+							<foreach name="list" item="vo">
+								<option value="{$vo.id}_separate_{$vo.game_tenant_id}_separate_{$vo.chatserver}_separate_{$vo.socket_type}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+							</foreach>
+						</select>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary js-ajax-submit">发送</button>
+				<!-- <a class="btn" href="{:U('System/index')}">{:L('BACK')}</a> -->
+			</div>
+	</div>
+
+	<script src="__PUBLIC__/js/socket.io.js"></script>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript">
+
+
+	 $(".js-ajax-submit").on("click",function(){
+		 custconfirm('发送【'+$.trim( $("#content").val() )+'】',function () {
+			 var tenant_id_arr = $("#tenant_id option:selected").val().split('_separate_');
+			 var content = $.trim( $("#content").val() );
+			 var tenant_id = tenant_id_arr[0];
+			 var game_tenant_id = tenant_id_arr[1];
+			 var chatserver = tenant_id_arr[2];
+			 var socket_type = tenant_id_arr[3];
+			 if (socket_type == 1) {
+				 var socket = io(chatserver);
+				 socket.on('connect', function () {
+					 console.log('connect success')
+					 setTimeout(function () {
+						 var data = '{"tenantId":' + tenant_id + ',"game_tenant_id":' + '"' + game_tenant_id + '"' + ',"content":' + '"' + content + '"' + '}';
+						 console.log("发送内容：" + data)
+						 socket.emit('systemadmin', data)
+					 }, 500)
+				 });
+
+				 socket.on('broadcastingListen', function (msg) {
+					 console.log('接收内容 msg: ' + msg);
+					 if (msg) {
+						 socket.disconnect();
+						 custalert('发送成功', function () {
+							 window.location.reload();
+						 });
+					 }
+				 });
+			 } else if (socket_type == 2) {
+				 var tenant_id = $("#tenant_id option:selected");
+
+				 var content = $.trim($("#content").val());
+				 if (!content) {
+					 custalert("内容不能为空");
+					 return !1;
+				 }
+				 $.ajax({
+					 url: '/index.php?g=admin&m=system&a=send',
+					 data: {"content": content, "tenant_id": tenant_id},
+					 type: 'POST',
+					 dataType: 'json',
+					 success: function (data) {
+						 if (data.error == 0) {
+							 custalert("公告发送成功");
+						 } else {
+							 custalert(data.msg);
+						 }
+					 }
+				 })
+			 } else if (socket_type == 3) {
+				 $.ajax({
+					 url: "{:u('system_message')}",
+					 data: {"content": content, "tenant_id": tenant_id},
+					 type: 'POST',
+					 dataType: 'json',
+					 success: function (data) {
+						 if (data.status == 1) {
+							 custalert("系统消息发送成功", function () {
+								 $("#content").val('')
+							 });
+
+						 } else {
+							 custalert(data.info);
+						 }
+					 }
+				 })
+			 }
+		 });
+	 })
+
+</script>	
+</body>
+</html>

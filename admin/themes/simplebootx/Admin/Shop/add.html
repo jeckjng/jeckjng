@@ -1,0 +1,104 @@
+<admintpl file="header" />
+<style>
+    .img_div{
+        display: inline-block;
+        width: 506px;
+        border: 2px solid #dce4ec;
+        height: 36px;
+        line-height: 36px;
+        border-radius: 3px;
+        padding: 0px 2px;
+    }
+    .img_div input{
+        float: left;
+        width: 447px;
+        vertical-align: middle;
+        background: none;
+        border: 0px;
+    }
+    .img_div .upload_btn{
+        padding: 1px 14px;
+        background-color: rgba(245, 245, 245, 1);
+        border: 1px solid gray;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+
+        {:getTableMenu($_GET['menuid'],'Admin/Shop/add')}
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Shop/add')}">
+        <fieldset>
+
+            <div class="control-group">
+                <label class="control-label">店铺名称</label>
+                <div class="controls">
+                    <input type="text" name="name" value="">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+
+
+
+            <div class="control-group">
+                <label class="control-label">服务范围</label>
+                <div class="controls">
+                    <textarea type="text" name="content"></textarea>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">店铺简介</label>
+                <div class="controls">
+                    <textarea type="text" name="introduction"></textarea>
+
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">成交单量</label>
+                <div class="controls">
+                    <input type="text" name="deal_num">
+
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">是否置顶</label>
+                <div class="controls">
+                    <label class="radio inline" for="is_top_1"><input type="radio" name="is_top" value="1" checked >是</label>
+                    <label class="radio inline" for="is_top_2"><input type="radio" name="is_top" value="2"   >否</label>
+
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">是否显示</label>
+                <div class="controls">
+                    <label class="radio inline" for="status_1"><input type="radio" name="status" value="1" id="status_1" checked>是</label>
+                    <label class="radio inline" for="status_2"><input type="radio" name="status" value="2" id="status_2"  >否</label>
+
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+            <a class="btn" href="{:U('Appointment/index')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>
+<script type="text/javascript" src="__PUBLIC__/js/wangeditor/wangEditor.min.js"></script> <!--富文本编辑器-->
+<script>
+
+
+
+</script>

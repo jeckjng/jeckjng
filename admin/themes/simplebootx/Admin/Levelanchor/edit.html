@@ -1,0 +1,169 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li ><a href="{:U('Levelanchor/index')}">等级列表</a></li>
+			<li class="active"><a >编辑</a></li>
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('Levelanchor/edit_post')}">
+			<fieldset>
+				<if condition="$role_id == 1">
+					<div class="control-group">
+						<label class="control-label">租户</label>
+						<div class="controls">
+							<select readonly>
+								<volist name="tenant_list" id="vo">
+									<if condition="$experlevel.tenant_id eq $vo['id']">
+										<option value="{$vo.id}" selected >{$vo.name}</option>
+									</if>
+								</volist>
+							</select>
+							<span class="form-required">*</span>
+						</div>
+					</div>
+				</if>
+				<div class="control-group">
+					<label class="control-label">等级</label>
+					<div class="controls">
+						<input type="text" name="levelid" value="{$experlevel['levelid']}" readonly>
+						<input type="hidden" name="id" value="{$experlevel['id']}">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">等级名称</label>
+					<div class="controls">
+						<input type="text" name="levelname" value="{$experlevel['levelname']}">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">等级经验</label>
+					<div class="controls">
+						<input type="text" name="experience" value="{$experlevel['experience']}" maxlength="9">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">原有图标</label>
+					<div class="controls">
+
+						<img style="width: 50px;height: 40px;" src="{$experlevel['thumb']}"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">图标类型</label>
+					<div class="controls" id="cdn">
+						<label class="radio inline"><input type="radio" value="0" name="type" checked="checked">本地上传</label>
+						<label class="radio inline"><input type="radio" value="1" name="type">网络文件</label>
+
+					</div>
+				</div>
+				<div class="control-group" id="thumb_host">
+					<label class="control-label">本地图标</label>
+					<div class="controls">
+						<a href="javascript:void(0);" id="swftype_bd_1">
+							<input type="file" name="thumb">
+						</a><span class="form-required"></span>
+					</div>
+
+				</div>
+				<div>
+					<div id="cdn_switch_1" class="hide">
+						<div class="control-group">
+							<label class="control-label">图标地址</label>
+							<div class="controls">
+								<input type="text" name="thumb" value="" id="thumb">
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-------------------- 分割线------------------------>
+
+				<div class="control-group">
+					<label class="control-label">原有头像角标</label>
+					<div class="controls">
+
+						<img style="width: 50px;height: 40px;"  src="{$experlevel['thumb_mark']}"/>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">角标类型</label>
+					<div class="controls" id="cdns">
+						<label class="radio inline"><input type="radio" value="0" name="types" checked="checked">本地上传</label>
+						<label class="radio inline"><input type="radio" value="1" name="types">网络文件</label>
+
+					</div>
+				</div>
+				<div class="control-group" id="thumb_mark_host">
+					<label class="control-label">本地角标</label>
+					<div class="controls">
+						<a href="javascript:void(0);" id="swftype_bd_1">
+							<input type="file" name="thumb_mark">
+						</a><span class="form-required"></span>
+					</div>
+
+				</div>
+
+				<div>
+					<div id="cdn_switch_2" class="hide">
+						<div class="control-group">
+							<label class="control-label">角标地址</label>
+							<div class="controls">
+								<input type="text" name="thumb_mark" value="" id="thumb_mark">
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary js-ajax-submit">{:L('EDIT')}</button>
+				<a class="btn" href="{:U('Levelanchor/index')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+	<script>
+		(function(){
+			$("#cdn label.radio").on('click',function(){
+				var v=$("input",this).val();
+				var b=$("#cdn_switch_1");
+				var t=$("#thumb_host");
+				if(v==0){
+					b.hide();
+					t.show();
+					$("#thumb").val('');
+				}else{
+					b.show();
+
+					t.hide();
+				}
+			})
+		})()
+	</script>
+	<script>
+		(function(){
+			$("#cdns label.radio").on('click',function(){
+				var v=$("input",this).val();
+				var b=$("#cdn_switch_2");
+				var t=$("#thumb_mark_host");
+				if(v==0){
+					b.hide();
+					t.show();
+					$("#thumb").val('');
+				}else{
+					b.show();
+
+					t.hide();
+				}
+			})
+		})()
+	</script>
+</body>
+</html>

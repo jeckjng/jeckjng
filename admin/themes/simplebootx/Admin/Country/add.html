@@ -1,0 +1,75 @@
+<admintpl file="header" />
+</head>
+<style>
+	.img_div{
+		display: inline-block;
+		width: 506px;
+		border: 2px solid #dce4ec;
+		height: 36px;
+		line-height: 36px;
+		border-radius: 3px;
+		padding: 0px 2px;
+	}
+	.img_div input{
+		float: left;
+		width: 447px;
+		vertical-align: middle;
+		background: none;
+		border: 0px;
+	}
+	.img_div .upload_btn{
+		padding: 1px 14px;
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid gray;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Country/add')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('add')}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">国家名称:</label>
+					<div class="controls">
+						<input type="text" name="name" required>
+						<span class="form-required">* (如: 中国)</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">国家英文名称:</label>
+					<div class="controls">
+						<input type="text" name="value" required>
+						<span class="form-required">* (如: China)</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">国家缩写:</label>
+					<div class="controls">
+						<input type="text" name="abridge" required>
+						<span class="form-required">* (如: CN)</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">国家code码:</label>
+					<div class="controls">
+						<input type="text" name="code" required>
+						<span class="form-required">* (如: 86)</span>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('ADD')},waittime:1000}">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script>
+
+</script>

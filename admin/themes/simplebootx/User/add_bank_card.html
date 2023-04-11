@@ -1,0 +1,64 @@
+<admintpl file="header"/>
+<style>
+    .controls img{
+        max-width:200px;
+    }
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        {:getTableMenu($_GET['menuid'],'User/Indexadmin/add_bank_card')}
+    </ul>
+    <form class="form-horizontal js-ajax-form" action="{:U('indexadmin/add_bank_card')}" method="post">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">用户id</label>
+                <div class="controls">
+                    <input type="text" name="uid" readonly  value="{$id}" />
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">银行名称</label>
+                <div class="controls">
+                    <select name="bank_id">
+                        <foreach name="bank_list" item="vo">
+                            <option value="{$vo['id']}">{$vo['bank_name']}</option>
+                        </foreach>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">银行卡号</label>
+                <div class="controls">
+                    <input type="text" name="bank_number"  value="" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">银行预留号码</label>
+                <div class="controls">
+                    <input type="text" name="phone"  value="" />
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">真实姓名</label>
+                <div class="controls">
+                    <input type="text" name="real_name"  value="" />
+                </div>
+            </div>
+
+
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">添加</button>
+            <a class="btn" href="{:U('indexadmin/index')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

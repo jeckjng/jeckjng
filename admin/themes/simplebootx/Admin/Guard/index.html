@@ -1,0 +1,82 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li class="active"><a href="{:U('Guard/index')}">列表</a></li>-->
+			<!-- <li><a href="{:U('Guard/add')}">添加</a></li> -->
+			{:getTableMenu($_GET['menuid'],'Admin/Guard/index')}
+		</ul>
+
+		<form class="well form-search" name="form1" method="post" action="{:U('index')}">
+			<if condition="$role_id == 1">
+				<div class="search-box">
+					租户
+					<select name="tenant_id" style="width: 120px;margin-right: 15px;">
+						<volist name="tenant_list" id="vo">
+							<option value="{$vo.id}" <if condition="$param.tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+						</volist>
+					</select>
+				</div>
+			</if>
+			<div class="search-box">
+				名称：
+				<input type="text" name="name" style="width: 200px;" value="{$param.name}" placeholder="请输入名称">
+			</div>
+			<div class="search-box">
+				<input type="submit" class="btn btn-primary" value="搜索">
+			</div>
+		</form>
+
+		<form method="post" class="js-ajax-form" action="{:U('Guard/listorders')}">
+		  <div class="table-actions">
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+			</div>
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+					   <th>序号</th>
+						<th align="center">ID</th>
+						<th>名称</th>
+					<!--	<th>类型</th>-->
+						<th>价格</th>
+						<th>守护图标</th>
+						<th>守护特效地址</th>
+						<th>时长</th>
+						<th>发布时间</th>
+						<th>更新时间</th>
+						<th>租户</th>
+						<th align="center">{:L('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+					  <td><input name="listorders[{$vo['id']}]" type="text" size="3" value="{$vo['orderno']}" class="input input-order"></td>
+						<td align="center">{$vo.id}</td>
+						<td>{$vo['name']}</td>
+					<!--	<td>{$type_a[$vo['type']]}</td>-->
+						<td>{$vo['coin']}</td>
+						<td><img style="width: 150px;height: 50px;" src="{$vo['guard_img']}" /></td>
+						<td>{$vo['guard_effect']}</td>
+						<td>{$vo['length']}{$length_type_a[$vo['length_type']]}</td>
+						<td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+						<td>{$vo.uptime|date="Y-m-d H:i:s",###}</td>
+						<td>{$vo.tenant_name}</td>
+						<td align="center">	
+							<a href="{:U('Guard/edit',array('id'=>$vo['id']))}" >编辑</a>
+							 <a href="{:U('Guard/del',array('id'=>$vo['id']))}"  class="js-ajax-dialog-btn" data-msg="您确定要删除吗？">删除</a>
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+				<div class="table-actions">
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

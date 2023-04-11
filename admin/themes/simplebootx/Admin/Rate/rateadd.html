@@ -1,0 +1,74 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li ><a href="{:U('Rate/index')}">币种管理</a></li>
+			<li class="active"><a>添加币种</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Rate/rateadd')}
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('Rate/rate_add_post')}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">币种名称:</label>
+					<div class="controls">
+						<input type="text" name="name" value="{$rateInfo['name']}">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">币种简称:</label>
+					<div class="controls">
+						<input type="text" name="code" id="code" value="{$rateInfo['code']}">
+						<span class="form-required">例如人民币:cny</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">汇率:</label>
+					<div class="controls">
+						<input type="text" name="rate" id="rate" value="{$rateInfo['rate']}">
+						<span class="form-required">(人民币:本币种)</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">图标:</label>
+					<div class="controls">
+						<input type="file" name="coin" id="thumb2" value="{$rateInfo['coin']}">
+						<if condition="$rateInfo['coin'] neq ''">
+							<input type="hidden" name="coin_edit" value="{$rateInfo['coin']}">
+						</if>
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">状态:</label>
+					<div class="controls">
+						<select name="status">
+							<option value="1" <if condition="$rateInfo['status'] eq '1'">selected</if>>启用</option>
+							<option value="0" <if condition="$rateInfo['status'] eq '0'">selected</if>>禁用</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+				<label class="control-label">是否为虚拟币</label>
+				<div class="controls">
+					<label class="radio inline" for="status_1"><input type="radio" name="is_virtual" value="1" id="status_1" <if condition="$rateInfo['is_virtual'] eq '1'">checked</if>>是</label>
+					<label class="radio inline" for="status_0"><input type="radio" name="is_virtual" value="0" id="status_0"
+						<if condition="$rateInfo['is_virtual'] eq '0'">checked</if>
+						<if condition=" !isset($rateInfo['is_virtual'])">checked</if>
+						>否</label>
+
+				</div>
+			</div>
+			</fieldset>
+			<div class="form-actions">
+				<input type="hidden" name="id" value="{$rateInfo['id']}">
+				<button type="submit" class="btn btn-primary js-ajax-submit">提交</button>
+				<a class="btn" href="{:U('Rate/index')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

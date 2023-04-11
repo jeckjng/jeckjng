@@ -1,0 +1,122 @@
+<admintpl file="header" />
+</head>
+<style>
+    .probability_none {
+        display: none;
+
+    }
+    .probability_block{
+        display: block;
+    }
+
+</style>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+
+        {:getTableMenu($_GET['menuid'],'Admin/Turntable/program_add')}
+    </ul>
+    <div class="top-nav well" style="text-align: center;">
+        <span class="cust-title" style="">{$param.title}</span>
+        <span class="" style="float: right;cursor: pointer;" onclick="$('#cust-js-iframe',window.parent.document).toggle();">
+				<i class="fa fa-times" aria-hidden="true"></i>
+			</span>
+    </div>
+    <form class="form-horizontal cust-js-ajax-form" method="post" action="">
+        <table class="table table-bordered innertable">
+            <tbody>
+            <tr>
+                <td style="text-align: center;width: 250px;">方案名称</td>
+                <td style="text-align: left;">
+                    <input type="text" name="name">
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;width: 150px;">获得奖品配置
+                    <button type="button" class="btn btn-primary add-line" onclick="add(this)" style="margin-left: 15px">新增 </button>
+                </td>
+                <td style="text-align: left;" class="program">
+                    <div>
+                        <div>第1次获得奖品</div>
+                        <div>
+                            <select name="turntable_id_1" class="tuuntableid">
+                                <foreach name="list" item="vo">
+                                    <option value="{$vo.id}" >{$vo.name}</option>
+                                </foreach>
+                            </select>
+                        </div>
+                        <div>第1次概率类型</div>
+                        <div>
+                            <input name="type_1" type="radio" class="type_1"  value="1" checked onchange="probability(1,1)" >100%必得
+                            <input name="type_1" type="radio"  class="type_1" value="2"  onchange="probability(1,2)"> 概率获得
+                        </div>
+                        <div  class="probability_1 probability_none">
+                            <div >概率</div>
+                            <div>
+                                <input type="text" name="probability_1">
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+        <div class="" style="padding: 20px 0px;text-align: center;background-color: #dde4e6;margin-top: 15px;">
+            <input type="hidden" name="number" value="1" id="number">
+            <button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SUBMIT')},waittime:1000}" >{:L('SUBMIT')}</button>
+        </div>
+
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript" src="__PUBLIC__/js/wangeditor/wangEditor.min.js"></script> <!--富文本编辑器-->
+<script type="text/javascript">
+    var turntableList  = {$list};
+    function add(){
+        var sort_num =$('.program').children('div').length + 1;
+
+        var optionHmtl = $('.tuuntableid').html()
+        var  times = 'times_'+sort_num;
+        var html ='<div class="'+times+'">\n' +
+            '                        <div>第'+sort_num+'次获得奖品 <button type="button" class="btn btn-primary add-line" onclick="del('+sort_num+')" style="margin-left: 5px">删除 </button></div>   ' +
+            '                        <div>\n' +
+            '                            <select name="turntable_id_'+sort_num+'">\n' +
+            optionHmtl+
+            '                            </select>\n' +
+            '                        </div>\n' +
+            '                        <div>第'+sort_num+'次概率类型</div>\n' +
+            '                        <div>\n' +
+            '                            <input name="type_'+sort_num+'" type="radio" class="type_'+sort_num+'"  value="1" checked onchange="probability('+sort_num+',1)" >100%必得\n' +
+            '                            <input name="type_'+sort_num+'" type="radio"  class="type_'+sort_num+'" value="2" onchange="probability('+sort_num+',2)" > 概率获得\n' +
+            '                        </div>\n' +
+            '                        <div  class="probability_'+sort_num+' probability_none">\n' +
+            '                            <div >概率</div>\n' +
+            '                            <div>\n' +
+            '                                <input type="text" name="probability_'+sort_num+'">\n' +
+            '                            </div>\n' +
+            '                        </div>\n' +
+            '                    </div>'
+
+        $('.program').append(html);
+        $('#number').val(sort_num)
+    }
+
+
+    function del(num) {
+
+        $('.times_'+num).empty();
+    }
+    function probability(sort,val) {
+
+        if (val == 1){
+            $('.probability_'+sort).removeClass('probability_block')
+            $('.probability_'+sort).addClass('probability_none')
+        }else{
+            $('.probability_'+sort).removeClass('probability_none')
+            $('.probability_'+sort).addClass('probability_block')
+        }
+
+    }
+</script>

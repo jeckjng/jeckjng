@@ -1,0 +1,121 @@
+<admintpl file="header" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/simpleboot/css/admin.css"/>
+</head>
+
+<body>
+	<div class="buyvip" id="buyvip"></div>
+	<div class="dds-dialog-bg" id="ds-dialog-bg"></div>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Monitor/index')}
+		</ul>
+		<form class="well form-search" method="post" action="{:U('index')}">
+			<div>
+				<if condition="$role_id eq 1">
+					<div class="search-box">
+						<select class="select_2" name="tenant_id" style="width: 120px;">
+							<option value="" <if condition="$param['tenant_id'] eq ''">selected</if> >全部（租户）</option>
+							<volist name="tenant_list" id="vo">
+								<option value="{$vo.id}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo.name}</option>
+							</volist>
+						</select>
+					</div>
+				</if>
+				<div class="search-box">
+					主播ID:
+					<input type="text" name="uid" style="width: 140px;" value="{$param.uid}" class="mar-right-15" placeholder="请输入主播ID">
+				</div>
+				<div class=	"search-box">
+					<input type="submit" class="btn btn-primary mar-right-15" value="搜索">
+				</div>
+			</div>
+		</form>
+		<form method="post" class="js-ajax-form" >
+			<div>
+				<ul>
+					<foreach name="lists" item="v">
+						<li class="mytd" style="height: 485px;border:none;font-size: 13px;font-weight: 400;">
+							<span>开播时长:{$v['live_time']}</span>
+							<span>暂停时长:{$v['stop_time']}</span>
+							<div class="live_ct" data-uid="{$v['uid']}" data-flvpull="{$v['flvpull']}" data-reflesh="0" id="live_{$v['uid']}" style="border: 1px solid #C2D1D8;height: 335px;">
+								<iframe src="{:U('livevideo',array('uid'=>$v['uid'],'key'=>$key))}" frameborder="{$key}" style="width: 160px;height: 335px;border: 0px;"></iframe>
+							</div><br>
+
+							<span class="name">主播: {$v['userinfo']['user_nicename']}</span>
+							<span>主播ID: {$v['uid']}</span>
+							<span>彩票会员ID: {$v['game_user_id']}</span>
+							<div>
+								<a  onclick="closeRoom('{$v[\'uid\']}',this)" class="full_btn mybtn" data-chatserver="{$v.chatserver}" data-socket_type="{$v.socket_type}">关闭</a>
+								<a href="{:U('liveuid_notice',array('uid'=>$v['uid']))}" class="full_btn cust-iframe-pop" title="弹窗警告" data-iframe="{width:500px,height:250px,top:10%,left:none;}" style="padding: 0px 4px;">弹窗警告</a>
+							</div>
+						</li>
+					</foreach>
+				</ul>
+			</div>
+			<div class="pagination"  style="clear:both">{$page}</div>
+		</form>
+	</div>
+<script type="text/javascript" src="__PUBLIC__/home/ckplayer/ckplayer.js"></script>
+
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script src="__PUBLIC__/js/admin.js?v={:jsversion()}"></script>
+<script src="__PUBLIC__/js/socket.io.js"></script>
+<script type="text/javascript">
+	function closeRoom(roomId,obj){
+		custconfirm('关闭【'+roomId+'】',function (){
+			custshowmsg('正在关闭', 5000);
+			closelive(roomId,obj); // 关闭直播间
+			console.log('----正在关闭 ----')
+			setTimeout(function (){
+				$.post("{:U('stopRoom')}", {uid:roomId}, function(res) {
+					console.log(res);
+					if(res.status == 1){
+						custshowmsg(res.info.msg);
+						setTimeout(function (){
+							if(res.referer){
+								location.href = res.referer;
+							}else{
+								location.reload();
+							}
+						},2000)
+					}else{
+						custalert(res.info.msg)
+					}
+				});
+			},5000);
+		});
+	}
+
+	function closelive(uid,obj){
+		var socket_url = $(obj).attr('data-chatserver');
+		var socket_type = $(obj).attr('data-socket_type');
+		if(socket_type == 1 || socket_type == 2){
+			var socket = io(socket_url);
+			socket.on('connect', function(){
+				console.log('connect success')
+				setTimeout(function () {
+					var data = '{"uid":'+uid+'}';
+					console.log("发送内容："+data)
+					socket.emit('closelive',data)
+				},10)
+			});
+			socket.on('broadcastingListen', function (msg) {
+				console.log(msg);
+				socket.disconnect();  // 关闭连接
+			});
+		}else if(socket_type == 3){
+			$.ajax({
+				url:"{:u('stopRoom')}",
+				data:{"uid": uid, "golang_event":1},
+				type:'POST',
+				dataType:'json',
+				success:function(data){
+					console.log(data);
+				}
+			})
+		}
+	}
+
+</script>

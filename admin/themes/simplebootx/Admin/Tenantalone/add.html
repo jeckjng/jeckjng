@@ -1,0 +1,113 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li ><a href="{:U('Tenantalone/index')}">列表</a></li>
+			<li class="active"><a >添加</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Tenantalone/add')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('Tenantalone/add_post')}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">独立租户名称</label>
+					<div class="controls">
+						<input type="text" name="name" class="width-400" required>
+						<span class="form-required" >*</span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">租户域名</label>
+					<div class="controls">
+						<input type="text" name="site" class="width-400">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">直播系统租户id</label>
+					<div class="controls">
+						<input type="text" name="game_tenant_id" class="width-400" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">收款银行卡</label>
+					<div class="controls">
+						<input type="text" name="bank_card" class="width-400">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">户名</label>
+					<div class="controls">
+						<input type="text" name="account_name" class="width-400" >
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">开户行</label>
+					<div class="controls">
+						<input type="text" name="account_bank" class="width-400" >
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">NFT接口地址</label>
+					<div class="controls">
+						<input type="text" name="balance_nft_url" class="width-400" >
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">商城接口地址</label>
+					<div class="controls">
+						<input type="text" name="shop_url" class="width-400" >
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">代发接口地址</label>
+					<div class="controls">
+						<input type="text" name="daifu_url" class="width-400" >
+						<span class="form-required"></span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">租户appKey</label>
+					<div class="controls">
+						<input type="text" name="appkey" class="width-400" >
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">是否开启直播权限</label>
+					<div class="controls" id="live_jurisdiction">
+						<label class="radio inline"><input type="radio" value="0" name="live_jurisdiction" checked="checked">关闭</label>
+						<label class="radio inline"><input type="radio" value="1" name="live_jurisdiction" >启用</label>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">租户状态</label>
+					<div class="controls" id="cdn">
+						<label class="radio inline"><input type="radio" value="0" name="status" checked="checked">禁用</label>
+						<label class="radio inline"><input type="radio" value="1" name="status">启用</label>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('ADD')},waittime:1000}">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script>
+	(function(){
+
+	})()
+	</script>
+</body>
+</html>

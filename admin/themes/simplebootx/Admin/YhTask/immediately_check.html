@@ -1,0 +1,101 @@
+<admintpl file="header" />
+</head>
+<style>
+	.top-nav{
+		color: #333;
+		font: 14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+		height: 43px;
+		line-height: 43px;
+		padding: 0 20px;
+	}
+	form{
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+</style>
+<body>
+	<div class="">
+		<div class="top-nav well" style="text-align: center;">
+			<span class="cust-title" style="">立即审核</span>
+			<span class="" style="float: right;cursor: pointer;" onclick="$('#cust-js-iframe',window.parent.document).toggle();">
+				<i class="fa fa-times" aria-hidden="true"></i>
+			</span>
+		</div>
+		<form class="form-horizontal js-ajax-form" method="post" action="">
+			<table class="table table-bordered innertable">
+				<tbody>
+					<tr>
+						<td style="text-align: center;width: 150px;">会员ID</td>
+						<td style="text-align: left;">{$info.uid}</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;">会员账号</td>
+						<td style="text-align: left;">{$info.userinfo.user_login}</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;">会员等级</td>
+						<td style="text-align: left;">{$info.vip_name}</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;">任务分类</td>
+						<td style="text-align: left;">{$info.classification}</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;">任务名称</td>
+						<td style="text-align: left;">{$info.task_name}</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;">任务价格</td>
+						<td style="text-align: left;">{$info.price}</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;">任务提交时间</td>
+						<td style="text-align: left;">{$info.submit_time}</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;">任务类型</td>
+						<td style="text-align: left;">{$info.task_type}</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;">奖励1</td>
+						<td style="text-align: left;color: red;">{$info.reward1}</td>
+					</tr>
+					<if condition="$info.reward2_upgrade_vip eq 1">
+						<tr>
+							<td style="text-align: center;width: 150px;">奖励2</td>
+							<td style="text-align: left;color: red;">VIP等级晋级</td>
+						</tr>
+						<tr>
+							<td style="text-align: center;width: 150px;">晋级后VIP级别</td>
+							<td style="text-align: left;color: red;">{$info.next_vip_name}</td>
+						</tr>
+					</if>
+					<tr>
+						<td style="text-align: center;width: 150px;">奖励3</td>
+						<td style="text-align: left;color: red;">{$info.reward1_number}</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;">审核状态</td>
+						<td style="text-align: left;">
+							<input type="radio" name="status" value="3">&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">审核通过</span>
+							<input type="radio" name="status" value="4">&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">审核拒绝</span>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;">备注</td>
+						<td style="text-align: left;"><textarea name="remark" cols="30" rows="3" style="width: 96%;"></textarea></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="" style="padding: 20px 0px;text-align: center;background-color: #dde4e6;margin-top: 15px;">
+				<input type="hidden" name="id" value="{$info.id}">
+				<button type="submit" class="btn btn-primary js-ajax-submit" data-option="{confirm:true,msg:{:L('SUBMIT')},waittime:1000}" >{:L('SUBMIT')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

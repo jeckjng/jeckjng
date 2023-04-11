@@ -1,0 +1,40 @@
+<admintpl file="header" />
+<style>
+input{
+    width:500px;
+}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li ><a href="{:U('Transfer/index')}">记录</a></li>
+			<li class="active"><a >编辑</a></li>
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('edit_post')}">
+		   <input type="hidden" name="id" value="{$cash['id']}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">备注</label>
+					<div class="controls">
+						<textarea type="text" name="mark"  ></textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">状态</label>
+					<div class="controls">
+						<label class="radio inline" for="status_2"><input type="radio" name="status" value="2" id="status_2" required <if condition="$cash['status'] eq '2'">checked</if>>拒绝</label>
+						<label class="radio inline" for="status_1"><input type="radio" name="status" value="1" id="status_1" required <if condition="$cash['status'] eq '1'">checked</if>>成功</label>
+					</div>
+				</div>
+
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('ADD')},waittime:1000}">{:L('EDIT')}</button>
+				<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>

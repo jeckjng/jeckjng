@@ -1,0 +1,45 @@
+# Query: 云豹
+
+18 个结果 - 12 文件
+
+admin/themes/simplebootx/Admin/login.html:
+   5: 		<title>飞豹直播 {:L('ADMIN_CENTER')}</title>
+  27:                 <div class="wraps-1-4">开发：泰安飞豹网络科技有限公司</div>
+
+admin/themes/simplebootx/Admin/boot/index.html:
+    8: <title>飞豹直播 {:L('ADMIN_CENTER')}</title>
+  157: 						飞豹直播 {:L('ADMIN_CENTER')}
+
+data/runtime/Cache/Admin/17c864e00f937e6528a86826c496ba3b.php:
+   5: 		<title>飞豹直播 <?php echo L('ADMIN_CENTER');?></title>
+  27:                 <div class="wraps-1-4">开发：泰安飞豹网络科技有限公司</div>
+
+data/runtime/Cache/Admin/92f738679a8b52d9d9d6545eeacc3b7f.php:
+    8: <title>飞豹直播 <?php echo L('ADMIN_CENTER');?></title>
+  146: 						飞豹直播 <?php echo L('ADMIN_CENTER');?>
+
+data/runtime/Cache/Home/9e280eab25537771c8ae2eb0c76a0676.php:
+  268: 					<p>飞豹直播</p>
+
+data/runtime/Cache/Home/047d5c56b4cd647c06889306652120db.php:
+  295: 					<p>飞豹直播</p>
+
+data/runtime/Cache/Home/e3e7fbea6218103c5299778d73f89f84.php:
+  293: 					<p>飞豹直播</p>
+
+data/runtime/Cache/Home/e6452bef04ca9171b6311ecf377e5ef1.php:
+  212: 					<p>飞豹直播</p>
+
+LiveNewIM/package.json:
+  4:   "description": "飞豹直播IM通信",
+
+public/home/ckplayer/ckplayer.js:
+    2: 	软件名称：飞豹直播
+  199: 			['飞豹直播', 'link', 'http://www.yunbaokj.com'],
+
+public/home/ckplayer/ckplayer.min.js:
+    2: 	软件名称：飞豹科技
+  112: nguage={volume:'音量：',play:'点击播放',pause:'点击暂停',full:'点击全屏',escFull:'退出全屏',mute:'点击静音',escMute:'取消静音',front:'上一集',next:'下一集',definition:'点击选择清晰度',playbackRate:'点击选择速度',error:'加载出错'};this.contextMenu=[['飞豹直播','link','http://www.yunbaokj.com'],['version:X','default','line']];this.errorList=[['000','Object does not exist'],['001','Variables type is not a object'],['002','Video object does not exist'],['003','Video object format error'],['004','Video object format error'],['005','Video object format error'],['006','[error] does not exist '],['007','Ajax error'],['008','Ajax error'],['009','Ajax object format error'],['010','Ajax.status:[error]']];this.playbackRateArr=[[0.5,'0.5倍'],[1,'正常'],[1.25,'1.25倍'],[1.5,'1.5倍'],[2,'2倍速'],[4,'4倍速']];this.playbackRateDefault=1;this.logo='';this.loaded=false;this.timerError=null;this.error=false;this.errorUrl=[];this.timerFull=null;this.full=false;this.timerTime=null;this.timerBuffer=null;this.isTimeButtonMove=true;this.isTimeButtonDown=false;this.isClick
+
+themes/simplebootx/Public/footer.html:
+  50: 					<p>飞豹直播</p>

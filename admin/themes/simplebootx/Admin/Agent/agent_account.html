@@ -1,0 +1,54 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        {:getTableMenu($_GET['menuid'],'Admin/agent/agent_account')}
+
+    </ul>
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th width="50">ID</th>
+            <th>用户名</th>
+            <th>昵称</th>
+            <th>角色</th>
+            <th>最后登录id</th>
+            <th>最后登录时间</th>
+            <th>邀请码</th>
+            <th width="120">{:L('ACTIONS')}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <php>$user_statuses=array("0"=>L('USER_STATUS_BLOCKED'),"1"=>L('USER_STATUS_ACTIVATED'),"2"=>L('USER_STATUS_UNVERIFIED'));</php>
+        <foreach name="users" item="vo">
+            <tr>
+                <td>{$vo.id}</td>
+                <td>{$vo.user_login}</td>
+                <td>{$vo.user_nicename}</td>
+                <td>{$vo.role_name}</td>
+                <td>{$vo.last_login_ip}</td>
+                <td>
+                    <if condition="$vo['last_login_time'] eq 0">
+                      未登录
+                        <else />
+                        {$vo.last_login_time}
+                    </if>
+                </td>
+
+
+                <td>{$vo.code}</td>
+                <td>
+
+                    <a href='{:U("agent/agent_account_edit",array("id"=>$vo["id"]))}'>编辑</a>
+
+                </td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+    <div class="pagination">{$page}</div>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

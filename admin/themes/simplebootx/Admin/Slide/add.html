@@ -1,0 +1,81 @@
+<admintpl file="header"/>
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<!--<li><a href="{:U('slide/index')}">{:L('ADMIN_SLIDE_INDEX')}</a></li>
+			<li class="active"><a href="{:U('slide/add')}">{:L('ADMIN_SLIDE_ADD')}</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Slide/add')}
+		</ul>
+		<form action="{:U('add')}" method="post" class="form-horizontal cust-js-ajax-form">
+			<div class="row-fluid">
+				<div class="span9">
+					<table class="table table-bordered">
+						<tr>
+							<th width="80">分类</th>
+							<td>
+								<select name="cat_name">
+									<option value=''>全部</option>
+									<foreach name="cat_list" item="vo">
+										<option value="{$key}" >{$vo}</option>
+									</foreach>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>标题</th>
+							<td>
+								<input type="text" style="width: 400px;" name="slide_name" value="" required placeholder="请输入标题"/>
+								<span class="form-required">*</span>
+							</td>
+						</tr>
+						<tr>
+							<th>链接</th>
+							<td><input type="text" name="slide_url" value="" style="width: 400px"></td>
+						</tr>
+						<tr>
+							<th>描述</th>
+							<td><input type="text" name="slide_des" value="" style="width: 400px"></td>
+						</tr>
+						<tr>
+							<th width="80">状态</th>
+							<td>
+								<input type="radio" name="slide_status" value="1" required checked>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">显示</span>
+								<input type="radio" name="slide_status" value="0" required >&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">隐藏</span>
+							</td>
+						</tr>
+						<tr>
+							<th>内容</th>
+							<td><textarea name="slide_content" style="width: 98%; height: 200px;"></textarea></td>
+						</tr>
+					</table>
+				</div>
+				<div class="span3">
+					<table class="table table-bordered">
+						<tr>
+							<th>缩略图</th>
+						</tr>
+						<tr>
+							<td>
+								<div class="img_div">
+									<input type="hidden" name="slide_pic"  required>
+									<span class="upload_btn cust-upload-img" data-name="slide_pic" data-showimgclass="slide_pic_img_show" data-progress="1" data-url="{:U('Upload/img_upload')}">
+										<img src="__TMPL__Public/assets/images/default-thumbnail.png" alt="" class="slide_pic_img_show" width="135" style="max-height: 135px;max-width: 135px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;">
+									</span>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary cust-js-ajax-submit" type="submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}">{:L("ADD")}</button>
+				<a class="btn" href="{:U('index')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script type="text/javascript" src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript">
+</script>

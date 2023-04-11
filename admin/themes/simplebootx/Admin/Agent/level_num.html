@@ -1,0 +1,64 @@
+<admintpl file="header" />
+</head>
+<body>
+<style>
+    input{
+        width:500px;
+    }
+    .form-horizontal textarea{
+        width:500px;
+    }
+    .nav-tabs>.current>a{
+        color: #95a5a6;
+        cursor: default;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-bottom-color: transparent;
+    }
+    .nav li
+    {
+        cursor:pointer
+    }
+    .nav li:hover
+    {
+        cursor:pointer
+    }
+    .hide{
+        display:none;
+    }
+</style>
+
+
+<div class="wrap">
+    <ul class="nav nav-tabs">
+
+        {:getTableMenu($_GET['menuid'],'Admin/Agent/level_num')}
+    </ul>
+
+    <form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('level_num')}">
+        <input type="hidden" name="post['id']" value="1">
+        <div class="js-tabs-content">
+            <!-- 网站信息 -->
+            <div class="control-group">
+                <label class="control-label">最高代理层级</label>
+                <div class="controls">
+                    <input type="text" style="width: 100px" name="post[agent_sum]" value="{$config['agent_sum']}">
+                </div>
+            </div>
+
+        </div>
+        <div class="form-actions">
+            <button onclick="set_save(1)" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}">{:L('SAVE')}</button>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script>
+    function set_save(type){
+        // $('form').attr('action',"{:U('Admin/TenantConfig/set_post/type/"+type+"')}");
+        $('form').attr('action',"{:U('Admin/TenantConfig/set_post')}"+type);
+    }
+</script>
+</body>
+</html>

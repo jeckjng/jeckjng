@@ -1,0 +1,64 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li class="active"><a >积分明细</a></li>
+			 <li><a href="{:U('Integral/integral_config')}">注册积分设置</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Integral/index')}
+		</ul>
+		<form class="well form-search" method="post" action="{:U('Integral/index')}">
+			操作时间：
+			<input type="text" name="start_time" class="js-date date" value="{$param.start_time}" style="width: 80px;" autocomplete="off">-
+			<input type="text" name="end_time" class="js-date date" value="{$param.end_time}" style="width: 80px;" autocomplete="off"> &nbsp; &nbsp;
+			关键字：
+			<input type="text" name="keyword" style="width: 200px;" value="{$param.keyword}" placeholder="请输入会员id、用户名或者昵称...">
+			操作类型：
+			<select class="select_2" name="act_type">
+				<option value="">全部</option>
+				<volist name="integralLogActType" id="vo" key="k">
+					<option value="{$k}" <if condition="$param.act_type eq $k">selected</if> >{$vo}</option>
+				</volist>
+			</select>
+			<input type="submit" class="btn btn-primary" value="搜索">
+		</form>
+		<form method="post" class="js-ajax-form" action="">
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>会员</th>
+						<th>发生前积分</th>
+						<th>发生积分</th>
+						<th>操作后积分</th>
+						<th>操作类型</th>
+						<th>状态</th>
+						<th>备注</th>
+						<th>操作时间</th>
+						<th>操作人</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td>{$vo['userinfo']['user_nicename']}</td>
+						<td>{$vo['start_integral']}</td>
+						<td>{$vo['change_integral']}</td>
+						<td>{$vo['end_integral']}</td>
+						<td>{$vo['act_type']}</td>
+						<td>{$vo['status']}</td>
+						<td>{$vo['remark']}</td>
+						<td>{$vo.ctime|date="Y-m-d H:i:s",###}</td>
+						<td>{$vo['act_userinfo']['user_nicename']}</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>
+<script>
+
+</script>

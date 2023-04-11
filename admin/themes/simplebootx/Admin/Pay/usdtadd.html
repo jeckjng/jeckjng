@@ -1,0 +1,278 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li ><a href="{:U('Pay/offlinepay')}">线下支付列表</a></li>
+        <li class="active"><a>添加线下支付</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Pay/usdtadd')}
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Pay/usdt_add_post')}">
+        <fieldset>
+
+            <div class="control-group">
+                <label class="control-label">租户:</label>
+                <div class="controls">
+                    <select name="tenant_id">
+                        <volist name="tenant_list" id="v">
+                            <option value="{$v['id']}">{$v['name']}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">渠道:</label>
+                <div class="controls">
+                    <select name="channel_id" onchange="up_channel(this)">
+                        <volist name="channel_list" id="v">
+                            <option value="{$v['id']}" >{$v['channel_name']}</option>
+                        </volist>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">商户名称:</label>
+                <div class="controls">
+                    <input type="text" name="name">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">前台显示名称:</label>
+                <div class="controls">
+                    <input type="text" name="reception_name">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">链类型:</label>
+                <div class="controls">
+                    <input type="text" name="usdt_type" >
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">链地址:</label>
+                <div class="controls">
+                    <input type="text" name="usdt_address">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">上游手续费:</label>
+                <div class="controls">
+                    <input type="text" name="service_charge" >%
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">支付限额:</label>
+                <div class="controls">
+                    <input type="text" name="min_amount" >~<input type="text" name="max_amount" >
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">二维码:</label>
+                <div class="controls">
+                    <input type="text" name="qr_code" >
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">排序:</label>
+                <div class="controls">
+                    <input type="text" name="orderno" >
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">状态:</label>
+                <div class="controls">
+                    <select name="status">
+                        <option value="1">启用</option>
+                        <option value="0">禁用</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">充值说明:</label>
+                <div class="controls task_details">
+                    <div class="task_details_wang_editor_div" style="width: 500px;">
+                        <p></p>
+                    </div>
+                    <input type="hidden" name="explain" class="task_details_wang_editor_input">
+                    <input type="text" class="task_details_input" style="width: 500px;display: none;">
+                </div>
+            </div>
+
+            <!--<div class="control-group">
+                <label class="control-label">IP白名单:</label>
+                <div class="controls">
+                    <input type="text" name="white_ip" >
+                    <span class="form-required">多个ip请用逗号分割</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">回调IP:</label>
+                <div class="controls">
+                    <input type="text" name="notify_ip" >
+                    <span class="form-required">多个ip请用逗号分割</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">浮动金额:</label>
+                <div class="controls">
+                    <input type="text" name="float_amount" >
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">快选金额:</label>
+                <div class="controls">
+                    <input type="text" name="select_amount" >
+                    <span class="form-required">三方支付金额给了规定值是使用，多个值请用英文逗号分隔</span>
+                </div>
+            </div>-->
+
+            <if condition="$gameid eq 104">
+                <label class="control-label">前台域名</label>
+
+                <div class="control-group">
+
+                    <div class="controls" id="url"> <foreach name="regurlList" item="vo" key = 'k'>
+
+                        <if condition="($k+  1) % 10  eq  0"><br></if>
+                        <input type="checkbox" name="key_id[]" value="{$vo['id']}"  maxlength="9"> {$vo.reg_url} &nbsp;&nbsp;
+                    </foreach>
+
+                    </div>
+
+                </div>
+                <div class="control-group">
+                    <label class="control-label">绑定vip</label>
+                    <div class="controls" id="vip"> <foreach name="viplist" item="vipvo">
+
+
+                        <input type="checkbox" name="vip_id[]" value="{$vipvo['id']}"  maxlength="9"> {$vipvo.name}({$vipvo.length})月 &nbsp;&nbsp;
+                    </foreach>
+
+                    </div>
+
+                </div>
+            </if>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+            <a class="btn" href="{:U('Pay/usdtpay')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+
+<script type="text/javascript" src="__PUBLIC__/js/wangeditor/wangEditor.min.js"></script> <!--富文本编辑器-->
+
+<script type="text/javascript">
+
+    function up_channel($this){
+        var  channle_id  = $this.value;
+        $.ajax({
+            url: '/Admin/Pay/getUrlAndVip',
+            type: 'POST',
+            dataType: 'json',
+            data: {channle_id: channle_id},
+            success:function(data){
+                var code = data.code;
+                var vipList  = data.data.vip;
+                var urlList = data.data.urlList
+                if(code==0){
+                    $('#vip').empty()
+                    $('#url').empty()
+                    var vipHtml = '';
+
+                    if (vipList){
+                        $.each(vipList,function(key,val) {
+                            vipHtml+=" <input type='checkbox' name='vip_id[]' value='"+val['id']+"'  maxlength='9'> "+val['name']+"("+val['length']+")月 &nbsp;"
+                        })
+                        $('#vip').append(vipHtml)
+                    }
+
+
+                    var urlListHtml = '';
+                    if (urlList){
+                        $.each(urlList,function(key,val) {
+                            urlListHtml+=" <input type='checkbox' name='key_id[]' value='"+val['id']+"'  maxlength='9'> "+val['reg_url']+" &nbsp;"
+                        })
+                        $('#url').append(urlListHtml)
+                    }
+                }else {
+
+                }
+            },
+
+        });
+
+
+    }
+
+    /*
+    * 富文本编辑
+    * */
+    const E = window.wangEditor
+    const editor = new E(".task_details_wang_editor_div");
+    // 或者 const editor = new E(document.getElementById('div1'))
+    // 配置菜单栏，设置不需要的菜单
+    editor.config.excludeMenus = ['video'];
+    // 设置编辑区域高度为 500px
+    // editor.config.height = 500;
+    // 配置 onchange 回调函数
+    editor.config.onchange = function (newHtml) {
+        $(".task_details_wang_editor_input").val(newHtml);
+        var height = $(".task_details_wang_editor_div").children(".w-e-text-container").children(".w-e-text").height();
+        var scrollTop = $(".task_details_wang_editor_div").children(".w-e-text-container").children(".w-e-text").scrollTop();
+        var window_height = $(window).height();
+        var task_details_height = (height+scrollTop);
+        task_details_height = task_details_height>700 ? 700 : task_details_height;
+        task_details_height = task_details_height>window_height ? window_height : task_details_height;
+        $(".task_details_wang_editor_div").children(".w-e-text-container").css('height',task_details_height);
+    };
+    // 配置 server 接口地址
+    editor.config.uploadImgServer = '{:U("Upload/wang_editor_img_upload")}';
+    editor.config.uploadImgMaxLength = 1; // 一次最多上传 5 个图片
+    editor.config.showLinkImg = false; //即可隐藏插入网络图片的功能，即只保留上传本地图片。
+    editor.config.uploadFileName = 'image';
+    // editor.config.uploadImgAccept = ['jpg', 'jpeg', 'png'];
+    editor.config.uploadImgTimeout = 5 * 1000; // 即上传接口等待的最大时间，默认是 10 秒钟，可以自己修改。
+    editor.config.uploadImgHooks = {
+        // 上传图片之前
+        before: function(xhr) {},
+        // 图片上传并返回了结果，图片插入已成功
+        success: function(xhr) {},
+        // 图片上传并返回了结果，但图片插入时出错了
+        fail: function(xhr, editor, resData) {},
+        // 上传图片出错，一般为 http 请求的错误
+        error: function(xhr, editor, resData) {},
+        // 上传图片超时
+        timeout: function(xhr) {},
+        // 图片上传并返回了结果，想要自己把图片插入到编辑器中
+        // 例如服务器端返回的不是 { errno: 0, data: [...] } 这种格式，可使用 customInsert
+        customInsert: function(insertImgFn, result) {
+            // result 即服务端返回的接口
+            // insertImgFn 可把图片插入到编辑器，传入图片 src ，执行函数即可
+            insertImgFn(result['info'].data[0])
+            custshowmsg('上传图片成功');
+        }
+    };
+    editor.create();
+
+    function client_all(obj){
+        if($(obj).attr('checked') == 'checked'){
+            $(obj).parent().children("input").attr('checked',true);
+        }else{
+            $(obj).parent().children("input").attr('checked',false);
+        }
+    }
+
+
+</script>
+</body>
+</html>

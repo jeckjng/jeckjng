@@ -1,0 +1,232 @@
+<admintpl file="header" />
+</head>
+<style>
+	.line-2-col-1{
+		display: inline-block;
+		border: 1px lightgray solid;
+		margin-right: 5px;
+		min-height: 550px;
+		vertical-align: top;
+	}
+	.line-2-col-2{
+		padding: 15px;
+	}
+	.line-2-col-1 lable{
+		font-weight: bold;
+		display: inline-block;
+	}
+	.line-2-col-1 .controls{
+		display: inline-block;
+	}
+</style>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Cache/redis')}
+	</ul>
+	<form class="well form-search" name="form1" method="post" style="" action="">
+	<div class="line-2">
+		<div class="line-2-col-1 width-400" >
+			<div class="line-2-col-2">
+				<p><lable>Redis 字符串(String)</lable></p>
+				<fieldset id="fieldset_string">
+					<div class="control-group">
+						<label class="control-label">类型: </label>
+						<div class="controls">
+							<select name="string_type">
+								<volist name="string_type_list" id="vo">
+									<option value="{$key}" <if condition="$key eq '1'">selected</if> >{$vo}</option>
+								</volist>
+							</select>
+							<span class="form-required">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">键名: </label>
+						<div class="controls">
+							<input type="text" name="string_key" class="width-300" required>
+							<span class="form-required">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<button type="button" class="btn btn-primary" onclick="redis_search(this, 'string')" style="margin-top: 92px">查询</button>
+					</div>
+					<div class="control-group">
+						<label class="control-label" style="display: block">结果: </label>
+						<div class="controls" style="display: block">
+							<textarea cols="2" rows="11" class="string_val width-300"></textarea>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+
+		<div class="line-2-col-1 width-400">
+			<div class="line-2-col-2">
+				<p><lable>Redis 哈希(Hash)</lable></p>
+				<fieldset id="fieldset_hash">
+					<div class="control-group">
+						<label class="control-label">类型: </label>
+						<div class="controls">
+							<select name="hash_type">
+								<volist name="hash_type_list" id="vo">
+									<option value="{$key}" <if condition="$key eq '2'">selected</if> >{$vo}</option>
+								</volist>
+							</select>
+							<span class="form-required">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">键名: </label>
+						<div class="controls">
+							<input type="text" name="hash_key" class="width-300" required>
+							<span class="form-required">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">hash键名: </label>
+						<div class="controls">
+							<input type="text" name="hash_element_key" class="" style="width: 270px;" required>
+							<span class="form-required"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<button type="button" class="btn btn-primary" onclick="redis_search(this, 'hash')"  style="margin-top: 49px">查询</button>
+					</div>
+					<div class="control-group">
+						<label class="control-label" style="display: block">结果: </label>
+						<div class="controls" style="display: block">
+							<textarea cols="2" rows="11" class="hash_val width-300"></textarea>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		<div class="line-2-col-1 width-400" >
+			<div class="line-2-col-2">
+				<p><lable>Redis 列表(List)</lable></p>
+				<fieldset id="fieldset_list">
+					<div class="control-group">
+						<label class="control-label">类型: </label>
+						<div class="controls">
+							<select name="list_type">
+								<volist name="list_type_list" id="vo">
+									<option value="{$key}" <if condition="$key eq '1'">selected</if> >{$vo}</option>
+								</volist>
+							</select>
+							<span class="form-required">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">键名: </label>
+						<div class="controls">
+							<input type="text" name="list_key" class="width-300" required>
+							<span class="form-required">*</span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">下标: </label>
+						<div class="controls">
+							<input type="number" name="list_index" class="width-300" required>
+							<span class="form-required"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">下标区间: </label>
+						<div class="controls">
+							<input type="number" name="list_start" class="width-100" required> -
+							<input type="number" name="list_end" class="width-100" required>
+							<span class="form-required"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<button type="button" class="btn btn-primary" onclick="redis_search(this, 'list')" >查询</button>								</div>
+					<div class="control-group">
+						<label class="control-label" style="display: block">结果: </label>
+						<div class="controls" style="display: block">
+							<textarea cols="2" rows="11" class="list_val width-300"></textarea>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>
+<script>
+	function redis_search(obj, type) {
+		switch (type) {
+			case 'string':
+				var request_data = {};
+				request_data['cache_type'] = type;
+				request_data['string_key'] = $("#fieldset_string").find("[name='string_key']").val();
+				request_data['string_type'] = $("#fieldset_string").find("[name='string_type']").val();
+				redis_search_post(type, obj, request_data)
+				break;
+			case 'hash':
+				var request_data = {};
+				request_data['cache_type'] = type;
+				request_data['hash_key'] = $("#fieldset_hash").find("[name='hash_key']").val();
+				request_data['hash_element_key'] = $("#fieldset_hash").find("[name='hash_element_key']").val();
+				request_data['hash_type'] = $("#fieldset_hash").find("[name='hash_type']").val();
+				redis_search_post(type, obj, request_data)
+				break;
+			case 'list':
+				var request_data = {};
+				request_data['cache_type'] = type;
+				request_data['list_key'] = $("#fieldset_list").find("[name='list_key']").val();
+				request_data['list_index'] = $("#fieldset_list").find("[name='list_index']").val();
+				request_data['list_start'] = $("#fieldset_list").find("[name='list_start']").val();
+				request_data['list_end'] = $("#fieldset_list").find("[name='list_end']").val();
+				request_data['list_type'] = $("#fieldset_list").find("[name='list_type']").val();
+				redis_search_post(type, obj, request_data)
+				break;
+		}
+	}
+
+	function redis_search_post(type, btn_obj, request_data){
+		console.log(request_data)
+		//按钮文案、状态修改
+		$(btn_obj).text($(btn_obj).text() + '中...').prop('disabled', true).addClass('disabled');
+		$.ajax({
+			url: '{:U("redis")}',
+			type: 'POST',
+			dataType: 'json',
+			data: request_data,
+			success:function(data){
+				console.log(data)
+				if(data.code == 200){
+					var update_func = 'update_' + type;
+					eval(update_func + '(data.data)');
+				}else{
+					custalert(data.msg);
+				}
+				$(btn_obj).removeClass('disabled').text($(btn_obj).text().replace('中...', '')).removeAttr('disabled');
+			},
+			error:function(data){
+				console.log(data)
+				custalert('请求失败');
+				$(btn_obj).removeClass('disabled').text($(btn_obj).text().replace('中...', '')).removeAttr('disabled');
+			},
+		});
+	}
+
+	function update_string(data){
+		console.log('==== update_string ====: '+data)
+		$("#fieldset_string").find(".string_val").val(data);
+	}
+
+	function update_hash(data){
+		console.log('==== update_hash ====: '+data)
+		$("#fieldset_hash").find(".hash_val").val(data);
+	}
+
+	function update_list(data){
+		console.log('==== update_list ====: '+data)
+		$("#fieldset_list").find(".list_val").val(data);
+	}
+
+</script>

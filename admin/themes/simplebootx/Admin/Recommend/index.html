@@ -1,0 +1,93 @@
+<admintpl file="header" />
+<style>
+	.table img{
+		max-width:100px;
+		max-height:100px;
+	}
+	.textArea textarea{
+		width:90%;padding:3%;height:80%;margin:0 auto;margin-top:30px;
+		margin-left: 2%;
+	}
+	.textArea_btn{
+		text-align: right;
+		margin-top: 30px;
+	}
+	.textArea_btn input{
+		margin-right: 30px;
+	}
+</style>
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		<!--<li class="active"><a >推荐直播列表</a></li>
+		<li><a href="{:U('Recommend/addrecommend')}">添加推荐主播列表</a></li>-->
+		{:getTableMenu($_GET['menuid'],'Admin/Recommend/index')}
+	</ul>
+
+	<form class="well form-search" method="post" action="{:U('index')}">
+		<div>
+			<if condition="$role_id eq 1">
+				<div class="search-box">
+					租户:
+					<select class="select_2" name="tenant_id" style="max-width: 200px;">
+						<volist name="tenant_list" id="vo">
+							<option value="{$vo.id}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo.name}</option>
+						</volist>
+					</select>
+				</div>
+			</if>
+			<div class="search-box">
+				主播ID:
+				<input type="text" name="uid" style="width: 140px;" value="{$param.uid}" class="mar-right-15" placeholder="请输入主播ID">
+			</div>
+			<div class="search-box">
+				<input type="submit" class="btn btn-primary mar-right-15" value="搜索">
+			</div>
+		</div>
+	</form>
+
+	<form method="post" class="js-ajax-form">
+		<table class="table table-hover table-bordered">
+			<thead>
+			<tr>
+				<th>ID</th>
+				<th>主播id</th>
+				<th>主播昵称</th>
+				<th>直播租户名称</th>
+				<th>游戏租户ID</th>
+				<th>添加时间</th>
+				<th align="center">{:L('ACTIONS')}</th>
+			</tr>
+			</thead>
+			<tbody>
+			<php>$status=array("0"=>"等待","1"=>"启用", "2"=>"停用", "3"=>"删除");</php>
+			<foreach name="lists" item="vo">
+				<tr>
+					<td>{$vo['id']}<br/></td>
+					<td>{$vo['liveuid']}</td>
+					<td>{$vo['nickname']}</td>
+					<td>{$vo['tenant_name']}</td>
+					<td>{$vo['game_tenant_id']}</td>
+					<td>{$vo['add_time']}</td>
+					<td align="center">
+						<a href="{:U('Recommend/del',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn del_color" data-msg="您确定删除该推荐主播吗？">删除</a>
+                	</td>
+				</tr>
+			</foreach>
+
+			<input type="hidden" value="{$httporigin}" id="origins" />
+			<input type="hidden" value="{$hostaddress}" id="hostaddress" />
+			<input type="hidden" value="{$propellingserver}" id="propellingserver" />
+			</tbody>
+		</table>
+		<div class="pagination">{$page}</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/socket.io.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/layer/layer.js"></script>
+
+
+</body>
+</html>

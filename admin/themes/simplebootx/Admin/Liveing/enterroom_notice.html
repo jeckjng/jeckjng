@@ -1,0 +1,63 @@
+<admintpl file="header" />
+</head>
+<style>
+    input,textarea{
+        width: 800px;
+    }
+</style>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        {:getTableMenu($_GET['menuid'],'Admin/Liveing/enterroom_notice')}
+    </ul>
+    <form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('enterroom_notice')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">中文</label>
+                <div class="controls">
+                    <textarea name="zh" rows="5" style="width: 800px;">{$info.zh}</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">英文</label>
+                <div class="controls">
+                    <textarea name="en" rows="5" style="width: 800px;">{$info.en}</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">越南</label>
+                <div class="controls">
+                    <textarea name="vn" rows="5" style="width: 800px;">{$info.vn}</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">泰文</label>
+                <div class="controls">
+                    <textarea name="th" rows="5" style="width: 800px;">{$info.th}</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">马来西亚</label>
+                <div class="controls">
+                    <textarea name="my" rows="5" style="width: 800px;">{$info.my}</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">印度尼西亚</label>
+                <div class="controls">
+                    <textarea name="ind" rows="5" style="width: 800px;">{$info.ind}</textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <input type="hidden" name="id" value="{$info.id}">
+                <button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('EDIT')},waittime:1000}">{:L('EDIT')}</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+</script>
+</body>
+</html>

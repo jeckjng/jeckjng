@@ -1,0 +1,50 @@
+<admintpl file="header" />
+</head>
+<style>
+	table th,td{
+		text-align: center !important;
+		vertical-align: middle !important;
+	}
+
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+
+			{:getTableMenu($_GET['menuid'],'Admin/Domain/index')}
+		</ul>
+
+		<form method="post" class="js-ajax-form" action="{:U('Vip/user_listorders')}">
+			<table class="table table-hover table-bordered">
+				<thead>
+				<tr>
+					<th>域名地址</th>
+					<th>是否被墙</th>
+					<th>创建时间</th>
+					<th>更新时间</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td>{$vo['title']}</td>
+						<td><?php if($vo['is_reachable'] == 0) {echo "是";}else{echo '否';}  ?></td>
+						<td>{$vo['created_at']}</td>
+						<td>{$vo['updated_at']}</td>
+						<td>
+							<a href="{:U('Domain/edit',array('id'=>$vo['id']))}" style="display: inline-block;">修改</a>&nbsp;
+							<a href="{:U('Domain/del',array('id'=>$vo['id']))}" class="cust-js-ajax del_color" confirm="您确定要删除吗？" style="display: inline-block;">删除</a>&nbsp;
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+</script>

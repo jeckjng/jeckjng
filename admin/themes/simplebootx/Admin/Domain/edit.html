@@ -1,0 +1,160 @@
+<admintpl file="header" />
+</head>
+<style>
+	input{
+		width: 500px;
+	}
+	.radio_type{
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid lightgray;
+		border-radius: 5px;
+		margin-right: 15px;
+		padding: 6px 15px;
+		cursor: pointer;
+	}
+	.active_radio{
+		background-color: #2c3e50;
+		color: white;
+	}
+	.radio_type input{
+		width: 0px;
+	}
+	.img_div{
+		display: inline-block;
+		width: 506px;
+		border: 2px solid #dce4ec;
+		height: 36px;
+		line-height: 36px;
+		border-radius: 3px;
+		padding: 0px 2px;
+	}
+	.img_div input{
+		float: left;
+		width: 447px;
+		vertical-align: middle;
+		background: none;
+		border: 0px;
+	}
+	.img_div .upload_btn{
+		padding: 1px 14px;
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid gray;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+
+			{:getTableMenu($_GET['menuid'],'Admin/Domain/edit')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">域名地址</label>
+					<div class="controls">
+						<input type="text" name="title" value="{$group['title']}" required oninput="if(this.value.length>255)this.value=this.value.slice(0,255)" placeholder="请输入"></span>
+						<input type="hidden" name="id" value="{$group['id']}" >
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">是否被墙显示</label>
+					<div class="controls">
+						<div style="display: inline-block;width: 506px;padding: 6px 6px 12px 0px;border: 2px;">
+							<input type="radio" name="is_reachable" value="1" <?php if($group['is_reachable'] == 1){ echo "checked=true";}  ?> required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">否</span>
+							<input type="radio" name="is_reachable" value="0"  <?php if($group['is_reachable'] == 0){ echo "checked=true";}  ?> required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">是</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">用户端是否显示</label>
+					<div class="controls">
+						<div style="display: inline-block;width: 506px;padding: 6px 6px 12px 0px;border: 2px;">
+							<input type="radio" name="is_view" value="1" <?php if($group['is_view'] == 1){ echo "checked=true";}  ?> required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">是</span>
+							<input type="radio" name="is_view" value="0"  <?php if($group['is_view'] == 0){ echo "checked=true";}  ?> required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">否</span>
+						</div>
+					</div>
+				</div>
+
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+				<a class="btn" href="{:U('index')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+
+<script type="text/javascript">
+
+	// 配置 server 接口地址
+	editor.config.uploadImgServer = '{:U("Upload/wang_editor_img_upload")}';
+	editor.config.uploadImgMaxLength = 1; // 一次最多上传 5 个图片
+	editor.config.showLinkImg = false; //即可隐藏插入网络图片的功能，即只保留上传本地图片。
+	editor.config.uploadFileName = 'image';
+	// editor.config.uploadImgAccept = ['jpg', 'jpeg', 'png'];
+	editor.config.uploadImgTimeout = 5 * 1000; // 即上传接口等待的最大时间，默认是 10 秒钟，可以自己修改。
+	editor.config.uploadImgHooks = {
+		// 上传图片之前
+		before: function(xhr) {},
+		// 图片上传并返回了结果，图片插入已成功
+		success: function(xhr) {},
+		// 图片上传并返回了结果，但图片插入时出错了
+		fail: function(xhr, editor, resData) {},
+		// 上传图片出错，一般为 http 请求的错误
+		error: function(xhr, editor, resData) {},
+		// 上传图片超时
+		timeout: function(xhr) {},
+		// 图片上传并返回了结果，想要自己把图片插入到编辑器中
+		// 例如服务器端返回的不是 { errno: 0, data: [...] } 这种格式，可使用 customInsert
+		customInsert: function(insertImgFn, result) {
+			// result 即服务端返回的接口
+			// insertImgFn 可把图片插入到编辑器，传入图片 src ，执行函数即可
+			insertImgFn(result['info'].data[0])
+			custshowmsg('上传图片成功');
+		}
+	};
+	editor.create();
+
+	function client_all(obj){
+		if($(obj).attr('checked') == 'checked'){
+			$(obj).parent().children("input").attr('checked',true);
+		}else{
+			$(obj).parent().children("input").attr('checked',false);
+		}
+	}
+
+	$(".radio_type").on('click',function (){
+		$(".radio_type").removeClass('active_radio');
+		$(this).addClass('active_radio');
+		$(this).children("input").attr('checked',true);
+
+		var type = $("input[name='type']:checked").val();
+		$.post("{:U('Task/get_classification_with_type')}", {type:type}, function(res) {
+			if(res.status == 1){
+				var html = '<option value=""></option>';
+				$.each(res.info,function (i,val){
+					html += '<option value="'+val['id']+'">'+val['name']+'</option>';
+				})
+				$("select[name='classification']").html('').append(html);
+			}
+		});
+	})
+
+	$("input[name='task_details_type']").click(function (){
+		if($(this).val() == 1){
+			$(".task_details_wang_editor_div").css('display','none');
+			$(".task_details_wang_editor_input").removeAttr('name');
+			$(".task_details_input").attr('name','task_details').css('display','inline-block');
+		}else{
+			$(".task_details_wang_editor_div").css('display','inline-block');
+			$(".task_details_wang_editor_input").attr('name','task_details');
+			$(".task_details_input").removeAttr('name').css('display','none');
+		}
+	});
+
+</script>

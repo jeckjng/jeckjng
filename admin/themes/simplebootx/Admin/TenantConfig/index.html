@@ -1,0 +1,952 @@
+<admintpl file="header" />
+</head>
+<body>
+<style>
+input{
+  width:500px;
+}
+.form-horizontal textarea{
+ width:500px;
+}
+.nav-tabs>.current>a{
+    color: #95a5a6;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
+.nav li
+{
+	cursor:pointer
+}
+.nav li:hover
+{
+	cursor:pointer
+}
+.hide{
+	display:none;
+}
+.img_div{
+	display: inline-block;
+	width: 506px;
+	border: 2px solid #dce4ec;
+	height: 36px;
+	line-height: 36px;
+	border-radius: 3px;
+	padding: 0px 2px;
+}
+.img_div input{
+	float: left;
+	width: 447px;
+	vertical-align: middle;
+	background: none;
+	border: 0px;
+}
+.img_div .upload_btn{
+	padding: 1px 14px;
+	background-color: rgba(245, 245, 245, 1);
+	border: 1px solid gray;
+	border-radius: 6px;
+	cursor: pointer;
+}
+</style>
+
+
+	<div class="wrap js-check-wrap">
+		<!-- <ul class="nav nav-tabs">
+			<li class="active"><a href="{:U('Config/index')}">设置</a></li>
+			<li><a href="{:U('Config/lists')}">管理</a></li>
+			<li><a href="{:U('Config/add')}">添加</a></li>
+		</ul> -->
+		<ul class="nav nav-tabs js-tabs-nav">
+			<foreach name="menu_list" item="vo" >
+				<li><a>{$vo}</a></li>
+			</foreach>
+	<!--
+			<li><a>APP版本管理</a></li>
+			<li><a>分享设置</a></li>
+			<li><a>推送配置</a></li>
+			<li><a>支付配置</a></li>
+			<li><a>统计配置</a></li>
+			<li><a>美颜/萌颜</a></li>-->
+		</ul>
+		
+		<form method="post" class="form-horizontal js-ajax-form" >
+			<input type="hidden" name="post['id']" value="1">
+			<div class="js-tabs-content">
+				<!-- 网站信息 -->
+				<if condition="array_key_exists('web_info',$menu_list)">
+					<div>
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">网站维护</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio" value="0" name="post[maintain_switch]" <eq name="config['maintain_switch']" value="0">checked="checked"</eq>>关闭</label>
+									<label class="radio inline"><input type="radio" value="1" name="post[maintain_switch]" <eq name="config['maintain_switch']" value="1">checked="checked"</eq>>开启</label>
+									<label class="checkbox inline">网站维护开启后，无法开启直播，进入直播间</label>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">维护提示</label>
+								<div class="controls">
+									<textarea name="post[maintain_tips]">{$config['maintain_tips']}</textarea>维护提示信息（200字以内）
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">网站标题</label>
+								<div class="controls">
+									<input type="text" name="post[sitename]" value="{$config['sitename']}">网站标题
+								</div>
+							</div>
+							<!--						<div class="control-group">-->
+							<!--							<label class="control-label">网站域名</label>-->
+							<!--							<div class="controls">				-->
+							<!--								<input type="text" name="post[site]" value="{$config['site']}"> 网站域名，http:// 开头  尾部不带 /-->
+							<!--							</div>-->
+							<!--						</div>-->
+							<div class="control-group">
+								<label class="control-label">版权信息</label>
+								<div class="controls">
+									<textarea name="post[copyright]">{$config['copyright']}</textarea>版权信息（200字以内）
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">公司电话</label>
+								<div class="controls">
+									<input type="text" name="post[mobile]" value="{$config['mobile']}">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">公司地址</label>
+								<div class="controls">
+									<input type="text" name="post[address]" value="{$config['address']}">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">网站logo图片</label>
+								<div class="controls">
+									<input type="hidden" name="post[site_logo]" id="site_logo" value="{$config['site_logo']}">
+									<a href="javascript:void(0);" onclick="flashupload('thumb_images', '附件上传','site_logo',thumb_images,'1,jpg|jpeg|png,1,,,1','','','');return false;">
+										<if condition="$config['site_logo'] neq ''">
+											<img src="{$config['site_logo']}" id="site_logo_preview" width="135" style="cursor: hand" />
+											<else/>
+											<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="site_logo_preview" width="135" style="cursor: hand" />
+										</if>
+									</a>
+									<input type="button" class="btn btn-small" onclick="$('#site_logo_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#site_logo').val('');return false;" value="取消图片">
+									<span class="form-required"></span>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">网站logo大图</label>
+								<div class="controls">
+									<input type="hidden" name="post[site_logo_big]" id="site_logo_big" value="{$config['site_logo_big']}">
+									<a href="javascript:void(0);" onclick="flashupload('thumb_images', '附件上传','site_logo_big',thumb_images,'1,jpg|jpeg|png,1,,,1','','','');return false;">
+										<if condition="$config['site_logo_big'] neq ''">
+											<img src="{$config['site_logo_big']}" id="site_logo_big_preview" width="135" style="cursor: hand" />
+											<else/>
+											<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="site_logo_big_preview" width="135" style="cursor: hand" />
+										</if>
+									</a>
+									<input type="button" class="btn btn-small" onclick="$('#site_logo_big_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#site_logo_big').val('');return false;" value="取消图片">
+									<span class="form-required"></span>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">用户默认头像</label>
+								<div class="controls">
+									<input type="hidden" name="post[user_default_avatar]" id="user_default_avatar" value="{$config['user_default_avatar']}">
+									<a href="javascript:void(0);" onclick="flashupload('thumb_images', '附件上传','user_default_avatar',thumb_images,'1,jpg|jpeg|png,1,,,1','','','');return false;">
+										<if condition="$config['user_default_avatar'] neq ''">
+											<img src="{$config['user_default_avatar']}" id="user_default_avatar_preview" width="135" style="cursor: hand" />
+											<else/>
+											<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="user_default_avatar_preview" width="135" style="cursor: hand" />
+										</if>
+									</a>
+									<input type="button" class="btn btn-small" onclick="$('#user_default_avatar_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#user_default_avatar').val('');return false;" value="取消图片">
+									<span class="form-required"></span>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">用户默认小头像</label>
+								<div class="controls">
+									<input type="hidden" name="post[user_default_avatar_thumb]" id="user_default_avatar_thumb" value="{$config['user_default_avatar_thumb']}">
+									<a href="javascript:void(0);" onclick="flashupload('thumb_images', '附件上传','thumb2',thumb_images,'1,jpg|jpeg|png,1,,,1','','','');return false;">
+										<if condition="$config['user_default_avatar_thumb'] neq ''">
+											<img src="{$config['user_default_avatar_thumb']}" id="user_default_avatar_thumb_preview" width="135" style="cursor: hand" />
+											<else/>
+											<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="user_default_avatar_thumb_preview" width="135" style="cursor: hand" />
+										</if>
+									</a>
+									<input type="button" class="btn btn-small" onclick="$('#user_default_avatar_thumb_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#user_default_avatar_thumb').val('');return false;" value="取消图片">
+									<span class="form-required"></span>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">app下载页宣传大图</label>
+								<div class="controls">
+									<input type="hidden" name="post[app_download_big_pic]" id="app_download_big_pic" value="{$config['app_download_big_pic']}">
+									<a href="javascript:void(0);" onclick="flashupload('thumb_images', '附件上传','thumb2',thumb_images,'1,jpg|jpeg|png,1,,,1','','','');return false;">
+										<if condition="$config['app_download_big_pic'] neq ''">
+											<img src="{$config['app_download_big_pic']}" id="app_download_big_pic_preview" width="135" style="cursor: hand" />
+											<else/>
+											<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="app_download_big_pic_preview" width="135" style="cursor: hand" />
+										</if>
+									</a>
+									<input type="button" class="btn btn-small" onclick="$('#app_download_big_pic_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#app_download_big_pic').val('');return false;" value="取消图片">
+									<span class="form-required"></span>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">直播水印图片</label>
+								<div class="controls">
+									<input type="hidden" name="post[watermark]" id="watermark" value="{$config['watermark']}">
+									<a href="javascript:void(0);" onclick="flashupload('thumb_images', '附件上传','thumb2',thumb_images,'1,jpg|jpeg|png,1,,,1','','','');return false;">
+										<if condition="$config['watermark'] neq ''">
+											<img src="{$config['watermark']}" id="watermark_preview" width="135" style="cursor: hand" />
+											<else/>
+											<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="watermark_preview" width="135" style="cursor: hand" />
+										</if>
+									</a>
+									<input type="button" class="btn btn-small" onclick="$('#watermark_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#watermark').val('');return false;" value="取消图片">
+									<span class="form-required"></span>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">android版下载二维码</label>
+								<div class="controls">
+									<div >
+										<input type="hidden" name="post[apk_ewm]" id="thumb1" value="{$config['apk_ewm']}">
+										<a href="javascript:void(0);" onclick="flashuploadcut('thumb_images', '附件上传','thumb1',thumb_images,'1,jpg|jpeg|gif|png|bmp,1,,,1','','','');return false;">
+											<if condition="$config['apk_ewm'] neq ''">
+												<img src="{$config['apk_ewm']}" id="thumb1_preview" width="135" style="cursor: hand" />
+												<else/>
+												<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb1_preview" width="135" style="cursor: hand" />
+											</if>
+										</a>
+										<input type="button" class="btn btn-small" onclick="$('#thumb1_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb1').val('');return false;" value="取消图片">
+									</div>
+
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">iPhone版下载二维码</label>
+								<div class="controls">
+									<div >
+										<input type="hidden" name="post[ipa_ewm]" id="thumb2" value="{$config['ipa_ewm']}">
+										<a href="javascript:void(0);" onclick="flashuploadcut('thumb_images', '附件上传','thumb2',thumb_images,'1,jpg|jpeg|gif|png|bmp,1,,,1','','','');return false;">
+											<if condition="$config['ipa_ewm'] neq ''">
+												<img src="{$config['ipa_ewm']}" id="thumb2_preview" width="135" style="cursor: hand" />
+												<else/>
+												<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb2_preview" width="135" style="cursor: hand" />
+											</if>
+										</a>
+										<input type="button" class="btn btn-small" onclick="$('#thumb2_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb2').val('');return false;" value="取消图片">
+									</div>
+
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">微信公众号</label>
+								<div class="controls">
+									<div >
+										<input type="hidden" name="post[wechat_ewm]" id="thumb3" value="{$config['wechat_ewm']}">
+										<a href="javascript:void(0);" onclick="flashuploadcut('thumb_images', '附件上传','thumb3',thumb_images,'1,jpg|jpeg|gif|png|bmp,1,,,1','','','');return false;">
+											<if condition="$config['wechat_ewm'] neq ''">
+												<img src="{$config['wechat_ewm']}" id="thumb3_preview" width="135" style="cursor: hand" />
+												<else/>
+												<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb3_preview" width="135" style="cursor: hand" />
+											</if>
+										</a>
+										<input type="button" class="btn btn-small" onclick="$('#thumb3_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb3').val('');return false;" value="取消图片">
+									</div>
+
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">官微A图标</label>
+								<div class="controls">
+									<div >
+										<input type="hidden" name="post[sina_icon]" id="thumb4" value="{$config['sina_icon']}">
+										<a href="javascript:void(0);" onclick="flashuploadcut('thumb_images', '附件上传','thumb4',thumb_images,'1,jpg|jpeg|gif|png|bmp,1,,,1','','','');return false;">
+											<if condition="$config['sina_icon'] neq ''">
+												<img src="{$config['sina_icon']}" id="thumb4_preview" width="40" style="cursor: hand" />
+												<else/>
+												<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb4_preview" width="40" style="cursor: hand" />
+											</if>
+										</a>
+										<input type="button" class="btn btn-small" onclick="$('#thumb4_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb4').val('');return false;" value="取消图片">
+									</div>
+
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">官微A标题</label>
+								<div class="controls">
+									<input type="text" name="post[sina_title]" value="{$config['sina_title']}">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">官微A描述</label>
+								<div class="controls">
+									<input type="text" name="post[sina_desc]" value="{$config['sina_desc']}">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">官微A链接</label>
+								<div class="controls">
+									<input type="text" name="post[sina_url]" value="{$config['sina_url']}"> 以http://或https://开头
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">官微B图标</label>
+								<div class="controls">
+									<div >
+										<input type="hidden" name="post[qq_icon]" id="thumb5" value="{$config['qq_icon']}">
+										<a href="javascript:void(0);" onclick="flashuploadcut('thumb_images', '附件上传','thumb5',thumb_images,'1,jpg|jpeg|gif|png|bmp,1,,,1','','','');return false;">
+											<if condition="$config['qq_icon'] neq ''">
+												<img src="{$config['qq_icon']}" id="thumb5_preview" width="40" style="cursor: hand" />
+												<else/>
+												<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb5_preview" width="40" style="cursor: hand" />
+											</if>
+										</a>
+										<input type="button" class="btn btn-small" onclick="$('#thumb5_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb5').val('');return false;" value="取消图片">
+									</div>
+
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">官微B标题</label>
+								<div class="controls">
+									<input type="text" name="post[qq_title]" value="{$config['qq_title']}">
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">官微B描述</label>
+								<div class="controls">
+									<input type="text" name="post[qq_desc]" value="{$config['qq_desc']}">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">官微B链接</label>
+								<div class="controls">
+									<input type="text" name="post[qq_url]" value="{$config['qq_url']}"> 以http://或https://开头
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">客服地址</label>
+								<div class="controls">
+									<input type="text" name="post[cust_service_addr]" value="{$config['cust_service_addr']}"> 以http://或https://开头
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">广告链接</label>
+								<div class="controls">
+									<input type="text" name="post[ad_link]" value="{$config['ad_link']}"> 以http://或https://开头
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">广告链接类型</label>
+								<div class="controls">
+									<select name="post[ad_link_type]" id="">
+										<option value="1" <if condition="$config['ad_link_type'] == 1">selected</if> >图片</option>
+										<option value="2" <if condition="$config['ad_link_type'] == 2">selected</if> >视频</option>
+									</select>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">广告时间</label>
+								<div class="controls">
+									<input type="text" name="post[ad_time]" value="{$config['ad_time']}"> 秒，广告弹窗需要多少秒才能关闭
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">语音播报开关</label>
+								<div class="controls">
+									<select name="post[voice_notice]" id="">
+										<option value="0" <if condition="$config['voice_notice'] == 0">selected</if> >否</option>
+										<option value="1" <if condition="$config['voice_notice'] == 1">selected</if> >是</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">不可提现余额设置</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio" disabled value="1" name="post[commission_type]" <eq name="config['commission_type']" value="1">checked="checked"</eq>>使用配置日期可转提现 </label>
+									<label class="radio inline"><input type="radio" disabled value="2" name="post[commission_type]" <eq name="config['commission_type']" value="2">checked="checked"</eq>>不可提现</label>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">不可提现转可提现日期（天）</label>
+								<div class="controls">
+									<input type="text" name="post[withdrawal_time]" value="{$config['withdrawal_time']}">
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">vip模式(运营前请确认)</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio"  value="1" name="post[vip_model]" <eq name="config['vip_model']" value="1">checked="checked"</eq>>购买模式 </label>
+									<label class="radio inline"><input type="radio"  value="2" name="post[vip_model]" <eq name="config['vip_model']" value="2">checked="checked"</eq>>保证金模式</label>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">是否展示邀请码</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio"  value="1" name="post[code_show]" <eq name="config['code_show']" value="1">checked="checked"</eq>>展示 </label>
+									<label class="radio inline"><input type="radio"  value="2" name="post[code_show]" <eq name="config['code_show']" value="2">checked="checked"</eq>>不展示</label>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">首次登录宝箱开关</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio"  value="1" name="post[treasure_swich]" <eq name="config['treasure_swich']" value="1">checked="checked"</eq>>开启 </label>
+									<label class="radio inline"><input type="radio"  value="2" name="post[treasure_swich]" <eq name="config['treasure_swich']" value="2">checked="checked"</eq>>关闭</label>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">视频代理线可见</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio"  value="0" name="post[agent_line_visible]" <eq name="config['agent_line_visible']" value="0">checked="checked"</eq>>否 </label>
+									<label class="radio inline"><input type="radio"  value="1" name="post[agent_line_visible]" <eq name="config['agent_line_visible']" value="1">checked="checked"</eq>>是</label>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">置顶视频数量</label>
+								<div class="controls">
+									<input type="number" name="post[top_short_video_count]" value="{$config['top_short_video_count']}" min="0" max="25">
+									<span>0 - 25，如果设置0，则不展示置顶视频</span>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">短视频上传自动审核</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio"  value="0" name="post[auto_check_short_video]" <eq name="config['auto_check_short_video']" value="0">checked="checked"</eq>>否 </label>
+									<label class="radio inline"><input type="radio"  value="1" name="post[auto_check_short_video]" <eq name="config['auto_check_short_video']" value="1">checked="checked"</eq>>是</label>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">会员注册后默认名称</label>
+								<div class="controls">
+									<input type="text" name="post[initial_membership]" value="{$config['initial_membership']}">
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" style="line-height: 60px !important;">红包图标</label>
+								<div class="controls">
+									<div class="img_div">
+										<input type="text" name="post[red_packet_icon]" value="{$config['red_packet_icon']}" placeholder="请上传" required>
+										<span class="upload_btn cust-upload-img" data-name="post[red_packet_icon]" data-showimgclass="img_show_red_packet_icon" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+									</div>
+									<img src="{$config['red_packet_icon']|default='__TMPL__Public/assets/images/default-thumbnail.png'}" alt="" class="img_show_red_packet_icon" style="max-height: 70px;max-width: 100px;min-height:50px;padding: 0px;margin: 0px 0px 0px 15px;">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" style="line-height: 60px !important;">红包特效图标</label>
+								<div class="controls">
+									<div class="img_div">
+										<input type="text" name="post[red_packet_special_effects]" value="{$config['red_packet_special_effects']}" placeholder="请上传" required>
+										<span class="upload_btn cust-upload-img" data-name="post[red_packet_special_effects]" data-showimgclass="img_show_red_packet_special_effects" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+									</div>
+									<img src="{$config['red_packet_special_effects']|default='__TMPL__Public/assets/images/default-thumbnail.png'}" alt="" class="img_show_red_packet_special_effects" style="max-height: 70px;max-width: 100px;min-height:50px;padding: 0px;margin: 0px 0px 0px 15px;">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" style="line-height: 60px !important;">红包购物券特效图标</label>
+								<div class="controls">
+									<div class="img_div">
+										<input type="text" name="post[red_packet_shopvoucher_special_effects]" value="{$config['red_packet_shopvoucher_special_effects']}" placeholder="请上传" required>
+										<span class="upload_btn cust-upload-img" data-name="post[red_packet_shopvoucher_special_effects]" data-showimgclass="img_show_red_packet_shopvoucher_special_effects" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+									</div>
+									<img src="{$config['red_packet_shopvoucher_special_effects']|default='__TMPL__Public/assets/images/default-thumbnail.png'}" alt="" class="img_show_red_packet_shopvoucher_special_effects" style="max-height: 70px;max-width: 100px;min-height:50px;padding: 0px;margin: 0px 0px 0px 15px;">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">详情页弹窗时间</label>
+								<div class="controls">
+									<input type="text" name="post[pop_time]" value="{$config['pop_time']}">
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red">达到此时间详情页显示弹窗，每次进入详情页只弹出一次(秒)</span>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">每次装盘消费金额</label>
+								<div class="controls">
+									<input type="text" name="post[turntable_consumption_amout]" value="{$config['turntable_consumption_amout']}">
+									&nbsp;&nbsp;&nbsp;&nbsp;
+								</div>
+							</div>
+						</fieldset>
+						<div class="form-actions">
+							<button onclick="set_save(1)" class="btn btn-primary js-ajax-submit">{:L('SAVE')}</button>
+						</div>
+					</div>
+				</if>
+				<!-- APP版本管理 -->
+				<if condition="array_key_exists('app_version',$menu_list)">
+					<div>
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">官网地址</label>
+								<div class="controls">
+									<input type="text" name="post[official_website_url]" value="{$config['official_website_url']}"> 安卓APP最新的版本号，请勿随意修改
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">APK版本号</label>
+								<div class="controls">
+									<input type="text" name="post[apk_ver]" value="{$config['apk_ver']}"> 安卓APP最新的版本号，请勿随意修改
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">APK下载链接</label>
+								<div class="controls">
+									<input type="text" name="post[apk_url]" value="{$config['apk_url']}"> 安卓最新版APK下载链接
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">APK是否需要强制更新</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio" value="1" name="post[apk_forced_update]" <eq name="config['apk_forced_update']" value="1">checked="checked"</eq>>需要</label>
+									<label class="radio inline"><input type="radio" value="0" name="post[apk_forced_update]" <eq name="config['apk_forced_update']" value="0">checked="checked"</eq>>不需要</label>
+
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;安卓最新版APK下载链接
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">APk更新说明</label>
+								<div class="controls">
+									<textarea name="post[apk_des]">{$config['apk_des']}</textarea>APk更新说明（200字以内）
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">IPA版本号</label>
+								<div class="controls">
+									<input type="text" name="post[ipa_ver]" value="{$config['ipa_ver']}"> IOS APP最新的版本号，请勿随意修改
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">IPA上架版本号</label>
+								<div class="controls">
+									<input type="text" name="post[ios_shelves]" value="{$config['ios_shelves']}"> IOS上架审核中版本的版本号(用于上架期间隐藏上架版本部分功能,不要和IPA版本号相同)
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">IPA下载链接</label>
+								<div class="controls">
+									<input type="text" name="post[ipa_url]" value="{$config['ipa_url']}"> IOS最新版IPA下载链接
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">IPA是否需要强制更新</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio" value="1" name="post[ipa_forced_update]" <eq name="config['ipa_forced_update']" value="1">checked="checked"</eq>>需要</label>
+									<label class="radio inline"><input type="radio" value="0" name="post[ipa_forced_update]" <eq name="config['ipa_forced_update']" value="0">checked="checked"</eq>>不需要</label>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IOS是否需要强制更新
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">IPA更新说明</label>
+								<div class="controls">
+									<textarea name="post[ipa_des]">{$config['ipa_des']}</textarea>IPA更新说明（200字以内）
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">二维码下载链接</label>
+								<div class="controls">
+									<div >
+										<input type="hidden" name="post[qr_url]" id="thumb" value="{$config['qr_url']}">
+										<a href="javascript:void(0);" onclick="flashuploadcut('thumb_images', '附件上传','thumb',thumb_images,'1,jpg|jpeg|gif|png|bmp,1,,,1','','','');return false;">
+											<if condition="$config['qr_url'] neq ''">
+												<img src="{$config['qr_url']}" id="thumb_preview" width="135" style="cursor: hand" />
+												<else/>
+												<img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb_preview" width="135" style="cursor: hand" />
+											</if>
+										</a>
+										<input type="button" class="btn btn-small" onclick="$('#thumb_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;" value="取消图片">
+									</div>
+									<span class="form-required">二维码生成链接：{$config['site']}/index.php?g=Portal&m=index&a=scanqr</span>
+								</div>
+							</div>
+
+						</fieldset>
+						<div class="form-actions">
+							<button onclick="set_save(2)" class="btn btn-primary js-ajax-submit">{:L('SAVE')}</button>
+						</div>
+					</div>
+				</if>
+
+				<!-- 分享设置 -->
+				<if condition="array_key_exists('share_set',$menu_list)">
+					<div>
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">推广域名</label>
+								<div class="controls">
+									<input type="text" name="post[wx_siteurl]" value="{$config['wx_siteurl']}"> http:// 开头 参数值为用户ID
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">直播分享标题</label>
+								<div class="controls">
+									<input type="text" name="post[share_title]" value="{$config['share_title']}"> 直播分享标题
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">直播分享话术</label>
+								<div class="controls">
+									<input type="text" name="post[share_des]" value="{$config['share_des']}"> 直播分享话术
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">AndroidAPP下载链接</label>
+								<div class="controls">
+									<input type="text" name="post[app_android]" value="{$config['app_android']}"> 分享用Android APP 下载链接
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">IOSAPP下载链接</label>
+								<div class="controls">
+									<input type="text" name="post[app_ios]" value="{$config['app_ios']}"> 分享用IOS APP 下载链接
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">短视频分享标题</label>
+								<div class="controls">
+									<input type="text" name="post[video_share_title]" value="{$config['video_share_title']}"> 短视频分享标题
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">短视频分享话术</label>
+								<div class="controls">
+									<input type="text" name="post[video_share_des]" value="{$config['video_share_des']}"> 短视频分享话术
+								</div>
+							</div>
+						</fieldset>
+						<div class="form-actions">
+							<button onclick="set_save(3)" class="btn btn-primary js-ajax-submit">{:L('SAVE')}</button>
+						</div>
+					</div>
+				</if>
+
+				<!-- 三方配置 -->
+				<if condition="array_key_exists('send_set',$menu_list)">
+					<div>
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">极光推送模式</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio" value="0" name="post[jpush_sandbox]" <eq name="config['jpush_sandbox']" value="0">checked="checked"</eq>>开发</label>
+									<label class="radio inline"><input type="radio" value="1" name="post[jpush_sandbox]" <eq name="config['jpush_sandbox']" value="1">checked="checked"</eq>>生产</label>
+									<label class="checkbox inline">极光推送模式</label>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">极光推送APP_KEY</label>
+								<div class="controls">
+									<input type="text" name="post[jpush_key]" value="{$config['jpush_key']}">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">极光推送master_secret</label>
+								<div class="controls">
+									<input type="text" name="post[jpush_secret]" value="{$config['jpush_secret']}">
+								</div>
+							</div>
+						</fieldset>
+						<div class="form-actions">
+							<button onclick="set_save(4)" class="btn btn-primary js-ajax-submit">{:L('SAVE')}</button>
+						</div>
+					</div>
+				</if>
+
+				<!-- 支付管理 -->
+				<if condition="array_key_exists('pay_set',$menu_list)">
+					<div>
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">支付宝APP</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio" value="0" name="post[aliapp_switch]" <eq name="config['aliapp_switch']" value="0">checked="checked"</eq>>关闭</label>
+									<label class="radio inline"><input type="radio" value="1" name="post[aliapp_switch]" <eq name="config['aliapp_switch']" value="1">checked="checked"</eq>>开启</label>
+									<label class="checkbox inline">支付宝APP支付是否开启</label>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">合作者身份ID</label>
+								<div class="controls">
+									<input type="text" name="post[aliapp_partner]" value="{$config['aliapp_partner']}">支付宝合作者身份ID
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">支付宝帐号</label>
+								<div class="controls">
+									<input type="text" name="post[aliapp_seller_id]" value="{$config['aliapp_seller_id']}">支付宝登录账号
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">支付宝安卓密钥</label>
+								<div class="controls">
+									<textarea name="post[aliapp_key_android]">{$config['aliapp_key_android']}</textarea>支付宝安卓密钥pkcs8
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">支付宝苹果密钥</label>
+								<div class="controls">
+									<textarea name="post[aliapp_key_ios]">{$config['aliapp_key_ios']}</textarea>支付宝苹果密钥pkcs8
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">支付宝校验码</label>
+								<div class="controls">
+									<input type="text" name="post[aliapp_check]" value="{$config['aliapp_check']}"> 支付宝校验码（PC扫码支付）（对应为 开放平台=》mapi网关产品=》MD5密钥）
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">苹果支付模式</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio" value="0" name="post[ios_sandbox]" <eq name="config['ios_sandbox']" value="0">checked="checked"</eq>>沙盒</label>
+									<label class="radio inline"><input type="radio" value="1" name="post[ios_sandbox]" <eq name="config['ios_sandbox']" value="1">checked="checked"</eq>>生产</label>
+									<label class="checkbox inline">苹果支付模式</label>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">支付宝PC</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio" value="0" name="post[aliapp_pc]" <eq name="config['aliapp_pc']" value="0">checked="checked"</eq>>关闭</label>
+									<label class="radio inline"><input type="radio" value="1" name="post[aliapp_pc]" <eq name="config['aliapp_pc']" value="1">checked="checked"</eq>>开启</label>
+									<label class="checkbox inline">支付宝PC扫码支付是否开启</label>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">微信支付PC</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio" value="0" name="post[wx_switch_pc]" <eq name="config['wx_switch_pc']" value="0">checked="checked"</eq>>关闭</label>
+									<label class="radio inline"><input type="radio" value="1" name="post[wx_switch_pc]" <eq name="config['wx_switch_pc']" value="1">checked="checked"</eq>>开启</label>
+									<label class="checkbox inline">微信支付PC 是否开启</label>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">微信支付</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio" value="0" name="post[wx_switch]" <eq name="config['wx_switch']" value="0">checked="checked"</eq>>关闭</label>
+									<label class="radio inline"><input type="radio" value="1" name="post[wx_switch]" <eq name="config['wx_switch']" value="1">checked="checked"</eq>>开启</label>
+									<label class="checkbox inline">微信支付开关</label>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">微信开放平台移动应用AppID</label>
+								<div class="controls">
+									<input type="text" name="post[wx_appid]" value="{$config['wx_appid']}">微信开放平台移动应用AppID
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">微信开放平台移动应用appsecret</label>
+								<div class="controls">
+									<input type="text" name="post[wx_appsecret]" value="{$config['wx_appsecret']}">微信开放平台移动应用appsecret
+								</div>
+							</div
+							><div class="control-group">
+							<label class="control-label">微信商户号mchid</label>
+							<div class="controls">
+								<input type="text" name="post[wx_mchid]" value="{$config['wx_mchid']}">微信商户号mchid（微信开放平台移动应用 对应的微信商户 商户号mchid）
+							</div>
+						</div>
+							<div class="control-group">
+								<label class="control-label">微信密钥key</label>
+								<div class="controls">
+									<input type="text" name="post[wx_key]" value="{$config['wx_key']}">微信密钥key（微信开放平台移动应用 对应的微信商户 密钥key）
+								</div>
+							</div>
+						</fieldset>
+						<div class="form-actions">
+							<button onclick="set_save(5)" class="btn btn-primary js-ajax-submit">{:L('SAVE')}</button>
+						</div>
+					</div>
+				</if>
+
+
+				<!-- 统计配置 -->
+				<if condition="array_key_exists('statistics_set',$menu_list)">
+					<div>
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">友盟OpenApi-apiKey</label>
+								<div class="controls">
+									<input type="text" name="post[um_apikey]" value="{$config['um_apikey']}"> 友盟统计OpenApi-apiKey
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">友盟OpenApi-apiSecurity</label>
+								<div class="controls">
+									<input type="text" name="post[um_apisecurity]" value="{$config['um_apisecurity']}"> 友盟统计OpenApi-apiKey
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">友盟Android应用-appkey</label>
+								<div class="controls">
+									<input type="text" name="post[um_appkey_android]" value="{$config['um_appkey_android']}"> 友盟Android应用-appkey
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">友盟IOS应用-appkey</label>
+								<div class="controls">
+									<input type="text" name="post[um_appkey_ios]" value="{$config['um_appkey_ios']}"> 友盟IOS应用-appkey
+								</div>
+							</div>
+
+						</fieldset>
+						<div class="form-actions">
+							<button onclick="set_save(6)" class="btn btn-primary js-ajax-submit">{:L('SAVE')}</button>
+						</div>
+					</div>
+				</if>
+
+
+                <!-- 美颜/萌颜 -->
+				<if condition="array_key_exists('filter_set',$menu_list)">
+					<div>
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">萌颜授权码</label>
+								<div class="controls">
+									<input type="text" name="post[sprout_key]" value="{$config['sprout_key']}" > 萌颜授权码
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">美白默认值</label>
+								<div class="controls">
+									<input type="text" name="post[sprout_white]" value="{$config['sprout_white']}" > 0-100 整数
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">磨皮默认值</label>
+								<div class="controls">
+									<input type="text" name="post[sprout_skin]" value="{$config['sprout_skin']}" > 0-100 整数
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">饱和默认值</label>
+								<div class="controls">
+									<input type="text" name="post[sprout_saturated]" value="{$config['sprout_saturated']}" > 0-100 整数
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">粉嫩默认值</label>
+								<div class="controls">
+									<input type="text" name="post[sprout_pink]" value="{$config['sprout_pink']}" > 0-100 整数
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">大眼默认值</label>
+								<div class="controls">
+									<input type="text" name="post[sprout_eye]" value="{$config['sprout_eye']}" > 0-100 整数
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">瘦脸默认值</label>
+								<div class="controls">
+									<input type="text" name="post[sprout_face]" value="{$config['sprout_face']}" > 0-100 整数
+								</div>
+							</div>
+
+						</fieldset>
+						<div class="form-actions">
+							<button onclick="set_save(7)" class="btn btn-primary js-ajax-submit">{:L('SAVE')}</button>
+						</div>
+					</div>
+				</if>
+
+                <!-- 游客配置 -->
+                <if condition="array_key_exists('visitor',$menu_list)">
+                    <div>
+                        <fieldset>
+                            <div class="control-group">
+                                <label class="control-label">每播放几个视频弹窗提示</label>
+                                <div class="controls">
+                                    <input type="text" name="post[notice_pernum]" value="{$config['notice_pernum']}" >
+                                    <span class="color-gray">（设置为0，则不限制，暂时只针对短视频）</span>
+                                </div>
+                            </div>
+							<div class="control-group">
+								<label class="control-label">是否使用游客</label>
+								<div class="controls">
+									<label class="radio inline"><input type="radio" value="0" name="post[is_use_visitor]" <eq name="config['is_use_visitor']" value="0">checked="checked"</eq>>否</label>
+									<label class="radio inline"><input type="radio" value="1" name="post[is_use_visitor]" <eq name="config['is_use_visitor']" value="1">checked="checked"</eq>>是</label>
+									<span class="color-gray"></span>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">游客免费观看次数</label>
+								<div class="controls">
+									<input type="text" name="post[tourists_watch_time]" value="{$config['tourists_watch_time']}" >
+									<span class="color-gray">（设置为0，则不限制，暂时只针对长视频）</span>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">正式会员 免费观看次数</label>
+								<div class="controls">
+									<input type="text" name="post[vip_watch_time]" value="{$config['vip_watch_time']}" >
+									<span class="color-gray">（设置为0，则不限制，暂时只针对长视频）</span>
+								</div>
+							</div>
+                        </fieldset>
+                        <div class="form-actions">
+                            <button onclick="set_save(8)" class="btn btn-primary js-ajax-submit" data-option="{waittime:1000}">{:L('SAVE')}</button>
+                        </div>
+                    </div>
+                </if>
+
+				<if condition="array_key_exists('statistics',$menu_list)">
+					<div>
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label">统计代码</label>
+								<div class="controls">
+									<textarea  style="height:310px " name="post[order_statistics_code]">{$config['order_statistics_code']}</textarea>
+								</div>
+							</div>
+
+						</fieldset>
+						<div class="form-actions">
+							<button onclick="set_save(8)" class="btn btn-primary js-ajax-submit" data-option="{waittime:1000}">{:L('SAVE')}</button>
+						</div>
+					</div>
+				</if>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script>
+	function set_save(type){
+		// $('form').attr('action',"{:U('Admin/TenantConfig/set_post/type/"+type+"')}");
+		$('form').attr('action',"{:U('Admin/TenantConfig/set_post')}"+type);
+	}
+</script>

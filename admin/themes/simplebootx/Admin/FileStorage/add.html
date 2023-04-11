@@ -1,0 +1,102 @@
+<admintpl file="header" />
+<style>
+	input{
+		width: 500px;
+	}
+</style>
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Livepushpull/add')}
+	</ul>
+	<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('add')}">
+		<fieldset>
+			<if condition="$role_id == 1">
+				<div class="control-group">
+					<label class="control-label">*租户</label>
+					<div class="controls">
+						<select name="tenant_id" >
+							<volist name="tenant_list" id="vo">
+								<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+							</volist>
+						</select>
+						<span class="form-required"></span>
+					</div>
+				</div>
+			</if>
+			<div class="control-group">
+				<label class="control-label">名称</label>
+				<div class="controls">
+					<input type="text" name="name" required>
+					<span class="form-required">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">服务商</label>
+				<div class="controls">
+					<select class="select_2" name="type" class="mar-right-15" >
+						<volist name="type_list" id="vo">
+							<option value="{$key}" <if condition="$key eq 1">selected</if>>{$vo}</option>
+						</volist>
+					</select>
+					<span class="form-required" style="vertical-align: middle;">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">空间域名</label>
+				<div class="controls">
+					<textarea name="domain" cols="3" rows="3" style="width: 500px;"></textarea>
+					<span class="form-required">（下载、播放、展示使用）不带 http:// ，最后无 /</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">空间名称</label>
+				<div class="controls">
+					<input type="text" name="bucket">
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">区域上传域名</label>
+				<div class="controls">
+					<input type="text" name="uphost">
+					<span class="form-required">（endpoint）如：http://upload-z2.qiniup.com</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">AccessKey</label>
+				<div class="controls">
+					<input type="text" name="accesskey">
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">SecretKey</label>
+				<div class="controls">
+					<input type="text" name="secretkey">
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">状态</label>
+				<div class="controls">
+					<input type="radio" name="status" value="1" required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">启用</span>
+					<input type="radio" name="status" value="0" checked required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">关闭</span>
+				</div>
+			</div>
+		</fieldset>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,waittime:1000}">{:L('SAVE')}</button>
+			<a class="btn" href="{:U('index')}">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script>
+
+
+
+</script>

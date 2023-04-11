@@ -1,0 +1,195 @@
+<admintpl file="header" />
+<style>
+    .treecontent .expander{
+        background-position: left center;
+        background-repeat: no-repeat;
+        padding-left:15px;
+        zoom: 1; /* IE7 Hack */
+        margin-left: -15px;
+    }
+    .treecontent .collapsed{
+        display: none;
+    }
+</style>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        {:getTableMenu($_GET['menuid'],'User/Indexadmin/agent')}
+    </ul>
+    <form class="well form-search"  enctype="multipart/form-data" name="form1" method="post" action="{:U('indexadmin/agent')}">
+        代理：<select class="select_2" name="agent">
+            <option value="1" <if condition="$formget.agent eq '1'">selected</if> >代理本身</option>
+            <option value="2" <if condition="$formget.agent eq '2'">selected</if> >全部下级</option>
+            <option value="3" <if condition="$formget.agent eq '3'">selected</if> >直属下级</option>
+        </select> &nbsp;&nbsp;
+        代理id：<input type="text" name="id" style="width: 200px;" value="{$formget.id}">
+        代理用户名 ：<input type="text" name="user_login" style="width: 200px;" value="{$formget.user_login}">
+        <input type="submit" class="btn btn-primary" value="搜索">
+    </form>
+    <form class="js-ajax-form" action="{:U('Menu/listorders')}" method="post">
+
+        <table class="table table-hover table-bordered table-list" id="menus-table">
+            <thead>
+            <tr>
+                <th width="200">用户id</th>
+                <th width="80">昵称</th>
+                <th width="80">用户名</th>
+                <th width="70">上一级用户id</th>
+                <th width="70">上一级用户名</th>
+                <th width="70">上二级用户id</th>
+                <th width="70">上二级用户名</th>
+                <th width="70">上三级用户id</th>
+                <th width="70">上三级用户名</th>
+                <th width="70">上四级用户id</th>
+                <th width="70">上四级用户名</th>
+                <th width="70">上五级用户id</th>
+                <th width="70">上五级用户名</th>
+            </tr>
+            </thead>
+            <tbody class="treecontent">
+            <volist name="list" id="vo">
+                <tr id="{$vo.uid}" class="expanded">
+                    <td style="padding-left: 0px;">
+                        <if condition="$vo.childscount gt 0">
+                            <span data-pid="{$vo.uid}" class="expander" data-type="1" data-left="0" onclick="expander(this)" style="background-image: url(/public/images/toggle-expand-dark.png);cursor:pointer;"></span>
+                        </if>
+                        &nbsp;&nbsp;{$vo.uid}</td>
+                    <td>{$vo.user_nicename}</td>
+                    <td>{$vo.user_login}</td>
+                    <td>{$vo.one_uid}</td>
+                    <td>{$vo.one_login}</td>
+                    <td>{$vo.two_uid}</td>
+                    <td>{$vo.two_login}</td>
+                    <td>{$vo.three_uid}</td>
+                    <td>{$vo.three_login}</td>
+                    <td>{$vo.four_uid}</td>
+                    <td>{$vo.four_login}</td>
+                    <td>{$vo.five_uid}</td>
+                    <td>{$vo.five_login}</td>
+                </tr>
+            </volist>
+            <if condition="$pall gt 1">
+                <tr><td class="loadmore" data-pid="{$pid}" data-nextp="2" data-left="0" onclick="loadmore(this,false)" colspan="12" style="text-align:center;cursor:pointer;">点击加载更多</td></tr>
+            </if>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script>
+    /*
+    * 页面准备完毕
+    * */
+    $(document).ready(function() {
+        // var lmshtml = '<tr><td class="loadmore" data-pid="0" data-nextp="1" data-left="0" onclick="loadmore(this,false)" colspan="12" style="text-align:center;cursor:pointer;">点击加载更多</td></tr>';
+        // $(".treecontent").append(lmshtml);
+        // $(".treecontent").find(".loadmore").trigger('click');
+    });
+
+    /*
+    * 加载更多数据
+    * */
+    function loadmore(obj,ischild){
+        var pid = $(obj).attr('data-pid');
+        var p = Number($(obj).attr('data-nextp'));
+        var left = Number($(obj).data('left'));
+        getChilds(obj,pid,p,'loadmore',left,ischild);
+    }
+
+    function getChilds(obj,pid,p,type,left,ischild){
+        custloading(); // 开启loading
+        $.post("{:U('indexadmin/agentchilds')}",{pid:pid,p:p}, function(res){
+            custloading(false); // 关闭loading
+            var html = '';
+            $.each(res.list,function (i,v){
+                var childshtml = v.childscount>0 ? '<span data-pid="'+v.uid+'" class="expander" data-type="1" data-left="'+left+'" onclick="expander(this)" style="background-image: url(/public/images/toggle-expand-dark.png);cursor:pointer;"></span>' : '';
+                childshtml = ischild==true ? (childshtml ? childshtml+'├─' : childshtml+'└─') : childshtml;
+                var childofnode = ischild==true ? 'child-'+v.one_uid : '';
+                html += '<tr id="'+v.uid+'" class="'+childofnode+' expanded">' +
+                            '<td style="padding-left: '+left+'px;">'+childshtml+'&nbsp;&nbsp;'+v.uid+'</td>' +
+                            '<td>'+v.user_login+'</td>' +
+                            '<td>'+v.user_nicename+'</td>' +
+                            '<td>'+v.one_uid+'</td>' +
+                            '<td>'+v.one_login+'</td>' +
+                            '<td>'+v.two_uid+'</td>' +
+                            '<td>'+v.two_login+'</td>' +
+                            '<td>'+v.three_uid+'</td>' +
+                            '<td>'+v.three_login+'</td>' +
+                            '<td>'+v.four_uid+'</td>' +
+                            '<td>'+v.four_login+'</td>' +
+                            '<td>'+v.five_uid+'</td>' +
+                            '<td>'+v.five_login+'</td>' +
+                        '</tr>';
+            });
+            if(type == 'loadmore'){
+                if(res.pall>p){
+                    $(obj).attr('data-nextp',(p+1));
+                }else{
+                    $(obj).css('display','none');
+                }
+                $(obj).parent().before(html);
+            }else{
+                if(res.pall>1){
+                    html += '<tr><td class="loadmore" data-pid="'+pid+'" data-nextp="'+(p+1)+'" data-left="'+left+'" onclick="loadmore(this,true)" colspan="12" style="text-align:center;cursor:pointer;display:;">点击加载更多</td></tr>';
+                }
+                $(obj).parent().parent().after(html);
+            }
+        });
+    }
+
+    /*
+    * 三角形按钮点击触发方法
+    * */
+    function expander(obj){
+        var type = $(obj).attr('data-type');
+        var pid = $(obj).attr('data-pid');
+        var left = Number($(obj).data('left'));
+        if(type==1){
+            $(obj).attr('data-type',0).css('background-image','url(/public/images/toggle-collapse-dark.png)');
+            if($(".treecontent").find('.child-'+pid).length > 0){
+                $(obj).parent().parent().removeClass('closedchild')
+                openchild(pid); // 展开下级
+            }else{
+                left += 25;
+                getChilds(obj,pid,1,'expander',left,true); // 网络请求下级
+            }
+        }else{
+            $(obj).parent().parent().addClass('closedchild');
+            $(obj).attr('data-type',1).addClass('closedchild').css('background-image','url(/public/images/toggle-expand-dark.png)');
+            closechild(pid); // 关闭下级
+        }
+    }
+
+    /*
+    * 关闭下级
+    * */
+    function closechild(pid){
+        $(".treecontent").find('.child-'+pid).addClass('collapsed').removeClass('expanded');
+        $(".treecontent").find('.child-'+pid).each(function(){
+            var id = $(this).attr('id');
+            if($(".treecontent").find('.child-'+id).length > 0){
+                closechild(id);
+            }
+        });
+    }
+
+    /*
+    * 展开下级
+    * */
+    function openchild(pid){
+        $(".treecontent").find('.child-'+pid).addClass('expanded').removeClass('collapsed');
+        $(".treecontent").find('.child-'+pid).each(function(){
+            if($(this).hasClass('closedchild') !== true){
+                var id = $(this).attr('id');
+                if($(".treecontent").find('.child-'+id).length > 0){
+                    openchild(id);
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

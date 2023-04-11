@@ -1,0 +1,61 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        {:getTableMenu($_GET['menuid'],'User/Indexadmin/batchUpdate')}
+
+    </ul>
+    <form class="well form-search"  enctype="multipart/form-data" name="form1" method="post">
+    <div class="search-box">
+
+        <input type="file" name="file" style="width: 200px;">
+        <input type="button" class="btn btn-primary" style="background-color: #1dccaa;" value="导入" onclick="form1.action='/User/Indexadmin/fansimport';form1.submit();">
+
+        <input type="button" class="btn btn-primary" style="background-color: #1dccaa;" value="下载模板" onclick="form1.action='/User/Indexadmin/fansexport';form1.submit();">
+
+
+    </div>
+    </form>
+    <form class="form-horizontal js-ajax-form" action="{:U('indexadmin/batchUpdate')}" method="post">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">用户id</label>
+                <div class="controls">
+                    <textarea type="text" name="uid" rows="8" value="" style="width: 500px"  placeholder="请用户id多用户用英文逗号分割',' "></textarea>
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">修改类型</label>
+                <div class="controls">
+                    <select name="type">
+                        <option value="1"> 粉丝数</option>
+                        <option value="2"> 关注数</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">数量</label>
+                <div class="controls">
+                    <textarea type="text" rows="8" style="width: 500px"   name="amount"   pceholder="多用户一个用户id对应一个值 多值同样用英文逗号分割"></textarea>
+                    <span  style="font-size: 20px ;font-weight: bold"> 逗号例: '&nbsp;&nbsp;,&nbsp;&nbsp;' </span>
+
+                </div>
+            </div>
+
+
+
+
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">提交</button>
+            <a class="btn" href="{:U('indexadmin/index')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<admintpl file="header" />
+<style>
+	.divHidden{
+		display:none;
+	}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li ><a href="{:U('Ads/index')}">图片列表</a></li>
+			<li class="active"><a >图片添加</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Ads/add')}
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('Ads/add_post')}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">分类</label>
+					<div class="controls">
+						<select name="sid" onchange="selectType()">
+						   <volist name="ads_sort" id="vo">
+							     <option value="{$key}">{$vo}</option>
+							 </volist>			
+							 
+						</select>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">排序</label>
+					<div class="controls">
+						<input type="text" name="orderno" value="0">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">标题</label>
+					<div class="controls">
+						<input type="text" name="name">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group" >
+					<label class="control-label">上传图片</label>
+						<div class="img_div ">
+							<input type="hidden" name="thumb"  required>
+							<span class="upload_btn cust-upload-img" data-name="thumb" data-showimgclass="thumb_img_show" data-progress="1" data-url="{:U('Upload/img_upload')}">
+								<img src="__TMPL__Public/assets/images/default-thumbnail.png" alt="" class="thumb_img_show" width="135" style="max-height: 135px;max-width: 135px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;">
+							</span>
+						</div>
+					<div>
+						图片大小建议：
+						首页  :高400px &nbsp;&nbsp;宽度按比例撑满 &nbsp;&nbsp;
+						直播  :高200px &nbsp;&nbsp;宽度按比例撑满 &nbsp;&nbsp;
+						短视频精选 :高200px &nbsp;&nbsp;宽度按比例撑满 &nbsp;&nbsp;
+						短视频推荐 :高200px 宽300px   &nbsp;&nbsp;
+						我的 :高200px  宽度按比例撑满 &nbsp;&nbsp;
+						长视频广告播放页 &nbsp;&nbsp; :高660p 宽度 1080px &nbsp;&nbsp;
+						创作中心 &nbsp;&nbsp; :高710p 宽度 170px &nbsp;&nbsp;
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">外部链接</label>
+					<div class="controls">
+						<input type="text" name="url">
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">外部链接跳转类型</label>
+					<div class="controls" id="live_jurisdiction">
+						<label class="radio inline"><input type="radio" value="1" name="url_jump_type" checked="checked" >新窗口</label>
+						<label class="radio inline"><input type="radio" value="2" name="url_jump_type" >本窗口</label>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">前台是否显示</label>
+					<div class="controls" id="live_jurisdiction">
+						<label class="radio inline"><input type="radio" value="1" name="is_show" checked="checked" >显示</label>
+						<label class="radio inline"><input type="radio" value="0" name="is_show" >不显示</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">描述</label>
+					<div class="controls">
+						<div class="wang_editor_div" style="width: 500px;">
+							<p></p>
+						</div>
+						<input type="hidden" name="des" class="wang_editor_input">
+					</div>
+				</div>
+				<div class="control-group divHidden changeAttribute">
+					<label class="control-label">难度</label>
+					<div class="controls">
+						<input type="text" name="grade" onkeyup="value=value.replace(/[^\d]/g,'')">
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group divHidden changeAttribute">
+					<label class="control-label">类型</label>
+					<div class="controls">
+						<input type="text" name="type_name">
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">是否为轮播图</label>
+					<div class="controls">
+						<label class="radio inline" for="status_1"><input type="radio" name="is_rotation" value="1" id="status_1">是</label>
+						<label class="radio inline" for="status_2"><input type="radio" name="is_rotation" value="0" id="status_2" checked >否</label>
+
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+				<a class="btn" href="{:U('Ads/index')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>
+<script type="text/javascript" src="__PUBLIC__/js/wangeditor/wangEditor.min.js"></script> <!--富文本编辑器-->
+<script>
+
+	uedit();
+
+	/*
+	* 富文本编辑
+	* */
+	function uedit() {
+		const E = window.wangEditor
+		const editor = new E(".wang_editor_div");
+		// 或者 const editor = new E(document.getElementById('div1'))
+		// 配置菜单栏，设置不需要的菜单
+		editor.config.excludeMenus = ['video'];
+		// 设置编辑区域高度为 500px
+		// editor.config.height = 500;
+		// 配置 onchange 回调函数
+		editor.config.onchange = function (newHtml) {
+			$(".wang_editor_input").val(newHtml);
+			var height = $(".wang_editor_div").children(".w-e-text-container").children(".w-e-text").height();
+			var scrollTop = $(".wang_editor_div").children(".w-e-text-container").children(".w-e-text").scrollTop();
+			var window_height = $(window).height();
+			var task_details_height = (height+scrollTop);
+			task_details_height = task_details_height>700 ? 700 : task_details_height;
+			task_details_height = task_details_height>window_height ? window_height : task_details_height;
+			$(".wang_editor_div").children(".w-e-text-container").css('height',task_details_height);
+		};
+		// 配置 server 接口地址
+		editor.config.uploadImgServer = '{:U("Upload/wang_editor_img_upload")}';
+		editor.config.uploadImgMaxLength = 1; // 一次最多上传 5 个图片
+		editor.config.showLinkImg = false; //即可隐藏插入网络图片的功能，即只保留上传本地图片。
+		editor.config.uploadFileName = 'image';
+		// editor.config.uploadImgAccept = ['jpg', 'jpeg', 'png'];
+		editor.config.uploadImgTimeout = 5 * 1000; // 即上传接口等待的最大时间，默认是 10 秒钟，可以自己修改。
+		editor.config.uploadImgHooks = {
+			// 上传图片之前
+			before: function(xhr) {},
+			// 图片上传并返回了结果，图片插入已成功
+			success: function(xhr) {},
+			// 图片上传并返回了结果，但图片插入时出错了
+			fail: function(xhr, editor, resData) {},
+			// 上传图片出错，一般为 http 请求的错误
+			error: function(xhr, editor, resData) {},
+			// 上传图片超时
+			timeout: function(xhr) {},
+			// 图片上传并返回了结果，想要自己把图片插入到编辑器中
+			// 例如服务器端返回的不是 { errno: 0, data: [...] } 这种格式，可使用 customInsert
+			customInsert: function(insertImgFn, result) {
+				// result 即服务端返回的接口
+				// insertImgFn 可把图片插入到编辑器，传入图片 src ，执行函数即可
+				insertImgFn(result['info'].data[0])
+				custshowmsg('上传图片成功');
+			}
+		};
+		editor.create();
+	}
+	function  selectType() {
+        var vs = $('select option:selected').val();
+      	if (vs == '15'){
+			$('.changeAttribute').removeClass('divHidden')
+		} else{
+            $('.changeAttribute').addClass('divHidden')
+		}
+
+    }
+</script>

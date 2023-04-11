@@ -1,0 +1,163 @@
+<!-- saved from url=(0023)http://www.avtt860.com/ -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="__PUBLIC__/home/js/hm.js"></script>
+    <meta content="width=device-width, initial-scale=1,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta name="applicable-device" content="mobile">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>AV天堂网-手机版</title>
+    <meta name="keywords"
+          content="BT下载,BT资源,avtt天堂网,自拍,偷拍,东京热,加勒比,一本道,HEYZO,天然素人,幼女强奸,人与动物,爱色军团,avt天堂,校园春色,阿V天堂网,开心情色网,做爱图,姐弟乱伦,制服丝袜">
+    <meta name="description"
+          content="BT下载,BT资源,avtt天堂网,自拍,偷拍,东京热系列,加勒比系列,一本道系列,HEYZO系列,天然素人系列,幼女强奸,人与动物,爱色军团,avt天堂,校园春色,阿V天堂网,开心情色网,做爱图,姐弟乱伦,制服丝袜">
+    <link href="__PUBLIC__/home/css/main.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/home/css/footer.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/home/css/index2.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/home/css/ms_home.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="__PUBLIC__/home/css/footer.css">
+    <script src="__PUBLIC__/home/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/home/js/jquery.index.js"></script>
+
+
+    <link href="__PUBLIC__/simpleboot/font-awesome/4.7.0/css/font-awesome.min.css"  rel="stylesheet" type="text/css">
+
+
+    </head>
+    <body style="padding-bottom: 117.188px;">
+
+        <div class="site">永久域名:livedev.jxmm168.com</div>
+        <div id="header_box">
+            <div class="wrap mt20 clearfix">
+                <ul>
+                    <foreach name="ads" item="adsvo">
+                        <li><a href="{$adsvo.url}" target="_blank">
+                            <img width="100%" height="40" src="{$adsvo.thumb}"></a>
+                        </li>
+                    </foreach>
+
+                </ul>
+            </div>
+        </div>
+        <!-- /上方横幅 -->
+    <section class="wrapper">
+        <!-- header -->
+        <header class="header">
+            <div class="aHeaderSearch top_search_btn" style="text-align:center">
+                <button type="submit" id="searchbutton" onclick="search();return false;" class="fa fa-search"></button>
+                <input id="iserach" name="s" type="text" class="inputtxt inputclear" placeholder="关键字搜索" value="{$video_name}">
+            </div>
+            </a>
+        </header>
+        <div id="top_box"></div>
+        <!-- /header -->
+        <section class="main">
+            <!-- 分类 -->
+            <section class="classlist">
+                <div class="classlist_li">
+                    <h3>类型：</h3>
+                    <div class="classlist_text">
+                        <div class="classlist_con">
+                            <a href="/Index/pchome/class/0" <if condition="$class eq '0'"> class="on" </if> >全部</a>
+                            <foreach name="label" item="vo" key="k">
+                                <a href="/Index/pchome/class/{$vo.label}" <if condition="$vo.label eq  $class"> class="on" </if> >{$vo.label}</a>
+                            </foreach>
+                        </div>
+                    </div>
+                </div>
+            </section>      <!-- /分类 -->
+            <section class="row globalMarginTop">
+                <section class="mod_a">
+                    <section class="th_a">
+                        <i class="iLine"></i>
+                        <span class="sMark"><if condition="$class eq '0'"> 热门推荐 <else /> {$class}</if></span>
+                    </section>
+                </section>
+            </section>
+            <section class="tb_a">
+                <div class="ilist_1">
+                    <div class="ilist_box">
+                        <!-- 列表start -->
+                        <ul class="globalPicList twoList clearfix" id="moreList22">
+                            <foreach name="video" item="videovo">
+                                <li>
+                                    <div class="pic">
+                                        <a href="/Index/playvidoe/id/{$videovo.id}">
+                                            <img src="{$videovo.thumb}"
+                                                 alt="点击播放《{$videovo.title}》">
+                                            <span class="sBottom"></span>
+                                        </a>
+                                    </div>
+                                    <span class="sTit">
+                      <a href="/Index/playvidoe/id/{$videovo.id}">{$videovo.title}</a>
+                    </span>
+                                </li>
+                            </foreach>
+                        </ul>
+                        <!-- /列表start -->
+                    </div>
+                </div>
+                <div class="ms-article">
+                    <div id="page">
+                        {$page}
+                    </div>
+                </div>
+            </section>
+        </section>
+    </section>
+    <!-- footer -->
+
+    <!-- 底部广告容器 -->
+    <!--<div id="footer_box"></div>-->
+    <!-- /底部广告容器 -->
+    <div class="ms-footer">
+        <div class="ms-f-a clear_fix">
+        </div>
+        <div class="ms-f-copy">
+            <p style="padding:0 10px;text-align:center">站点申明：我们立足于美利坚合众国，对全球华人服务，受北美法律保护</p>
+        </div>
+    </div>
+
+    <!-- <div class="bottom-banner">
+         <div class="top" style="text-align:center">
+             <a href="http://www.yes4444.com/" target="_blank">http://www.yes4444.com (防屏蔽网站) 牢记此站
+             </a></div>
+         <a href="http://www.yes4444.com/" target="_blank">
+         </a>
+     </div>
+     <a href="http://www.yes4444.com/" target="_blank">
+         <script src="__PUBLIC__/home/js/jquery.lazyload.js"></script>
+         <script src="__PUBLIC__/home/js/jquery.index.js"></script>
+         <script src="__PUBLIC__/home/js/sjgg.js"></script>
+         <script src="./AV天堂网-手机版_files/B1B1D603-1797-16188-34-B57BDCF39B7E.alpha"></script>
+         <script src="./AV天堂网-手机版_files/D4087FEE-B8AA-16212-33-0DF0FB30E0CE.alpha"></script>
+         <div style="display:none;">
+             <script type="text/javascript" src="./AV天堂网-手机版_files/z_stat.php"></script>
+         </div>
+     </a>
+
+     <brde id="ATSPWEIM" style="margin-left: 0px; margin-bottom: 0px;">
+         <brde id="ATSPWEIMDV" style="display: block; margin: 0px; padding: 0px; width: 100%; height: 117.188px;">
+             <brde style="position: absolute; z-index: 1; width: 100%;"><a
+                     href="http://c8f3ff.haowui.com/cpv/go.php?u=aHR0cHM6Ly93d3cuendhcWouY29tL2EwMDEvYWd0ei5waHA="
+                     target="_blank" id="ATSPWEIMAL755"><img src="./AV天堂网-手机版_files/3540737_1629252807.jpg" border="0"
+                                                             width="100%" height="117.1875"
+                                                             style="background-color: transparent; height: 117.188px; display: block !important;"></a>
+             </brde>
+             <img id="ATSPWEIMFL" width="100%" height="117.1875" style="display: block !important;" border="0"
+                  src="./AV天堂网-手机版_files/f62a4f5be51dca77.gif"></brde>
+         <brde id="ATSPWEIMCL"
+               style="z-index: 1999999; top: -15px; right: 0px; width: 15px; height: 15px; position: absolute; display: block;">
+             <a href="javascript:;" target="_self"><img
+                     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAUCAYAAACJfM0wAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAfRJREFUeNpiZGBg0GSgAWBioBFgBmJRGCc7O1ucjY3t3+PHj/+QYsiRI0d8REREPh89evQLsrgmDD99+nT5z58/H3l7e5sii+PDW7duTfn169eT69ev96LJoSr88ePHHZDhZWVlToQMvX///uw/f/68//DhwyF0OYww5uDg8P3379/P5ubmhUDDJXF5//jx476SkpKuX758udzW1taATQ1W13z//v020OWPExMTbdHlbt682Q9y6adPn07i0o8zVYSEhEQBXf5j5syZy4GGi8DE9+7d6yIvLx8INPRcfn5+CS79jITS8bdv3zawsLBwBwIBMHi89fT08oHx8JCHhycSnz5GYjII0PB1TExMnMDYfwnEb0tLS9vnz5//huIMcvHixfmsrKwi3NzcmsCgmUTIUIwMgg2cPn06SF9fP+Xly5e7mJmZmezs7GKePHmy7cKFC98IGY4znQIjKvf3799vgUFxE5Y6vn79ehUYHM8nTpzoTyCdY5cAer8FGEn33717txddjkjDMQXnzJkTAnTpK1Ba1tTUNMSmBmj4ZZDhra2tHkQZfO7cuQZQxnj//v0BQmUG1PAXOLI/glNTU+MGUggqL4gIQzAGZukLoGSIbjgLciwCXfnrwYMHK9XU1GYQW2SCMsq9e/cKyMogg6oGAQgwAK8UInW+KGpJAAAAAElFTkSuQmCC"
+                     ck="ATSPWEIMCL_hide" border="0" style="width: 15px; height: 15px; cursor: pointer;"></a></brde>
+         <brde style="z-index: 1999999; bottom: 1px; right: 1px; width: 30px; height: 18px; position: absolute;"><a
+                 href="javascript:void(0);" target="_blank"><img src="./AV天堂网-手机版_files/3540737_1629252807.jpg"
+                                                                 style="width: 30px; height: 18px; border-style: none;"></a>
+         </brde>
+     </brde>-->
+
+</body>
+</html>

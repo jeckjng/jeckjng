@@ -1,0 +1,82 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li class="active"><a >列表</a></li>
+			<li><a href="{:U('Liveclass/add')}">添加</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Liveclass/index')}
+		</ul>
+
+		<form class="well form-search" method="post" action="{:U('index')}">
+			<div>
+				<if condition="$role_id eq 1">
+					<div class="search-box">
+						租户:
+						<select class="select_2" name="tenant_id" style="max-width: 200px;">
+							<volist name="tenant_list" id="vo">
+								<option value="{$vo.id}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo.name}</option>
+							</volist>
+						</select>
+					</div>
+				</if>
+				<div class="search-box">
+					名称:
+					<input type="text" name="name" style="width: 140px;" value="{$param.name}" class="mar-right-15" placeholder="请输入名称">
+				</div>
+				<div class="search-box">
+					<input type="submit" class="btn btn-primary mar-right-15" value="搜索">
+				</div>
+			</div>
+		</form>
+
+		<form method="post" class="js-ajax-form" action="{:U('Liveclass/listorders')}">
+			<div class="table-actions">
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+			</div>
+		
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+                        <th>排序</th>
+						<th align="center">ID</th>
+						<th>名称</th>
+						<th>是否app显示</th>
+						<th>图标</th>
+						<th>所属租户</th>
+						<th align="center">{:L('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+					   <td><input name="listorders[{$vo['id']}]" type="text" size="3" value="{$vo['orderno']}" class="input input-order"></td>
+						<td align="center">{$vo.id}</td>
+						<td>{$vo['name']}</td>
+						<td>
+							<if condition="$vo['is_app'] eq '0'">
+								是
+								<else/>
+								否
+							</if>
+						</td>
+						<td><if condition="$vo['thumb'] neq '' "><img width="25" height="25" src="{:get_upload_path($vo['thumb'])}" /></if></td>
+						<td>{$vo['tenant_name']}</td>
+						<td align="center">	
+							<a href="{:U('Liveclass/edit',array('id'=>$vo['id']))}" >编辑</a>
+							 |
+                            <a href="{:U('Liveclass/del',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn del_color" data-msg="您确定要删除吗？">删除</a>
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+			<div class="table-actions">
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

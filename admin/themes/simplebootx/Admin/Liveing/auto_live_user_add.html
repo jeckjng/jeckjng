@@ -1,0 +1,107 @@
+<admintpl file="header" />
+<link href="__PUBLIC__/colpick/colpick.css" rel="stylesheet" type="text/css">
+</head>
+<style>
+	.img_div{
+		display: inline-block;
+		width: 506px;
+		border: 2px solid #dce4ec;
+		height: 36px;
+		line-height: 36px;
+		border-radius: 3px;
+		padding: 0px 2px;
+	}
+	.img_div input{
+		float: left;
+		width: 447px;
+		vertical-align: middle;
+		background: none;
+		border: 0px;
+	}
+	.img_div .upload_btn{
+		padding: 1px 14px;
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid gray;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+	.exclu_car .control-label,.special_effect .control-label{
+		float: none !important;
+		text-align: left !important;
+		margin-top: 10px;
+	}
+	.exclu_car .controls,.special_effect .controls{
+		margin-left: 0px !important;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/auto_live_user/auto_live_user_add')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('auto_live_user_add')}">
+			<fieldset>
+				<if condition="$role_id == 1">
+					<div class="control-group">
+						<label class="control-label">租户</label>
+						<div class="controls">
+							<select name="tenant_id" onchange="change_tenant_id(this)">
+								<volist name="tenant_list" id="vo">
+									<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+								</volist>
+							</select>
+							<span class="form-required">*</span>
+						</div>
+					</div>
+				</if>
+				<div class="control-group">
+					<label class="control-label">ID类型</label>
+					<div class="controls">
+						<select name="id_type">
+							<option value="1" selected>直播会员ID</option>
+							<option value="2">彩票会员ID</option>
+						</select>
+						<span class="form-required" style="vertical-align: middle;">*</span>
+					</div>
+				</div>
+				<!--<div class="control-group">-->
+					<!--<label class="control-label">自动开播类型</label>-->
+					<!--<div class="controls">-->
+						<!--<select name="type">-->
+							<!--<volist name="type_list" id="vo">-->
+								<!--<option value="{$key}" >{$vo}</option>-->
+							<!--</volist>-->
+						<!--</select>-->
+						<!--<span class="form-required" style="vertical-align: middle;">*</span>-->
+					<!--</div>-->
+				<!--</div>-->
+				<div class="control-group">
+					<label class="control-label">用户ID</label>
+					<div class="controls" style="display: inline-block;margin-left: 20px;">
+						<input type="text" name="uid" value="" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">封面</label>
+					<div class="controls">
+						<div class="img_div">
+							<input type="text" name="thumb" value="" placeholder="请上传">
+							<span class="upload_btn cust-upload-img" data-name="thumb" data-showimgclass="img_show_thumb" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+						</div>
+						<img src="" alt="" class="img_show_thumb" style="max-height: 70px;max-width: 100px;min-height: 50px;min-height: 50px;padding: 0px;margin: 0px 0px 0px 15px;">
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('ADD')},waittime:1000}">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script>
+
+</script>

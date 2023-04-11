@@ -1,0 +1,1 @@
+ALTER TABLE cmf_ads  ADD  `is_rotation` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否为轮播图';

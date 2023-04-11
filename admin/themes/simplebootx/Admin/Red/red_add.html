@@ -1,0 +1,143 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li ><a href="{:U('Car/index')}">列表</a></li>
+			<li class="active"><a >添加</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Red/red_add')}
+		</ul>
+		<form method="post" enctype="multipart/form-data" class="form-horizontal cust-js-ajax-form">
+			<fieldset>
+				<if condition="$role_id == 1">
+					<div class="control-group">
+						<label class="control-label">*租户</label>
+						<div class="controls">
+							<select name="tenant_id" >
+								<volist name="tenant_list" id="vo">
+									<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+								</volist>
+							</select>
+							<span class="form-required"></span>
+						</div>
+					</div>
+				</if>
+				<div class="control-group">
+					<label class="control-label">红包名称</label>
+					<div class="controls">
+						<input type="text" name="name" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">奖品类型: </label>
+					<div class="controls">
+						<select name="type">
+							<volist	name="type_list" id="vo">
+								<option value="{$key}" >{$vo}</option>
+							</volist>
+						</select>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">红包有效时间</label>
+					<div class="controls">
+						<input type="text" name="effect_time_start" class="js-date date" id="effect_time_start" value="{$info.effect_time_start}" style="width: 140px;" autocomplete="off" placeholder="生效时间" required> -
+						<input type="text" name="effect_time_end" class="js-date date" id="effect_time_end" value="{$info.effect_time_end}" style="width: 140px;" autocomplete="off" placeholder="结束时间" required>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">红包推送时间点</label>
+					<div class="controls">
+						<volist name="red_time_list" id="vo">
+							<label class="checkbox inline"><input type="checkbox" value="{$vo}"  name="red_time[]" >{$vo}点</label>
+						</volist>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">开抢分钟设置</label>
+					<div class="controls">
+						<input type="text" name="second_time" value="0" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+		    	<div class="control-group">
+					<label class="control-label">红包效果时长</label>
+					<div class="controls">
+						<input type="text" name="effect_time" required>
+						<span class="form-required">*分钟</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">可抢到红包时长</label>
+					<div class="controls">
+						<input type="text" name="win_time" required>
+						<span class="form-required">*分钟</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" >普通用户: </label>
+					<div class="controls">
+						<span>
+							总金额: <input type="text" name="red_total" class="width-100" value="0" required>
+						</span>
+						<span class="mar-left-15">
+							红包个数: <input type="number" name="red_num" class="width-100" value="0" min="0" required>
+						</span>
+						<span class="mar-left-15">
+							金额范围: <input type="text" name="money_min" class="width-100" value="0" required> -
+									<input type="text" name="money_max" class="width-100" value="0" required>
+						</span>
+						<span class="mar-left-15">
+							倍数: <input type="number" name="multiple" class="width-100" value="1" min="1" max="9999" required>
+						</span>
+						<span class="form-required">*, 范围：1 - 9999</span>
+					</div>
+				</div>
+				<volist name="vip_grade_list" id="vo">
+					<if condition="$vo['status']==1">
+						<div class="control-group color-orange">
+							<label class="control-label ">（等级）{$vo['name']}: </label>
+							<div class="controls">
+								<span>
+									总金额: <input type="text" name="vip_conf[vip_grade_{$vo['vip_grade']}][red_total]" value="0" class="width-100" required>
+								</span>
+								<span class="mar-left-15">
+									红包个数: <input type="number" name="vip_conf[vip_grade_{$vo['vip_grade']}][red_num]" value="0" class="width-100" min="0" required>
+								</span>
+								<span class="mar-left-15">
+									红包金额范围: <input type="text" name="vip_conf[vip_grade_{$vo['vip_grade']}][money_min]" value="0" class="width-100" required> -
+											<input type="text" name="vip_conf[vip_grade_{$vo['vip_grade']}][money_max]" value="0" class="width-100" required>
+								</span>
+								<span class="mar-left-15">
+									倍数: <input type="number" name="vip_conf[vip_grade_{$vo['vip_grade']}][multiple]" value="1" class="width-100" min="1" max="9999" required>
+								</span>
+								<span class="form-required">*, 范围：1 - 9999</span>
+							</div>
+						</div>
+					</if>
+				</volist>
+				<div class="control-group">
+					<label class="control-label">指定会员</label>
+					<div class="controls">
+						<textarea name="uids" id="" cols="30" rows="4" style="width: 442px" placeholder="输入用户ID">{$list['uids']}</textarea>
+						<span class="form-required">非必选，多个用户ID，用英文逗号 ” , “ 分隔</span>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}">{:L('SAVE')}</button>
+					<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript">
+
+</script>
+

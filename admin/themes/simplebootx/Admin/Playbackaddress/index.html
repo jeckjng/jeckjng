@@ -1,0 +1,89 @@
+<admintpl file="header" />
+<style>
+    .table img{
+        max-width:100px;
+        max-height:100px;
+    }
+    .textArea textarea{
+        width:90%;padding:3%;height:80%;margin:0 auto;margin-top:30px;
+        margin-left: 2%;
+    }
+    .textArea_btn{
+        text-align: right;
+        margin-top: 30px;
+    }
+    .textArea_btn input{
+        margin-right: 30px;
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        {:getTableMenu($_GET['menuid'],'Admin/Playbackaddress/index')}
+        <!--<li class="active"><a >播放配置</a></li>-->
+    </ul>
+
+    <form method="post" class="js-ajax-form" action="">
+
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+
+                <th style="max-width: 300px;">名称</th>
+                <th style="max-width: 300px;">播放域名</th>
+                <th style="max-width: 300px;">域名类型</th>
+                <th>状态</th>
+                <th style="max-width: 300px;">java端返回对应字段</th>
+                <th style="max-width: 300px;">视频表绑定字段</th>
+                <th style="max-width: 300px;">空间名称</th>
+                <th>操作</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="playback_address_list" item="vo">
+                <tr>
+                    <td>{$vo['name']}</td>
+                    <td>{$vo['url']}</td>
+                    <td>
+                        <if condition="$vo['type'] eq 1">
+                            <span style="color: red">播放地址</span>
+                            <else />
+                            <span style="color: green">下载地址</span>
+                        </if>
+                    </td>
+                    <td>
+                        <if condition="$vo['is_enable'] eq 1">
+                            <span style="color: red">主用线路</span>
+                            <else />
+                            <span style="color: green">备用</span>
+                        </if>
+                    </td>
+                    <td>{$vo['java_field']}</td>
+                    <td>{$vo['viode_table_field']}</td>
+                    <td>{$vo['space_name']}</td>
+                    <td>
+                        <if condition="$vo['is_enable'] neq 1">
+                            <a href="{:U('Playbackaddress/upstatus',array('id'=>$vo['id'],'type'=> $vo['type']))}" class="js-ajax-dialog-btn" >设为主用线路</a>
+
+                        </if>
+                        <a href="{:U('Playbackaddress/edit',array('id'=>$vo['id']))}" >编辑</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/layer/layer.js"></script>
+<script type="text/javascript">
+
+</script>
+
+<script type="text/javascript">
+</script>
+</body>
+</html>

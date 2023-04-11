@@ -1,0 +1,85 @@
+<admintpl file="header" />
+</head>
+<style>
+    table th,td{
+        text-align: center !important;
+        vertical-align: middle !important;
+    }
+
+</style>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li class="active"><a href="{:U('Task/index')}">任务管理</a></li>
+        <li><a href="{:U('Task/add_task')}">新增任务</a></li>
+        <li><a href="{:U('Task/classification')}">分类管理</a></li>
+        <li><a href="{:U('Task/user_task')}">任务领取记录</a></li>
+        <li><a href="{:U('Task/reward_log')}">奖励明细</a></li>
+        <li><a href="{:U('Task/login_reward')}">登录赠送</a></li>
+        <li><a href="{:U('Task/first_recharge')}">首充活动</a></li>
+        <li><a href="{:U('Task/share')}">分享活动</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/RechargeLevel/index')}
+    </ul>
+    <form class="well form-search" method="post" action="{:U('RechargeLevel/index')}">
+
+    </form>
+
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>层级名称</th>
+                <th>充值渠道 </th>
+                <th>等级条件</th>
+                <th>提款限制</th>
+
+                <th>备注</th>
+                <th>操作</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo['id']}</td>
+                    <td>{$vo['name']}</td>
+                    <td style="text-align: left !important;">
+                        <foreach name="vo['channel_data']" item="channelVo">
+                            <div>
+                               <span>●</span><span style="font-weight: bold"> {$channelVo['name']}:</span>
+                                <foreach name="channelVo['account_list']"  item="accountVo" key="k" >
+                                    <span style="margin-left: 20px">{$k+1}. {$accountVo['name']}</span>
+                                </foreach>
+                            </div>
+                        </foreach>
+                    </td>
+                    <td>累计充值:{$vo['min_amount']} - {$vo['max_amount']}</td>
+                    <td>
+                        <div> 单日提款次数:{$vo['every_day_count']}</div>
+                        <div> 单日每次提款限额:{$vo['every_day_amount']}</div>
+                    </td>
+
+
+                    <th>{$vo['des']}</th>
+                    <td>
+                        <a href="{:U('RechargeLevel/edit',array('id'=>$vo['id']))}" style="display: inline-block;">编辑</a>&nbsp;
+                       <if condition="$vo['status'] eq '1'">
+                        <a href="{:U('RechargeLevel/updateStatus',array('id'=>$vo['id'],'status'=>2))}" class="cust-js-ajax del_color" confirm="禁用？" style="display: inline-block;">禁用</a>&nbsp;
+
+                        <else/>
+
+                        <a href="{:U('RechargeLevel/updateStatus',array('id'=>$vo['id'],'status'=>1))}" class="cust-js-ajax del_color" confirm="启用" style="display: inline-block;">启用</a>&nbsp;
+                        </if>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+</script>

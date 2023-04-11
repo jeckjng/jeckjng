@@ -1,0 +1,81 @@
+<admintpl file="header" />
+</head>
+<style>
+	input,textarea{
+		width: 500px;
+	}
+</style>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Keywordset/setting')}
+
+	</ul>
+<!--	<form class="well form-search" method="post" action="{:U('Keywordset/setting')}">
+		<div class="search-box">
+			会员(ID)：
+			<input type="text" name="uid" value="{$param.uid}" style="width: 100px;" autocomplete="off" placeholder="请输入会员(ID)">
+		</div>
+		<div class="search-box">
+			关键词：
+			<input type="text" name="content" value="{$param.content}" style="width: 200px;" autocomplete="off" placeholder="请输入关键词">
+		</div>
+
+		<div class="search-box">
+			<input type="submit" class="btn btn-primary" value="搜索">
+		</div>
+	</form>-->
+	<form method="post" class="form-horizontal cust-js-ajax-form" action="">
+		<fieldset>
+			<!--<div class="control-group">
+				<label class="control-label">进群提示消息</label>
+				<div class="controls">
+					<textarea cols="30" rows="3" name="enter_msg" placeholder="请输入">{$info.enter_msg}</textarea>
+				</div>
+			</div>-->
+			<if condition="$role_id == 1">
+				<div class="control-group">
+					<label class="control-label">*租户</label>
+					<div class="controls">
+						<select name="tenant_id" onchange="change_tenant_id(this)">
+							<volist name="tenant_list" id="vo">
+								<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+							</volist>
+						</select>
+						<span class="form-required"></span>
+					</div>
+				</div>
+			</if>
+			<div class="control-group">
+				<label class="control-label">触发禁言</label>
+				<div class="controls">
+					<input type="number" name="shut_times" value="{$info.shut_times}" placeholder="请输入"> 次
+					&nbsp
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">触发踢出房间</label>
+				<div class="controls">
+					<input type="number" name="outroom_times" value="{$info.outroom_times}"  placeholder="请输入"> 次
+					&nbsp;
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">关键词</label>
+				<div class="controls">
+					<textarea name="content" value="{$info.content}" style="height: 120px;"  placeholder="请输入"></textarea>
+				</div>
+			</div>
+
+		</fieldset>
+		<div class="form-actions">
+			<input type="hidden" name="id" value="{$info.id}">
+			<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+		</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+</script>

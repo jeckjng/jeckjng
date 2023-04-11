@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+.input-order{width:30px;}
+.wrap {
+padding: 20px 20px 70px;
+}
+.table td {font-size:12px;}
+.del_color{color: #ff0000;}
+.success_color{color: green;}
+.danger_color{color: #ff0000;}

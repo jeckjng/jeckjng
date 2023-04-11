@@ -1,0 +1,75 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li class="active"><a >列表</a></li>
+        <li><a href="{:U('Vip/vip_grade_add')}">添加</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Vip/vip_longgrade')}
+    </ul>
+    <form class="well form-search" name="form1" method="post" action="{:U('vip_longgrade')}">
+        <if condition="$role_id == 1">
+            租户
+            <select name="tenant_id" style="width: 120px;margin-right: 15px;">
+                <volist name="tenant_list" id="vo">
+                    <option value="{$vo.id}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo.name}</option>
+                </volist>
+            </select>
+        </if>
+        等级：
+        <input type="text" name="vip_grade" style="width: 200px;" value="{$param.vip_grade}" placeholder="请输入等级">
+        <input type="submit" class="btn btn-primary" value="搜索">
+    </form>
+    <form method="post" class="cust-js-ajax-form" >
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+               <th>id</th>
+                <th>名称</th>
+                <th>等级</th>
+                <th>天数</th>
+                <th>金额</th>
+                <th>是否永久会员</th>
+                <th>状态</th>
+
+                <th align="center">{:L('ACTIONS')}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="lists" item="vo">
+                <tr>
+
+                    <th>{$vo['id']}</th>
+                    <td>{$vo['name']}</td>
+                    <td align="center">{$vo.vip_grade}</td>
+                    <td>{$vo['effect_days']}</td>
+                    <td>{$vo['price']}</td>
+                    <td><if condition="$vo['is_forever_member'] eq '1'">
+                        是
+                        <else/>
+                        否
+                    </if>
+                    </td>
+
+                    <td> <if condition="$vo['status'] == 1">
+                        启用
+                        <else/>
+                        禁用
+                    </if>
+                    <td align="center">
+
+                        <a href="{:U('Vip/vip_longgrade_add',array('id'=>$vo['id']))}" >编辑</a>
+
+
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

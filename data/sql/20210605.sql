@@ -1,0 +1,1 @@
+ALTER TABLE cmf_video_label ADD `type` TINYINT (4) DEFAULT '0' COMMENT '1:火热标签 0 普通标签';

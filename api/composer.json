@@ -1,0 +1,6 @@
+{
+    "require": {
+        "wisembly/elephant.io": "^3.3",
+        "guzzlehttp/guzzle": "~6.0"
+    }
+}

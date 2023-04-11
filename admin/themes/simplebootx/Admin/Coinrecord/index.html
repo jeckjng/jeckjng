@@ -1,0 +1,207 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li class="active"><a >消费记录</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Coinrecord/index')}
+		</ul>
+		<form class="well form-search" method="post" name="form1" action="">
+			<div style="">
+				<div class="search-box">
+					<input type="text" name="start_time" class="js-date date" id="start_time" value="{$param.start_time}" style="width: 80px;" autocomplete="off" placeholder="创建时间">
+				</div>
+				<div class="search-box">
+					<input type="button" data-time_type="today" class="btn btn-primary cust-time-select {:$param['time_type']=='today' ? '' : 'bg-color-white color-black'}" value="今日" data-time_start="{:explode(' ',$time_se['today_start'])[0]}" data-time_end="{:explode(' ',$time_se['today_end'])[0]}" />
+				</div>
+				<div class="search-box">
+					<input type="button" data-time_type="tweek" class="btn btn-primary cust-time-select {:$param['time_type']=='tweek' ? '' : 'bg-color-white color-black'}" value="本周" data-time_start="{:explode(' ',$time_se['tweek_start'])[0]}" data-time_end="{:explode(' ',$time_se['tweek_end'])[0]}" />
+				</div>
+				<div class="search-box">
+					<input type="button" data-time_type="tmonth" class="btn btn-primary cust-time-select {:$param['time_type']=='tmonth' ? '' : 'bg-color-white color-black'}" value="本月" data-time_start="{:explode(' ',$time_se['tmonth_start'])[0]}" data-time_end="{:explode(' ',$time_se['tmonth_end'])[0]}" />
+				</div>
+				<if condition="$role_id == 1">
+					<div class="search-box">
+						<select class="select_2 width-200" name="tenant_id" id="tenant_id">
+							<option value="" <if condition="$param['tenant_id'] eq ''">selected</if> >全部（租户）</option>
+							<volist name="tenant_list" id="vo">
+								<option value="{$vo['id']}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo['name']}</option>
+							</volist>
+						</select>
+					</div>
+				</if>
+				<div class="search-box">
+					<select class="select_2" name="type">
+						<option value="-1">全部（收支类型）</option>
+						<volist name="type_list" id="v">
+							<option value="{$key}" <if condition="$param.type eq $key">selected</if> >{$v}</option>
+						</volist>
+					</select>
+				</div>
+				<div class="search-box">
+					<select class="select_2" name="action">
+						<option value="-1">全部（收支行为）</option>
+						<volist name="action_list" id="v">
+							<option value="{$key}" <if condition="$param.action eq $key">selected</if> >{$v}</option>
+						</volist>
+					</select>
+				</div>
+			</div>
+			<div style="">
+				<div class="search-box">
+					<input type="text" class="js-date date" name="end_time" id="end_time" value="{$param.end_time}" style="width: 80px;" autocomplete="off" placeholder="创建时间">
+				</div>
+				<div class="search-box">
+					<input type="button" data-time_type="ytoday" class="btn btn-primary cust-time-select {:$param['time_type']=='ytoday' ? '' : 'bg-color-white color-black'}" value="昨日" data-time_start="{:explode(' ',$time_se['ytoday_start'])[0]}" data-time_end="{:explode(' ',$time_se['ytoday_end'])[0]}" />
+				</div>
+				<div class="search-box">
+					<input type="button" data-time_type="yweek" class="btn btn-primary cust-time-select {:$param['time_type']=='yweek' ? '' : 'bg-color-white color-black'}" value="上周" data-time_start="{:explode(' ',$time_se['yweek_start'])[0]}" data-time_end="{:explode(' ',$time_se['yweek_end'])[0]}" />
+				</div>
+				<div class="search-box">
+					<input type="button" data-time_type="ymonth" class="btn btn-primary cust-time-select {:$param['time_type']=='ymonth' ? '' : 'bg-color-white color-black'}" value="上月" data-time_start="{:explode(' ',$time_se['ymonth_start'])[0]}" data-time_end="{:explode(' ',$time_se['ymonth_end'])[0]}" />
+				</div>
+				<div class="search-box">
+					<select class="select_2 width-120" name="user_type">
+						<option value="-1" <if condition="$param['user_type'] eq '-1'">selected</if>>全部（用户类型）</option>
+						<volist name="user_type_list" id="vo">
+							<option value="{$vo.type}" <if condition="$param['user_type'] eq $vo['type']">selected</if> >{$vo['name']}</option>
+						</volist>
+					</select>
+				</div>
+				<div class="search-box">
+					<input type="text" name="uid" class="width-140" style="" value="{$param.uid}" placeholder="用户ID">
+				</div>
+				<div class="search-box">
+					<input type="text" name="user_login" value="{$param.user_login}" style="width: 200px;" autocomplete="off" placeholder="用户账号">
+				</div>
+				<div class="search-box">
+					<input type="text" name="touid" style="width: 200px;" value="{$param.touid}" placeholder="主播ID">
+				</div>
+			</div>
+			<div>
+				<div class="search-box">
+					<input type="hidden" name="time_type" id="time_type" value="{$param['time_type']}"/>
+				</div>
+				<div class="search-box">
+					<input type="submit" class="btn btn-primary" value="搜索" onclick="form1.action='{:U(\'index\')}';form1.submit();"/>
+				</div>
+				<div class="search-box">
+					<input type="button" class="btn btn-primary {:showHidden(U('export'))}" style="background-color: #1dccaa;" value="导出" onclick="form1.action='{:U(\'export\')}';form1.submit();"/>
+				</div>
+			</div>
+			<p style="padding: 0px;margin: 5px 0px 0px 0px;">
+				<span class="mar-right-15">总变动金额: {$data['change_total_balance']}</span>
+				<span class="">本页变动金额: {$data['current_p_change_balance']}</span>
+			</p>
+		</form>
+		
+		<form method="post" class="js-ajax-form" >
+			<div class="table-actions">
+				<button type="button" class="btn btn-success btn-small cust-filter-column" data-table_id="list_content" data-page_name="{:U('index')}">列展示</button>
+			</div>
+			<table class="table table-hover table-bordered" id="list_content" style="white-space: nowrap;overflow-x: auto;" >
+				<thead>
+					<tr>
+						<th data-field="id" class="align-center-i">ID</th>
+						<th data-field="type_name" class="align-center-i">收支类型</th>
+						<th data-field="action_name" class="align-center-i">收支行为</th>
+						<th data-field="user" class="align-center-i">用户</th>
+						<th data-field="totalcoin" class="align-center-i">变动金额</th>
+						<th data-field="after_balance" class="align-center-i">变动后余额</th>
+						<th data-field="order_id" class="align-center-i">订单号</th>
+						<th data-field="cd_ratio" class="align-center-i">金币:账号余额</th>
+						<th data-field="addtime" class="align-center-i">变动时间</th>
+						<th data-field="remark" class="align-left-i">备注</th>
+						<th data-field="touid" class="align-center-i">主播 (ID)</th>
+						<th data-field="playname" class="align-center-i">投注类型</th>
+						<th data-field="showid" class="align-center-i">直播id</th>
+						<th data-field="tenant_name">会员所属租户</th>
+						<th data-field="receive_tenant_id">直播所属租户</th>
+						<th data-field="tenantuser_total">消费租户分成</th>
+						<th data-field="tenant_total">直播租户分成</th>
+						<th data-field="family_total">家族分成</th>
+						<th data-field="anthor_total">主播分成</th>
+						<th data-field="familyhead_total">家族长分成</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td data-field="id" class="align-center-i">{$vo.id}</td>
+						<td data-field="type_name" class="align-center-i">{$vo['type_name']}</td>
+						<td data-field="action_name" class="align-center-i">{$vo['action_name']}</td>
+						<td data-field="user" class="align-left-i">
+							ID: {$vo['uid']}<br>
+							账号: {$vo['user_login']}<br>
+						</td>
+						<td data-field="totalcoin" class="align-center-i">{$vo['totalcoin']}</td>
+						<td data-field="after_balance" class="align-center-i">{$vo['after_balance']}</td>
+						<if condition="in_array($vo['action'], ['buy_video','video_uplode_reward','buy_longvideovip','charge','withdraw','offline_charge','video_uplode_reward'])">
+							<td data-field="order_id" class="align-left-i">
+							订单号: {:$vo['order_id'] ? $vo['order_id'] : '-'}
+							</td>
+							<else/>
+							<td data-field="order_id" class="align-left-i">
+								商城订单号: {:$vo['shop_order_no'] ? $vo['shop_order_no'] : '-'}<br>
+								代发订单号: {:$vo['order_id'] ? $vo['order_id'] : '-'}<br>
+							</td>
+						</if>
+
+						<td data-field="cd_ratio" class="align-center-i">{$vo['cd_ratio']}</td>
+						<td data-field="addtime" class="align-center-i">{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+						<td data-field="remark" class="align-left-i" style="max-width: 250px">{$vo['remark']}</td>
+						<td data-field="touid" class="align-center-i">
+							{$vo['user_login']} ( {$vo['touid']} )
+						</td>
+						<td data-field="playname" class="align-center-i">{$vo['playname']}</td>
+						<td data-field="showid" class="align-center-i">{$vo['showid']}</td>
+						<td data-field="tenant_name" class="align-center-i">{$vo['tenant_name']}</td>
+						<td data-field="receive_tenant_id" class="align-center-i">{$vo['receive_tenant_id']}</td>
+						<td data-field="tenantuser_total" class="align-center-i">{$vo['tenantuser_total']}</td>
+						<td data-field="tenant_total" class="align-center-i">{$vo['tenant_total']}</td>
+						<td data-field="family_total" class="align-center-i">{$vo['family_total']}</td>
+						<td data-field="anthor_total" class="align-center-i">{$vo['anthor_total']}</td>
+						<td data-field="familyhead_total" class="align-center-i">{$vo['familyhead_total']}</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script>
+	$("#exports").click(function(){
+		var count = 20;
+		var countdown = setInterval(CountDown, 2000);
+		function CountDown() {
+			$("#exports").attr("disabled", true);
+			$("#exports").val("请等待 " + count + " 秒!");
+			if (count == 0) {
+				$("#exports").val("导出").removeAttr("disabled");
+				clearInterval(countdown);
+			}
+			count--;
+		}
+	});
+
+	$(document).ready(function (){
+		// 筛选列，是否有隐藏的，如果有则隐藏不显示
+		var cust_filter_column_obj = $('.cust-filter-column');
+		var cust_filter_column_key = "cust-filter-column-" + $.md5($(cust_filter_column_obj).attr('data-page_name'));
+		var checked_no_json = window.localStorage.getItem(cust_filter_column_key)
+		if(checked_no_json){
+			checked_no_list = JSON.parse(checked_no_json);
+			var table_id = $(cust_filter_column_obj).attr('data-table_id');
+			$.each(checked_no_list, function (index, val){
+				data_field = val
+				$('#'+table_id).children('thead').find("[data-field='" + data_field + "']").addClass('filter-checked-no').removeClass('filter-checked-yes').css('display', 'none');
+				$('#'+table_id).children('tbody').find("[data-field='" + data_field + "']").addClass('filter-checked-no').removeClass('filter-checked-yes').css('display', 'none');
+			})
+		}
+
+	});
+</script>

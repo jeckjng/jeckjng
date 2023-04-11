@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html><admintpl file="header" />
+
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li class="active"><a >福利兑换记录</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Welfare/exchangelog')}
+    </ul>
+    <form method="post" class="js-ajax-form" >
+        <!-- <div class="table-actions">
+             <button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+         </div>-->
+
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <!--   <th>排序</th>-->
+                <th align="center">ID</th>
+
+                <th>名称</th>
+                <th>所需积分</th>
+                <th>用户名称</th>
+                <th>收货人</th>
+                <th>电话</th>
+                <th>收货地址</th>
+                <th>兑换时间</th>
+                <th>兑换状态</th>
+                <th align="center">{:L('ACTIONS')}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="lists" item="vo">
+                <tr>
+                    <!--       <td><input name="listorders[{$vo['id']}]" type="text" size="3" value="{$vo['orderno']}" class="input input-order"></td>-->
+                    <td align="center">{$vo.id}</td>
+
+                    <td>{$vo['welfare_name']}</td>
+                    <td>{$vo['integral']}</td>
+                    <td>{$vo['user_nicename']}</td>
+                    <td>{$vo['consignee']}</td>
+                    <td>{$vo['phone']}</td>
+                    <td>{$vo['address']}</td>
+                    <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+                    <td><if condition="$vo['status'] eq '1'">
+                        申请中
+                    </if>
+                    <if condition="$vo['status'] eq '2'">
+                        兑换成功
+                    </if>
+                    <if condition="$vo['status'] eq '3'">
+                        驳回
+                    </if></td>
+                    <td align="center">
+                        <if condition="$vo['status'] eq '1'">
+                            <a href="{:U('Welfare/exchangelogedit',array('id'=>$vo['id']))}" >编辑</a>
+                        </if>
+
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+        <div class="table-actions">
+            <!-- <button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>-->
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

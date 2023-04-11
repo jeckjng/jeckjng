@@ -1,0 +1,40 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li><a href="{:U('Family/users')}">成员列表</a></li>
+			<li class="active"><a>新增成员</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Family/users_add')}
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('Family/users_add_post')}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">家族名称</label>
+					<div class="controls">
+						<select name="familyid" id="">
+							<volist name="family_list" id="vo">
+								<option value="{$key}">{$vo}</option>
+							</volist>
+						</select>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">成员ID</label>
+					<div class="controls">
+						<input type="text" name="uid">
+						<span class="form-required">* 彩票会员ID</span>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+				<a class="btn" href="{:U('Family/users')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

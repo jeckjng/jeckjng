@@ -1,0 +1,122 @@
+<admintpl file="header" />
+<style>
+	.table img{
+		max-width:100px;
+		max-height:100px;
+	}
+	.textArea textarea{
+		width:90%;padding:3%;height:80%;margin:0 auto;margin-top:30px;
+		margin-left: 2%;
+	}
+	.textArea_btn{
+		text-align: right;
+		margin-top: 30px;
+	}
+	.textArea_btn input{
+		margin-right: 30px;
+	}
+</style>
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Atmosphere/rewardlist')}
+		<!--<li class="active"><a >直播氛围列表</a></li>
+		<li><a href="{:U('Atmosphere/addatmosphere')}">添加直播氛围</a></li>-->
+	</ul>
+
+
+
+	<form method="post" class="js-ajax-form">
+		<table class="table table-hover table-bordered">
+			<thead>
+			<tr>
+				<th>排序</th>
+				<th>会员ID 会员昵称</th>
+				<th>打赏幅度调整</th>
+				<th>创建时间</th>
+				<th align="center">{:L('ACTIONS')}</th>
+			</tr>
+			</thead>
+			<tbody>
+			<php>$status=array("0"=>"等待","1"=>"启用", "2"=>"停用", "3"=>"删除");</php>
+			<foreach name="lists" item="vo">
+				<tr>
+					<td>{$vo['id']}<br/></td>
+					<td>{$vo['uid']}<br/>
+						{$vo['user_nicename']}
+					</td>
+					<td>{$vo['coin_start']},{$vo['coin_end']}<br/></td>
+					<td>{$vo['addtime']}<br/></td>
+
+					<td align="center">
+						<a href="{:U('Atmosphere/reward_edit',array('id'=>$vo['id']))}" >编辑</a>
+					    <a href="{:U('Atmosphere/reward_delete',array('id'=>$vo['id']))}"  class="js-ajax-dialog-btn del_color" data-msg="您确定删除该任务吗？" >删除</a>
+
+				</tr>
+			</foreach>
+
+			<input type="hidden" value="{$httporigin}" id="httporigin" />
+			<input type="hidden" value="{$hostaddress}" id="hostaddress" />
+			<input type="hidden" value="{$propellingserver}" id="propellingserver" />
+			<input type="hidden" value="{$socket_type}" id="socket_type" />
+			</tbody>
+		</table>
+		<div class="pagination">{$page}</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/socket.io.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/layer/layer.js"></script>
+<script src='https://cdn.bootcss.com/socket.io/1.3.7/socket.io.js'></script>
+<script type="text/javascript">
+	function getids(obj){
+		var id  =obj;
+		if(!id){
+			alert("操作项id不能为空");
+			return !1;
+		}
+		var httporigin = $("#httporigin").val();
+		var propellingserver = $("#propellingserver").val();
+		var socket_type = $("#socket_type").val();
+		var socket = io(propellingserver);
+
+
+		if(socket_type==1){
+			socket.emit('autosend', '{"id":'+id+',"httporigin":"'+httporigin+'","status":"1","socket_type":"1"}')
+		}else {
+			socket.emit('autosend', '{"id":'+id+',"httporigin":"'+httporigin+'","status":"1","socket_type":"2"}')
+		}
+		socket.on('broadcastingListen', function(msg){
+			console.log('connection succ open');
+		});
+
+
+
+   }
+
+	function closework(obj){
+		var id  =obj;
+		if(!id){
+			alert("操作项id不能为空");
+			return !1;
+		}
+		var propellingserver = $("#propellingserver").val();
+		var socket_type = $("#socket_type").val();
+		var socket = io(propellingserver);
+
+		if(socket_type==1){
+			socket.emit('autosend', '{"id":'+id+',"status":"2","socket_type":"1"}')
+		}else {
+			socket.emit('autosend', '{"id":'+id+',"status":"2","socket_type":"2"}')
+		}
+		socket.on('broadcastingListen', function(msg){
+			console.log('connection succ open');
+		});
+
+	}
+
+
+</script>
+</body>
+</html>

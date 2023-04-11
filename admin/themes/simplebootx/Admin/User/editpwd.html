@@ -1,0 +1,47 @@
+<admintpl file="header"/>
+<style>
+	.controls img{
+		max-width:200px;
+	}
+</style>
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#">修改密</a></li>
+	</ul>
+	<form class="form-horizontal cust-js-ajax-form" method="post" action="">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">输入旧密码</label>
+				<div class="controls">
+					<input type="password" name="old_pwd" required/>
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">输入新密码</label>
+				<div class="controls">
+					<input type="password" name="new_pwd" required/>
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">确认新密码</label>
+				<div class="controls">
+					<input type="password" name="new_check_pwd" required/>
+					<span class="form-required"></span>
+				</div>
+			</div>
+		</fieldset>
+		<div class="" style="padding: 20px 0px;text-align: center;background-color: #dde4e6;margin-top: 15px;">
+			<input type="hidden" name="id" value="{$id}">
+			<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:修改吗,waittime:3000}" >确定</button>
+			<button class="btn" onclick="javascript:history.back(-1);">取消</button>
+		</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

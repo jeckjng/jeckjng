@@ -1,0 +1,60 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        {:getTableMenu($_GET['menuid'],'Admin/Regurl/add')}
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Regurl/add')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">域名</label>
+                <div class="controls">
+                    <input type="text"  style="width: 300px !important;" name="reg_url">
+                </div>
+            </div>
+
+
+            <div class="control-group">
+                <label class="control-label">Key</label>
+                <div class="controls">
+                    <input type="text"style="width: 300px !important;"  name="reg_key"><div class="btn btn-primary js-ajax-submit" onclick="generatekey()">生成key</div>
+                </div>
+            </div>
+
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+            <a class="btn" href="{:U('Proxy/index')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+
+<script src="__PUBLIC__/js/common.js">
+
+</script>
+<script src="__PUBLIC__/appapi/share//js/jquery.md5.js">
+</script>
+    <script>
+    function generatekey() {
+        var rooudSring =  creatUserName(8)
+        var keyString  =  $.md5(rooudSring).toUpperCase();
+        $("input[name='reg_key']").val(keyString)
+    }
+
+    function creatUserName(len = 6)  {
+        let nameArr = [
+            [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+        ];
+        let name = '';
+        for (let i = 0; i < len; i++) {
+            let index = Math.floor(Math.random() * 2);
+            let zm = nameArr[index][Math.floor(Math.random() * nameArr[index].length)];
+            name += zm;
+        }
+        return name;
+    }
+</script>
+</body>
+</html>

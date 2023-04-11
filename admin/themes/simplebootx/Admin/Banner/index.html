@@ -1,0 +1,80 @@
+<admintpl file="header" />
+<style>
+    .table img{
+        max-width:100px;
+        max-height:100px;
+    }
+    .textArea textarea{
+        width:90%;padding:3%;height:80%;margin:0 auto;margin-top:30px;
+        margin-left: 2%;
+    }
+    .textArea_btn{
+        text-align: right;
+        margin-top: 30px;
+    }
+    .textArea_btn input{
+        margin-right: 30px;
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li class="active"><a >banner图管理</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Banner/index')}
+    </ul>
+
+    <form method="post" class="js-ajax-form">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th align="center">ID</th>
+                <th style="max-width: 300px;">标题</th>
+                <th style="max-width: 300px;">封面</th>
+                <th style="max-width: 300px;">标签</th>
+                <th>状态</th>
+                <th>操作</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="banner" item="vo">
+                <tr>
+                    <td align="center">{$vo['id']}</td>
+                    <td>{$vo['title']}</td>
+                    <td><img src="{$vo['img']}"></td>
+                    <td>{$vo['label']}</td>
+                    <td>
+                        <if condition="$vo['status'] eq 1">
+                            <span style="color: green">启用</span>
+                            <else />
+                            <span style="color: green">禁用</span>
+                        </if>
+                    </td>
+
+
+                    <td>
+                        <if condition="$vo['status'] eq 1">
+                            <a href="{:U('Banner/upstatus',array('id'=>$vo['id'],'status' =>2 ))}" class="js-ajax-dialog-btn">设为禁用</a>
+                            <else />
+                            <a href="{:U('Banner/upstatus',array('id'=>$vo['id'],'status' =>1))}" class="js-ajax-dialog-btn" >设为启用</a>
+                        </if>
+                        <a href="{:U('Banner/delete',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn del_color" >删除</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/layer/layer.js"></script>
+<script type="text/javascript">
+
+</script>
+
+<script type="text/javascript">
+</script>
+</body>
+</html>

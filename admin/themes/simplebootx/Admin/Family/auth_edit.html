@@ -1,0 +1,116 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Family/auth')}
+	</ul>
+	<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('auth_edit')}">
+		<input type="hidden" name="id" value="{$auth['id']}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">线路分类</label>
+				<div class="controls">
+					<select class="select_2" name="ct_type" class="mar-right-15">
+						<volist name="ct_type_list" id="vo">
+							<option value="{$key}" <if condition="$auth['ct_type'] eq $key">selected</if> >{$vo}</option>
+						</volist>
+					</select>
+					<span class="form-required" style="vertical-align: middle;">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">会员</label>
+				<div class="controls">
+					<input type="text" value="{$auth['game_user_id']}" readonly>
+					<span class="form-required">*  彩票会员ID</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">手机号码</label>
+				<div class="controls">
+					<input type="text" name="mobile" value="{$auth['mobile']}" required>
+					<span class="form-required">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">主播照片</label>
+				<div class="controls">
+					<div class="img_div">
+						<input type="hidden" name="anchor_photo" value="{$auth['anchor_photo']}" required>
+						<span class="upload_btn cust-upload-img" data-name="anchor_photo" data-showimgclass="anchor_photo_view_img_show" data-progress="1" data-url="{:U('Upload/img_upload')}">
+							<img src="{$auth['anchor_photo']|default='__TMPL__Public/assets/images/default-thumbnail.png'}" alt="" class="anchor_photo_view_img_show" width="135" style="max-height: 135px;max-width: 135px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;">
+						</span>
+					</div>
+					<span class="form-required"></span>
+				</div>
+				<div class="controls">
+					<span onclick="view_big(this)" class="mar-right-15 color-blue" style="color: blue;cursor: pointer;">查看大图</span><span onclick="dowload_img(this)" class="color-blue" style="color: blue;cursor:pointer;">下载图片</span>
+					<img class="img-zoom" src="" style="display: none"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">主播视频</label>
+				<div class="controls">
+					<div class="img_div">
+						<input type="hidden" name="anchor_video" value="{$auth['anchor_video']}" required>
+						<video src="{$auth['anchor_video']|default='__TMPL__Public/assets/images/default-thumbnail.png'}" controls="controls" class="anchor_video_view_img_show" width="135" style="max-height: 250px;max-width: 135px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;vertical-align: middle;"></video>
+						<span class="upload_btn cust-upload-img" data-name="anchor_video" data-accept="video/mp4" data-showimgclass="anchor_video_view_img_show" data-progress="1" data-max_size="20" data-url="{:U('Upload/img_upload')}">
+							<span style="vertical-align: middle;padding: 15px;cursor: pointer;">添加视频</span>
+						</span>
+					</div>
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">备注</label>
+				<div class="controls">
+					<input type="text" name="remark" value="{$auth['remark']}">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">审核状态</label>
+				<div class="controls">
+					<if condition="$is_show == 1">
+						<label class="radio inline" for="status_2"><input type="radio" name="status" value="2" id="status_2" <if condition="$auth['status'] eq '2'">checked</if>>失败</label>
+					</if>
+					<label class="radio inline" for="status_0"><input type="radio" name="status" value="0" id="status_0" <if condition="$auth['status'] eq '0'">checked</if>>处理中</label>
+					<if condition="$is_show == 1">
+						<label class="radio inline" for="status_1"><input type="radio" name="status" value="1" id="status_1" <if condition="$auth['status'] eq '1'">checked</if>>成功</label>
+					</if>
+				</div>
+			</div>
+		</fieldset>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,waittime:1000}">{:L('EDIT')}</button>
+			<a class="btn" href="{:U('auth')}">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}1"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>
+<script src="__PUBLIC__/js/imgzoom/imgzoom.js"></script>
+<script>
+	new ImgZoom();
+	function view_big(obj){
+		var imgsrc = $("input[name='anchor_photo']").val();
+		if(!imgsrc){
+			custalert('请上传图片');
+			return ;
+		}
+		$(".img-zoom").attr('src',imgsrc);
+		$(".img-zoom").trigger('click');
+	}
+
+	function dowload_img(obj) {
+		var imgsrc = $("input[name='anchor_photo']").val();
+		if(!imgsrc){
+			custalert('请上传图片');
+			return ;
+		}
+		window.location.href = "{:U('Upload/downFile')}?file_url="+imgsrc;
+	}
+
+</script>

@@ -1,0 +1,206 @@
+<admintpl file="header" />
+</head>
+<style>
+	.top-nav{
+		color: #333;
+		font: 14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+		height: 43px;
+		line-height: 43px;
+		padding: 0 0 0 20px;
+	}
+	form{
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+	table tr>td>.star{
+		color: red;
+	}
+	input,textarea{
+		width: 80%;
+	}
+	.radio_type{
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid lightgray;
+		border-radius: 5px;
+		margin-right: 25px;
+		padding: 6px 25px;
+		cursor: pointer;
+	}
+	.active_radio{
+		background-color: #2c3e50;
+		color: white;
+	}
+	.radio_type input{
+		width: 0px;
+	}
+	.img_div{
+		display: inline-block;
+		width: 80%;
+		border: 2px solid #dce4ec;
+		height: 36px;
+		line-height: 36px;
+		border-radius: 3px;
+		padding: 0px 5px;
+	}
+	.img_div input{
+		float: left;
+		width: 480px;
+		vertical-align: middle;
+		background: none;
+		border: 0px;
+	}
+	.img_div .upload_btn{
+		padding: 1px 14px;
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid gray;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+</style>
+<body>
+	<div class="">
+		<div class="top-nav well" style="text-align: center;">
+			<span class="cust-title" style="">{$title}</span>
+			<span class="" style="float: right;cursor: pointer;padding: 0 20px;" onclick="$('#cust-js-iframe',window.parent.document).toggle();">
+				<i class="fa fa-times" aria-hidden="true" style="font-size: 22px;vertical-align: middle;"></i>
+			</span>
+		</div>
+		<form class="form-horizontal cust-js-ajax-form" method="post" action="">
+			<table class="table table-bordered innertable">
+				<tbody>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="star">*</span><span class="title">分类名称</span></td>
+						<td style="text-align: left;">
+							<input type="text" name="name" value="{$info.name}" oninput="if(this.value.length>20)this.value=this.value.slice(0,20)" placeholder="请输入">&nbsp;&nbsp;<span></span>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="star">*</span><span class="title">分类类别</span></td>
+						<td style="text-align: left;">
+							<span class="radio_type <if condition="$info.type eq 1">active_radio</if>">
+								<input type="radio" name="type" value="1" required <if condition="$info.type eq 1">checked="checked"</if> >
+								初级
+							</span>
+							<span class="radio_type <if condition="$info.type eq 2">active_radio</if>">
+								<input type="radio" name="type" value="2" required <if condition="$info.type eq 2">checked="checked"</if> >
+								中级
+							</span>
+							<span class="radio_type <if condition="$info.type eq 3">active_radio</if>">
+								<input type="radio" name="type" value="3" required <if condition="$info.type eq 3">checked="checked"</if> >
+								高级
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="title">分类描述</span></td>
+						<td style="text-align: left;">
+							<textarea cols="30" rows="3" name="description" placeholder="请输入">{$info.description}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="star">*</span><span class="title">分类LOGO</span></td>
+						<td style="text-align: left;">
+							<div class="img_div">
+								<input type="text" name="logo" value="{$info.logo}" placeholder="请上传">
+								<span class="upload_btn cust-upload-img" data-name="logo" data-showimgclass="img_show1" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+							</div>
+							<img src="{$info.logo}" alt="" class="img_show1" style="max-height: 70px;max-width: 100px;padding: 0px;margin: 0px 0px 0px 15px;">
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="star">*</span><span class="title">分类背景图</span></td>
+						<td style="text-align: left;">
+							<div class="img_div">
+								<input type="text" name="bgimg" value="{$info.bgimg}" placeholder="请上传">
+								<span class="upload_btn cust-upload-img" data-name="bgimg" data-showimgclass="img_show2" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+							</div>
+							<img src="{$info.bgimg}" alt="" class="img_show2" style="max-height: 70px;max-width: 100px;padding: 0px;margin: 0px 0px 0px 15px;">
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="star">*</span><span class="title">佣金比例</span></td>
+						<td style="text-align: left;">
+							<input type="text" name="commission_rate" value="{$info.commission_rate}" data-oval="{$info.commission_rate}" onblur="check_isnumber(this,'佣金比例')" placeholder="请输入" style="display: block">
+							<div style="margin-top: 5px;color: red;">完成此分类下的任务，可能额外获取的佣金 = 任务价格 *佣金比例。</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="star">*</span><span class="title">每日任务数限制</span></td>
+						<td style="text-align: left;">
+							<input type="number" name="daily_task" value="{$info.daily_task}" min="0" max="9999" oninput="if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">&nbsp;&nbsp;<span></span>
+							<div style="margin-top: 5px;color: red;">配置0，不限制</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="star">*</span><span class="title">解锁金额（解锁条件1）</span></td>
+						<td style="text-align: left;">
+							<input type="text" name="unlock_amount" value="{$info.unlock_amount}" data-oval="{$info.unlock_amount}" onblur="check_isnumber(this,'解锁金额（解锁条件1）')" placeholder="请输入">
+							<div style="margin-top: 5px;color: red;">接收该任务需要付多少金额，配置0为不需要额外付费。</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="star">*</span><span class="title">直邀人数（解锁条件2）</span></td>
+						<td style="text-align: left;">
+							<input type="number" name="direct_invitation" value="{$info.direct_invitation}" min="0" max="9999" oninput="if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+							<div style="margin-top: 5px;color: red;">解锁条件2须邀请多少个下级，配置0，不需要邀请人数。</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="star">*</span><span class="title">订单最高金额</span></td>
+						<td style="text-align: left;color: red;">
+							<input type="text" name="max_amount" value="{$info.max_amount}" data-oval="{$info.max_amount}" onblur="check_isnumber(this,'订单最高金额')" placeholder="请输入">&nbsp;&nbsp;<span></span>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="star">*</span><span class="title">订单最低金额</span></td>
+						<td style="text-align: left;color: red;">
+							<input type="text" name="min_amount" value="{$info.min_amount}" data-oval="{$info.min_amount}" onblur="check_isnumber(this,'订单最低金额')" placeholder="请输入">&nbsp;&nbsp;<span></span>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="star">*</span><span class="title">上限金额</span></td>
+						<td style="text-align: left;color: red;">
+							<input type="text" name="limit_max_balance" value="{$info.limit_max_balance}" data-oval="{$info.limit_max_balance}" onblur="check_isnumber(this,'上限金额')" placeholder="请输入">
+							<div style="margin-top: 5px;color: red;">账户资金余额超过该金额无法抢单，配置0.00，不限制</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="star">*</span><span class="title">任务间隔（秒）</span></td>
+						<td style="text-align: left;color: red;">
+							<input type="number" name="space_time" value="{$info.space_time}" min="0" max="99999999"  oninput="if(this.value.length>8)this.value=this.value.slice(0,8)" placeholder="请输入">
+							<div style="margin-top: 5px;color: red;">上一个任务完成后至新任务返回前的间隔时间。</div>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="title">分类状态</span></td>
+						<td style="text-align: left;">
+							<input type="radio" name="status" value="1" <if condition="$info.status eq 1">checked="checked"</if> >&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">开启</span>
+							<input type="radio" name="status" value="0" <if condition="$info.status eq 0">checked="checked"</if> >&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">关闭</span>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;"><span class="title">是否体验商城</span></td>
+						<td style="text-align: left;">
+							<input type="radio" name="experience_shop" value="1" <if condition="$info.experience_shop eq 1">checked="checked"</if> >&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">是</span>&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="experience_shop" value="0" <if condition="$info.experience_shop eq 0">checked="checked"</if> >&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">否</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="" style="padding: 20px 0px;text-align: center;background-color: #dde4e6;margin-top: 15px;">
+				<input type="hidden" name="id" value="{$info.id}">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SUBMIT')},waittime:1000}" >{:L('SUBMIT')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+	$(".radio_type").on('click',function (){
+		$(".radio_type").removeClass('active_radio');
+		$(this).addClass('active_radio');
+		$(this).children("input").attr('checked',true);
+	})
+
+</script>

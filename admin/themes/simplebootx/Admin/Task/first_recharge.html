@@ -1,0 +1,178 @@
+<admintpl file="header" />
+</head>
+<style>
+	.controls input{
+		width: 500px;
+	}
+	label{
+		width: 230px !important;
+	}
+	.controls{
+		margin-left: 250px !important;
+	}
+	.cust input{
+		width: 120px;
+	}
+	.cust label{
+		width: auto !important;
+	}
+	.cust{
+		margin-left: 20px;
+	}
+	.cust .controls{
+		display: inline-block;
+		margin-left: 15px !important;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li><a href="{:U('Task/index')}">任务管理</a></li>
+			<li><a href="{:U('Task/add_task')}">新增任务</a></li>
+			<li><a href="{:U('Task/classification')}">分类管理</a></li>
+			<li><a href="{:U('Task/user_task')}">任务领取记录</a></li>
+			<li><a href="{:U('Task/reward_log')}">奖励明细</a></li>
+			<li><a href="{:U('Task/login_reward')}">登录赠送</a></li>
+			<li class="active"><a href="{:U('Task/first_recharge')}">首充活动</a></li>
+			<li><a href="{:U('Task/share')}">分享活动</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Task/first_recharge')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('Task/first_recharge')}">
+			<fieldset>
+				<div class="control-group reward">
+					<div class="cust" style="display: inline-block;">
+						<label class="control-label" style="">首充奖励1</label>
+						<div class="controls">
+							<input type="text" name="fro_min" value="{$info.fro_min}" data-oval="{$info.fro_min}" onblur="check_isnumber(this)" required required  placeholder="首充奖励1最小值">
+							-
+							<input type="text" name="fro_max" value="{$info.fro_max}" data-oval="{$info.fro_max}" onblur="check_isnumber(this)" required required  placeholder="首充奖励1最大值">
+						</div>
+					</div>
+					<div class="cust" style="display: inline-block">
+						<label class="control-label" style="">奖励金额</label>
+						<div class="controls">
+							<input type="text" name="fro_reward" value="{$info.fro_reward}" data-oval="{$info.fro_reward}" onblur="check_isnumber(this)" required required  placeholder="奖励金额">
+						</div>
+					</div>
+					<div class="cust" style="display: inline-block;">
+						<label class="control-label">赠送观影次数</label>
+						<div class="controls">
+							<input type="number" name="fro_watchtimesnum" value="{$info.fro_watchtimesnum}" data-oval="{$info.fro_watchtimesnum}" style="width: 60px;" required min="0" max="999999" required  placeholder="赠送观影次数">
+						</div>
+					</div>
+					<div class="cust" style="display: inline-block">
+						<label class="control-label">赠送观影时长</label>
+						<div class="controls">
+							<input type="number" name="fro_watchtime" value="{$info.fro_watchtime}" data-oval="{$info.fro_watchtime}" style="width: 60px;" required min="0" max="999999" required  placeholder="赠送观影时长">
+						</div>
+						&nbsp;<span>分钟</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="cust" style="display: inline-block">
+						<label class="control-label" style="">首充奖励2</label>
+						<div class="controls">
+							<input type="text" name="frt_min" value="{$info.frt_min}" data-oval="{$info.frt_min}" onblur="check_isnumber(this)" required required  placeholder="首充奖励2最小值">
+							-
+							<input type="text" name="frt_max" value="{$info.frt_max}" data-oval="{$info.frt_max}" onblur="check_isnumber(this)" required required  placeholder="首充奖励2最大值">
+						</div>
+					</div>
+					<div class="cust" style="display: inline-block">
+						<label class="control-label" style="">奖励金额</label>
+						<div class="controls">
+							<input type="text" name="frt_reward" value="{$info.frt_reward}" data-oval="{$info.frt_reward}" onblur="check_isnumber(this)" required required  placeholder="奖励金额">
+						</div>
+					</div>
+					<div class="cust" style="display: inline-block">
+						<label class="control-label">赠送观影次数</label>
+						<div class="controls">
+							<input type="number" name="frt_watchtimesnum" value="{$info.frt_watchtimesnum}" data-oval="{$info.frt_watchtimesnum}" style="width: 60px;" required min="0" max="999999" required  placeholder="赠送观影次数">
+						</div>
+					</div>
+					<div class="cust" style="display: inline-block">
+						<label class="control-label">赠送观影时长</label>
+						<div class="controls" style="">
+							<input type="number" name="frt_watchtime" value="{$info.frt_watchtime}" data-oval="{$info.frt_watchtime}" style="width: 60px;" required min="0" max="999999" required  placeholder="赠送观影时长">
+						</div>
+						&nbsp;<span>分钟</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">推荐奖励首充最低充值金额</label>
+					<div class="controls">
+						<input type="text" name="recommend_frmr" value="{$info.recommend_frmr}" data-oval="{$info.recommend_frmr}" onblur="check_isnumber(this)" required required placeholder="最低充值金额">
+						&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">推荐奖励[推荐首充1人]-奖励金额</label>
+					<div class="controls">
+						<input type="text" name="recommend_rr_1" value="{$info.recommend_rr_1}" data-oval="{$info.recommend_rr_1}" onblur="check_isnumber(this)" required required placeholder="赠送金额">
+						&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">推荐奖励[推荐首充2人]-奖励金额</label>
+					<div class="controls">
+						<input type="text" name="recommend_rr_2" value="{$info.recommend_rr_2}" data-oval="{$info.recommend_rr_2}" onblur="check_isnumber(this)" required required  placeholder="赠送金额">
+						&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">推荐奖励[推荐首充3人]-奖励金额</label>
+					<div class="controls">
+						<input type="text" name="recommend_rr_3" value="{$info.recommend_rr_3}" data-oval="{$info.recommend_rr_3}" onblur="check_isnumber(this)" required required  placeholder="赠送金额">
+						&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">推荐奖励[推荐首充4人]-奖励金额</label>
+					<div class="controls">
+						<input type="text" name="recommend_rr_4" value="{$info.recommend_rr_4}" data-oval="{$info.recommend_rr_4}" onblur="check_isnumber(this)" required required  placeholder="赠送金额">
+						&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">推荐奖励[推荐首充5人]-奖励金额</label>
+					<div class="controls">
+						<input type="text" name="recommend_rr_5" value="{$info.recommend_rr_5}" data-oval="{$info.recommend_rr_5}" onblur="check_isnumber(this)" required required  placeholder="赠送金额">
+						&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">推荐奖励[推荐首充6人]-奖励金额</label>
+					<div class="controls">
+						<input type="text" name="recommend_rr_6" value="{$info.recommend_rr_6}" data-oval="{$info.recommend_rr_6}" onblur="check_isnumber(this)" required required  placeholder="赠送金额">
+						&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:C('JS_VERSION')}222"></script>
+</body>
+</html>
+<script type="text/javascript">
+	/*
+	* 判断是否为数字或带小数点的数
+	* */
+	function check_isnum(obj) {
+		var value = obj.value;
+		// var ex = /^\.\d+$/;
+		var ex = /^(-)?\d+(\.\d+)?$/;
+		if (!ex.test(value)) {
+			var label = $(obj).parent().parent().children("label").text();
+			var msg = label ? '【'+label+'】请设置正确的值' : '请设置正确的值';
+			custalert(msg);
+			if($(obj).attr('data-oval')){
+				$(obj).val($(obj).attr('data-oval'));
+			}else{
+				$(obj).val('');
+			}
+		}
+		return false;
+	}
+</script>

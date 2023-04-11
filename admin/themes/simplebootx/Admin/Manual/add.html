@@ -1,0 +1,86 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li ><a href="{:U('Manual/index')}">手动充值记录</a></li>
+			<li class="active"><a >手动充值</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Manual/add')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('add_post')}">
+			<fieldset>
+				<if condition="$role_id == 1">
+					<div class="control-group">
+						<label class="control-label">*租户</label>
+						<div class="controls">
+							<select name="tenant_id" onchange="change_tenant_id(this)">
+								<volist name="tenant_list" id="vo">
+									<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+								</volist>
+							</select>
+							<span class="form-required"></span>
+						</div>
+					</div>
+				</if>
+				<div class="control-group">
+					<label class="control-label">会员ID</label>
+					<div class="controls">
+						<input type="text" name="uid" >
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">会员账号</label>
+					<div class="controls">
+						<input type="text" name="user_login" >
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">调整币种</label>
+					<div class="controls">
+						<select class="select_2" name="currency_code">
+							<option value=""></option>
+							<volist name="ratelsit" id="vo">
+								<option value="{$vo.code}" >{$vo.name}</option>
+							</volist>
+						</select>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">调整金额</label>
+					<div class="controls">
+						<input type="text" name="money" data-oval="" onkeyup="checkIntegerOr4Decimal(this, '', true)"  required>
+						<span class="form-required">*，默认为加，若为扣减请输入负数</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">业务类型</label>
+					<div class="controls">
+						<select class="select_2" name="business_type">
+							<option value=""></option>
+							<volist name="business_type_list" id="vo">
+								<option value="{$vo.type}" >{$vo.name}</option>
+							</volist>
+						</select>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">备注</label>
+					<div class="controls">
+						<textarea type="text" name="remark" cols="200" rows="3" ></textarea>
+						<span class="form-required"></span>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('ADD')},waittime:1000}">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>

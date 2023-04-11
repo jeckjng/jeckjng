@@ -1,0 +1,178 @@
+<admintpl file="header" />
+<style>
+.input{
+    width:500px;
+}
+#storage .active{
+	display: block;
+}
+#storage .unactive{
+	display: none;
+}
+</style>
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Storage/index')}
+			<!--<li class="active"><a href="{:U('storage/index')}">{:L('ADMIN_STORAGE_INDEX')}</a></li>-->
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('storage/setting_post')}">
+			<select name="type" onchange="func()" id="mySelect">
+				<volist name="support_storages" id="vo">
+					<option value="{$key}" <if condition="$key == $option_value['storage']['type']">selected</if> >{$vo}</option>
+				</volist>
+			</select>
+			<div id="storage" style="display:block">
+				<ul class="nav nav-tabs">
+<!--					<li class="active"><a>七牛云存储</a></li>-->
+					<volist name="support_storages" id="vo">
+						<li id="li-{$key}" data-id="{$key}" onclick="select_type(this)" <if condition="$key == $option_value['storage']['type']">style="display: block;"<else/>style="display: none;"</if> ><a>{$vo}</a></li>
+					</volist>
+				</ul>
+				<div id="Local" <if condition="'Local' == $option_value['storage']['type']">class="filebox active"<else/>class="filebox unactive"</if> >
+					<fieldset>
+						<div class="control-group">
+							<label class="control-label">AccessKey</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Local[accessKey]" value="{$option_value['storage']['Local']['accessKey']}"  >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">SecretKey</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Local[secretKey]" value="{$option_value['storage']['Local']['secretKey']}" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">{:L('DOMAIN')}</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Local[domain]" value="{$option_value['storage']['Local']['domain']}" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">{:L('BUCKET')}</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Local[bucket]" value="{$option_value['storage']['Local']['bucket']}" >&nbsp;（bucket）
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">区域上传域名(服务端)</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Local[upHost]" value="{$option_value['storage']['Local']['upHost']}" >  <a href="https://developer.qiniu.com/kodo/manual/1671/region-endpoint" target="_blank">存储区域</a>
+							</div>
+						</div>
+					</fieldset>
+				</div >
+				<div id="Qiniu" <if condition="'Qiniu' == $option_value['storage']['type']">class="filebox active"<else/>class="filebox unactive"</if> >
+					<fieldset>
+						<div class="control-group">
+							<label class="control-label">AccessKey</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Qiniu[accessKey]" value="{$option_value['storage']['Qiniu']['accessKey']}" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">SecretKey</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Qiniu[secretKey]" value="{$option_value['storage']['Qiniu']['secretKey']}" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">{:L('DOMAIN')}</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Qiniu[domain]" value="{$option_value['storage']['Qiniu']['domain']}" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">{:L('BUCKET')}</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Qiniu[bucket]" value="{$option_value['storage']['Qiniu']['bucket']}" >&nbsp;（bucket）
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">区域上传域名(服务端)</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Qiniu[upHost]" value="{$option_value['storage']['Qiniu']['upHost']}" >  <a href="https://developer.qiniu.com/kodo/manual/1671/region-endpoint" target="_blank">存储区域</a>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+				<div id="Aliyunoss" <if condition="'Aliyunoss' == $option_value['storage']['type']">class="filebox active"<else/>class="filebox unactive"</if> >
+					<fieldset>
+						<div class="control-group">
+							<label class="control-label">AccessKey</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Aliyunoss[accessKey]" value="{$option_value['storage']['Aliyunoss']['accessKey']}" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">SecretKey</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Aliyunoss[secretKey]" value="{$option_value['storage']['Aliyunoss']['secretKey']}" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">{:L('DOMAIN')}</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Aliyunoss[domain]" value="{$option_value['storage']['Aliyunoss']['domain']}" >
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">{:L('BUCKET')}</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Aliyunoss[bucket]" value="{$option_value['storage']['Aliyunoss']['bucket']}" >&nbsp;（bucket）
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">区域上传域名(服务端)</label>
+							<div class="controls">
+								<input type="text" class="input mr5" name="Aliyunoss[upHost]" value="{$option_value['storage']['Aliyunoss']['upHost']}" > （endpoint） <a href="https://developer.qiniu.com/kodo/manual/1671/region-endpoint" target="_blank">存储区域</a>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+			<div class="form-actions">
+				<input type="hidden" name="option_id" value="{$info.option_id}">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('ADD')},waittime:1000}">{:L('SAVE')}</button>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script src="__PUBLIC__/js/jquery.js"></script>
+<script>
+	function func(){
+		var vs = $('select option:selected').val();
+
+		console.log(vs)
+		/*if(vs=="Qiniu")
+		{
+			$("#storage").css('display','block');
+		}else
+		{
+			$("#storage").css('display','none');
+		}*/
+
+		$("#storage").children("ul").children("li").css('display','none');
+		$("#storage").children("ul").children("#li-"+vs).css('display','block');
+		$("#storage").children("ul").children("#li-"+vs).click();
+
+	};
+	$(function(){
+		func();
+	})
+
+	function select_type(obj){
+		console.log($(obj).text())
+		$(obj).parent().children("li").removeClass("active");
+		$(obj).addClass("active");
+
+		var id = $(obj).attr('data-id');
+		$("#storage").children(".filebox").removeClass("active").removeClass("unactive").addClass('unactive');
+		$("#storage").children("#"+id).removeClass("active").removeClass("unactive").addClass('active');
+	}
+
+</script>

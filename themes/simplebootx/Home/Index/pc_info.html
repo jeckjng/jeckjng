@@ -1,0 +1,87 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" async="" src="__PUBLIC__/home/js/analytics.js"></script>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="cache-control" content="no-siteapp">
+    <title>最新好看的电影推荐 - 游鱼直播</title>
+    <link type="text/css" rel="stylesheet" href="__PUBLIC__/home/css//movie.css">
+    <script type="text/javascript" src="__PUBLIC__/home/js/jquery.js"></script>
+   <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv"></script>
+    <![endif]-->
+</head>
+<body class="searchon m-nav-full list">
+<header class="header">
+    <div class="container"><h1 class="logo"><a href="#" title="游鱼直播"><img
+            src="/logo_top.png" alt="游鱼直播"><span>游鱼直播</span></a></h1><span
+            class="searchstart-on"><i class="fa"></i></span><span class="searchstart-off"><i class="fa"></i></span>
+        <form method="get" action="/Index/pc_info" class="searchform">
+            <button tabindex="3" class="sbtn" type="submit" onclick=""><i class="fa"></i></button>
+            <input tabindex="2" name="video_name" class="sinput" type="text" placeholder="搜索" value="{$video_name}"></form>
+        <div class="nav">
+            <ul>
+                <li ><a href="/Index/pchome">首页</a></li>
+                <foreach name="label_list" item="vo" key="k">
+                    <li <if condition="$vo.label eq  $class"> class="current-menu-item" </if> ><a href="/Index/pc_info/class/{$vo.label}">{$vo.label}</a></li>
+                </foreach>
+            </ul>
+        </div>
+        <span class="nav-on"><i class="fa"></i></span><span class="nav-mask"></span></div>
+</header>
+<div class="container">
+    <div class="lists lists-filter lists-thumb-top lists-title-lines-1">
+
+        <header>
+            <dl>
+                <dt <if condition="$sort eq  1 || !$sort"> class="on" </if> ><a href="/Index/pc_info/class/{$class}<if condition="$video_name">/video_name/{$video_name}</if>/sort/1">综合排序</a></dt>
+                <dt <if condition="$sort eq  2"> class="on" </if> ><a href="/Index/pc_info/class/{$class}<if condition="$video_name">/video_name/{$video_name}</if>/sort/2">按人气排序</a></dt>
+                <dt <if condition="$sort eq  3"> class="on" </if> ><a href="/Index/pc_info/class/{$class}<if condition="$video_name">/video_name/{$video_name}</if>/sort/3">按时间排序</a></dt>
+            </dl>
+        </header>
+        <div class="lists-content">
+            <ul>
+                <!--<li><a href="https://www.nunuyy.cc/dianying/20549.html" class="thumbnail" target="_blank"><img
+                        referrerpolicy="no-referrer" src="./最新好看的电影推荐 - 努努影院_files/137c900021645c9637abe.jpg"
+                        class="thumb" alt="恋之罪">
+                    <div class="note"><span>HD</span></div>
+                    <div class="countrie"><span class="orange">2011</span><span class="orange">日本</span></div>
+                </a>
+                    <h2><a href="https://www.nunuyy.cc/dianying/20549.html" target="_blank">恋之罪</a></h2>
+                    <footer><span class="star star35"></span><span class="rate">6.9</span></footer>
+                </li>
+                -->
+
+                <foreach name="video_list" item="vo" key="k">
+                    <li style=""><a href="/Index/playvidoe/class/{$vo.label}/id/{$vo.id}" class="thumbnail"
+                                    target="_blank"><img referrerpolicy="no-referrer"
+                                                         src="{$vo.thumb}" style="width: 200px;height: 250px"
+                                                         class="thumb" alt="">
+                    </a>
+                        <h2><a href="/Index/playvidoe/class/{$vo.label}/id/{$vo.id}" target="_blank">{$vo.title}</a>
+                        </h2>
+                    </li>
+                </foreach>
+            </ul>
+        </div>
+        <div class="pagination pagination-multi">
+            {$page}
+        </div>
+    </div>
+</div>
+<footer class="footer">
+    <div class="container">© 2018-2021 <a href="#">游鱼直播</a></div>
+</footer>
+<script type="text/javascript" src="__PUBLIC__/home/js/s2t.js"></script>
+<script type="text/javascript" src="__PUBLIC__/home/js/movie.js"></script>
+
+<div class="rollbar">
+    <div class="rollbar-item rollbar-item-top" etap="to_top" title="回顶部"><i class="fa"></i></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Guard/index')}">列表</a></li>
+			<li class="active"><a >修改</a></li>
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('Guard/do_edit')}">
+		   <input type="hidden" name="id" value="{$data['id']}">
+			<fieldset>
+             <!--   <div class="control-group">
+					<label class="control-label">类型</label>
+					<div class="controls">
+                        &lt;!&ndash; <volist name="type_a" id="v">
+						<label class="radio inline" for="type_{$key}"><input type="radio" name="type" value="{$key}" id="type_{$key}" <if condition="$data['type'] eq $key">checked</if> >{$v}</label>
+                        </volist> &ndash;&gt;
+                        {$type_a[$data['type']]}
+						<span class="form-required">*</span>
+					</div>
+				</div>-->
+				<div class="control-group">
+					<label class="control-label">序号</label>
+					<div class="controls">
+						<input type="text" name="orderno" value="{$data['orderno']}">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+                
+                <div class="control-group">
+					<label class="control-label">名称</label>
+					<div class="controls">
+						<input type="text" name="name" value="{$data['name']}" readonly>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">开通价格</label>
+					<div class="controls">
+						<input type="text" name="coin" value="{$data['coin']}">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+
+                <div class="control-group">
+					<label class="control-label">时长</label>
+					<div class="controls">
+                        <input type="text" name="length" value="{$data['length']}" readonly>
+                        <!-- <volist name="length_type_a" id="v">
+						<label class="radio inline" for="length_type_{$key}"><input type="radio" name="length_type" value="{$key}" id="length_type_{$key}" <if condition="$data['length_type'] eq $key">checked</if> >{$v}</label>
+                        </volist> -->
+                        {$length_type_a[$data['length_type']]}
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<img style="width: 150px;height: 50px;margin-left: 20px;margin-bottom: 20px;" src="{$data['guard_img']}" />
+					<label class="control-label">守护图标:</label>
+					<div class="controls">
+						<input type="file" name="guard_img" id="guard_img">
+					</div>
+
+				</div>
+				<div class="control-group">
+					<label class="control-label">守护特效:</label>
+					<input type="hidden" name="guard_effect" value="{$data['guard_effect']}" required>
+			     	<span class="upload_btn cust-upload-img" data-name="swf" data-accept="*" data-showimgclass="swf_img_show" data-progress="1" data-url="{:U('Upload/img_upload')}">
+							<img src="{$data['guard_effect']|default='__TMPL__Public/assets/images/default-thumbnail.png'}" alt="" data-changefunc="check_imfsrc" class="swf_img_show" width="135" style="max-height: 335px;max-width: 335px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 100px;">
+							</span>
+
+					<div class="controls">
+						<input type="file" name="guard_effect" id="guard_effect">
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">坐标1</label>
+					<div class="controls">
+						<input type="text" name="position_first" value="{$data['position_first']}">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">坐标2</label>
+					<div class="controls">
+						<input type="text" name="position_second" value="{$data['position_second']}">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">是否可以送专属礼物</label>
+					<div class="controls">
+						<label class="radio inline"><input type="radio" name="is_gift" value="0"  <if condition="$data['is_gift'] eq '0'">checked</if> >否</label>
+						<label class="radio inline"><input type="radio" name="is_gift" value="1"  <if condition="$data['is_gift'] eq '1'">checked</if> >是</label>
+
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">是否防禁言被踢</label>
+					<div class="controls">
+						<label class="radio inline"><input type="radio" name="is_shutup" value="0"  <if condition="$data['is_shutup'] eq '0'">checked</if> >否</label>
+						<label class="radio inline" ><input type="radio" name="is_shutup" value="1"  <if condition="$data['is_shutup'] eq '1'">checked</if> >是</label>
+
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">守护礼物绑定</label>
+					<div class="controls">
+						<foreach name="listsgift" item="vo">
+							<label class="checkbox inline"><input value="{$vo.id}"   <if condition="in_array($vo['id'],$guard_gift)"> checked== 'checked'</if>      type="checkbox" name="giftname[]">{$vo.giftname}</label>
+						</foreach>
+					</div>
+
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary js-ajax-submit">{:L('EDIT')}</button>
+				<a class="btn" href="{:U('Guard/index')}">{:L('BACK')}</a>
+			</div>
+			<input type="hidden" name="old_guard_img" value="{$data['guard_img']}"/>
+			<input type="hidden" name="old_guard_effect" value="{$data['guard_effect']}"/>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+	<script src="__PUBLIC__/js/svgaplayerweb/svga.min.js"></script>
+</body>
+</html>
+<script>
+	check_imfsrc($(".swf_img_show"));
+
+	function check_imfsrc(obj){
+		var src = $(obj).attr('src');
+		var class_name = $(obj).attr('class');
+		var arr = src.split('.');
+		var end_str = arr[arr.length - 1];
+		var html = '<div id="'+class_name+'" width="135" style="max-height: 335px;max-width: 335px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 100px;"></div>';
+		$("#"+class_name).remove();
+		if(end_str.toLowerCase() == 'svga'){
+			$(obj).after(html);
+			var player =new SVGA.Player('#'+class_name);
+			var parser =new SVGA.Parser('#'+class_name);
+			parser.load(src, function(videoItem) {
+				player.setVideoItem(videoItem);
+				player.startAnimation();
+			})
+		}else{
+			$(obj).parent().parent().children("input[name='guard_effect']").val('');
+		}
+		return;
+	}
+</script>

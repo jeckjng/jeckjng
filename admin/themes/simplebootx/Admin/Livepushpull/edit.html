@@ -1,0 +1,248 @@
+<admintpl file="header" />
+<style>
+	input{
+		width: 500px;
+	}
+</style>
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Livepushpull/edit')}
+	</ul>
+	<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('edit')}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">线路名称</label>
+				<div class="controls">
+					<input type="text" name="name" value="{$info.name}" required>
+					<span class="form-required">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">推拉流服务商</label>
+				<div class="controls">
+					<select class="select_2" name="code" class="mar-right-15" onchange="change_code(this)" readonly>
+						<volist name="pushpull_list" id="vo">
+							<if condition="$info['code'] eq $key">
+								<option value="{$key}" selected>{$vo}</option>
+							</if>
+						</volist>
+					</select>
+					<span class="form-required" style="vertical-align: middle;">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">线路分类</label>
+				<div class="controls">
+					<select class="select_2" name="ct_type" class="mar-right-15">
+						<volist name="ct_type_list" id="vo">
+							<option value="{$key}" <if condition="$info['ct_type'] eq $key">selected</if> >{$vo}</option>
+						</volist>
+					</select>
+					<span class="form-required" style="vertical-align: middle;">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">推流域名</label>
+				<div class="controls">
+					<input type="text" name="push" value="{$info.push}" >
+					<span class="form-required">不带 http:// ,最后无 /</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">播流域名</label>
+				<div class="controls">
+					<textarea name="pull" cols="3" rows="{$info.pull_rows}" style="width: 500px;">{$info.pull}</textarea>
+					<span class="form-required">不带 http:// ，最后无 /，多个域名换行输入</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">空间名称</label>
+				<div class="controls">
+					<input type="text" name="appname" value="{$info.appname}">
+					<span class="form-required">AppName，如：mb/live，青点云默认mb</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">直播appid</label>
+				<div class="controls">
+					<input type="text" name="appid" value="{$info.appid}">
+					<span class="form-required">（腾讯云）</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">App证书</label>
+				<div class="controls">
+					<input type="text" name="certificate" value="{$info.certificate}">
+					<span class="form-required">（声网）</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">直播bizid</label>
+				<div class="controls">
+					<input type="text" name="bizid" value="{$info.bizid}">
+					<span class="form-required">（腾讯云）</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">推流鉴权KEY/推流防盗链Key</label>
+				<div class="controls">
+					<input type="text" name="push_key" value="{$info.push_key}">
+					<span class="form-required">（阿里云、腾讯云、声网、12群）</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">推流鉴权有效时长</label>
+				<div class="controls">
+					<input type="number" name="push_length" value="{$info.push_length}" min="0" max="99999999999">
+					<span class="form-required">（阿里云）</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">播流鉴权KEY</label>
+				<div class="controls">
+					<input type="text" name="pull_key" value="{$info.pull_key}">
+					<span class="form-required">（阿里云、12群）</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">播流鉴权有效时长</label>
+				<div class="controls">
+					<input type="number" name="pull_length" value="{$info.pull_length}" min="0" max="99999999999">
+					<span class="form-required">（阿里云）</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">AccessKey</label>
+				<div class="controls">
+					<input type="text" name="accesskey" value="{$info.accesskey}">
+					<span class="form-required">（七牛云）</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">SecretKey</label>
+				<div class="controls">
+					<input type="text" name="secretkey" value="{$info.secretkey}">
+					<span class="form-required">（七牛云）</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">推流地址</label>
+				<div class="controls">
+					<input type="text" name="push_url" value="{$info.push_url}">
+					<span class="form-required">（自建SRS）</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">播流地址</label>
+				<div class="controls">
+					<textarea name="pull_url" cols="3" rows="{$info.pull_url_rows}" style="width: 500px;">{$info.pull_url}</textarea>
+					<span class="form-required">（自建SRS），多个域名换行输入</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">flv播流地址</label>
+				<div class="controls">
+					<textarea name="flv_pull_url" cols="3" rows="{$info.flv_pull_url_rows}" style="width: 500px;">{$info.flv_pull_url}</textarea>
+					<span class="form-required">（自建SRS），多个域名换行输入</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">HLS播流地址</label>
+				<div class="controls">
+					<input type="text" name="hls_pull" value="{$info.hls_pull}">
+					<span class="form-required">（奥点云）</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">是否鉴权</label>
+				<div class="controls">
+					<input type="radio" name="auth_status" value="1" <if condition="$info.auth_status eq 1">checked</if> required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">是&nbsp;&nbsp;&nbsp;&nbsp;</span>
+					<input type="radio" name="auth_status" value="0" <if condition="$info.auth_status eq 0">checked</if> required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">否</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">分流比例</label>
+				<div class="controls">
+					<input type="number" name="bypass_ratio" value="{$info.bypass_ratio}" min="0" max="100" required>
+					<span class="form-required">%</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">状态</label>
+				<div class="controls">
+					<input type="radio" name="status" value="1" <if condition="$info.status eq 1">checked</if> required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">启用</span>
+					<input type="radio" name="status" value="0" <if condition="$info.status eq 0">checked</if> required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">关闭</span>
+				</div>
+			</div>
+		</fieldset>
+		<div class="form-actions">
+			<input type="hidden" name="id" value="{$id}">
+			<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,waittime:1000}">编辑</button>
+			<a class="btn" href="{:U('index')}">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script>
+
+	change_code($("select[name='code']"));
+
+	function change_code(obj) {
+		var field = new Array();
+		var code = $(obj).val();
+		switch (code) {
+			case '1': // 阿里云
+				field = ['push','pull','push_key','push_length','pull_key','pull_length'];
+				break;
+			case '2': // 腾讯云
+				field = ['push','pull','appid','bizid','push_key'];
+				break;
+			case '3': // 七牛云
+				field = ['push','pull','accesskey','secretkey','appname'];
+				break;
+			case '4': // 网宿
+				field = ['push','pull','push_key','appname'];
+				break;
+			case '5':// 网易
+				field = ['accesskey','secretkey',];
+				break;
+			case '6': // 奥点云
+				field = ['push','pull','hls_pull','appname'];
+				break;
+			case '7':// 自建SRS，自定义服务器 $url='rtmp://120.25.106.132:1935/live/livestream';
+				field = ['push_url','pull_url','flv_pull_url','push_key','pull_key'];
+				break;
+			case '8': // 青点云
+				field = ['push','pull','appname'];
+				break;
+			case '9': //  腾讯云 rtmps
+				field = ['push','pull','appid','bizid','push_key'];
+				break;
+            case '10': //  声网
+                field = ['push','pull','push_key','appid','certificate'];
+                break;
+			case '11': //  12群
+				field = ['push','pull','push_key','pull_key','auth_status'];
+				break;
+			default:
+				field = [];
+		}
+		// console.log(field)
+		$("input,textarea").each(function () {
+			var name = $(this).attr('name');
+			if(name != 'name' && name != 'status' && name != 'id' && name != 'bypass_ratio'){
+				// console.log('name: '+name+' indexof: '+field.indexOf(name))
+				if(field.indexOf(name) == -1){
+					$(this).parent().parent().css('display','none');
+				}else{
+					$(this).parent().parent().css('display','block');
+				}
+			}
+		})
+	}
+
+</script>

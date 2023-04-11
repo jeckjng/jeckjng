@@ -1,0 +1,77 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li class="active"><a >直播记录</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Live/liverecord_summary')}
+		</ul>
+		
+		<form class="well form-search" method="post" action="{:U('liverecord_summary')}">
+			<div class="search-box">
+				时间：
+				<input type="text" name="start_time" class="js-date date" value="{$param.start_time}" style="width: 80px;" autocomplete="off">-
+				<input type="text" class="js-date date mar-right-15" name="end_time" value="{$param.end_time}" style="width: 80px;" autocomplete="off">
+			</div>
+			<if condition="$role_id == 1">
+				<div class="search-box">
+					租户
+					<select name="tenant_id" style="width: 120px;margin-right: 15px;">
+						<option value="" <if condition="$param.tenant_id eq ''">selected</if> >全部</option>
+						<volist name="tenant_list" id="vo">
+							<option value="{$vo.id}" <if condition="$param.tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+						</volist>
+					</select>
+				</div>
+			</if>
+			<div class="search-box">
+				会员ID：
+				<input type="text" name="uid" style="width: 120px;" value="{$param.uid}" class="mar-right-15" placeholder="请输入会员id">
+			</div>
+			<div class="search-box">
+				彩票会员ID：
+				<input type="text" name="game_user_id" style="width: 120px;" value="{$param.game_user_id}" class="mar-right-15" placeholder="请输入彩票会员ID">
+			</div>
+			<div class="search-box">
+				<input type="submit" class="btn btn-primary mar-right-15" value="搜索">
+			</div>
+		</form>		
+		<form method="post" class="js-ajax-form" >
+
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>会员（ID）</th>
+						<th>彩票会员ID</th>
+						<th>直播收益</th>
+						<th>暂停时长</th>
+						<th>有效时长</th>
+						<th>总人数</th>
+						<if condition="$roleId  eq '1'">
+							<th>所属租户</th>
+						</if>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="list" id="vo">
+					<tr>
+						<td>{$vo['userinfo']['user_nicename']} ( {$vo['uid']} ) </td>
+						<td>{$vo['game_user_id']}</td>
+						<td>{$vo['votes']}</td>
+						<td>{$vo['stop_time']}</td>
+						<td>{$vo['effective_time']}</td>
+						<td>{$vo['nums']}</td>
+						<if condition="$roleId  eq '1'">
+							<td>{$vo['tenant_name']}</td>
+						</if>
+					</tr>
+					</volist>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

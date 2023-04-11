@@ -1,0 +1,65 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Guard/guardRecord')}
+		</ul>
+		<form class="well form-search" method="post" action="{:U('Guard/guardRecord')}">
+			<if condition="$role_id == 1">
+				<div class="search-box">
+					<select class="select_2 width-200" name="tenant_id" id="tenant_id">
+						<option value="" <if condition="$param['tenant_id'] eq ''">selected</if> >全部（租户）</option>
+						<volist name="tenant_list" id="vo">
+							<option value="{$vo['id']}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo['name']}</option>
+						</volist>
+					</select>
+				</div>
+			</if>
+			<div class="search-box">
+				会员ID：
+				<input type="text" name="uid" style="width: 200px;" value="{$param.uid}" placeholder="请输入会员ID">
+			</div>
+			<div class="search-box">
+				主播ID：
+				<input type="text" name="liveuid" style="width: 200px;" value="{$param.liveuid}" placeholder="请输入主播ID">
+			</div>
+			<div class="search-box">
+				<input type="submit" class="btn btn-primary" value="搜索">
+			</div>
+		</form>
+		<form method="post" class="js-ajax-form">
+
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th align="center">ID</th>
+						<th>购买会员</th>
+				    	<th>守护会员</th>
+						<th>守护类型</th>
+						<th>购买时间</th>
+						<th>到期时间</th>
+						<th>租户</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+					<td align="center">{$vo.id}</td>
+						<td>{$vo['uid']}({$vo['user_nicename']})</td>
+						<td>{$vo['liveuid']}({$vo['live_nicename']})</td>
+						<td>{$guard_name[$vo['type']]['name']}</td>
+						<td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+						<td>{$vo.endtime|date="Y-m-d H:i:s",###}</td>
+						<td>{$vo.tenant_name}</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

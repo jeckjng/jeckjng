@@ -1,0 +1,49 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Recommend/addrecommend')}
+		<!--<li class="active"><a >添加推荐主播</a></li>-->
+	</ul>
+	<form method="post" class="form-horizontal js-ajax-form" action="{:U('Recommend/add_recommend')}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">主播ID</label>
+				<div class="controls">
+					<input type="text" name="liveuid">
+					<span class="form-required" style="color: red;">*添加的推荐主播ID，必须是正在直播的，且所属下面的游戏租户。</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">所属游戏租户</label>
+				<div class="controls">
+					<if condition="$role_id eq 1">
+						<select name="tenamtinfo" id="tenamtinfo">
+							<foreach name="tenamtinfo" item="vo">
+								<option value="{$vo.id}_{$vo.name}_{$vo.game_tenant_id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+							</foreach>
+						</select>
+					<else />
+						<select name="tenamtinfo" id="tenamtinfo">
+							<foreach name="tenamtinfo" item="vo">
+								<if condition="$tenant_id eq $vo['id']">
+									<option value="{$vo.id}_{$vo.name}_{$vo.game_tenant_id}" selected >{$vo.name}</option>
+								</if>
+							</foreach>
+						</select>
+					</if>
+				</div>
+			</div>
+
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+			<a class="btn" href="{:U('recommend/index')}">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+
+</body>
+</html>

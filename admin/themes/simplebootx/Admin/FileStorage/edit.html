@@ -1,0 +1,91 @@
+<admintpl file="header" />
+<style>
+	input{
+		width: 500px;
+	}
+</style>
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Livepushpull/edit')}
+	</ul>
+	<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('edit')}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">名称</label>
+				<div class="controls">
+					<input type="text" name="name" value="{$info.name}" required>
+					<span class="form-required">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">服务商</label>
+				<div class="controls">
+					<select class="select_2" name="type" class="mar-right-15" >
+						<volist name="type_list" id="vo">
+							<if condition="$info['type'] eq $key">
+								<option value="{$key}" selected>{$vo}</option>
+							</if>
+						</volist>
+					</select>
+					<span class="form-required" style="vertical-align: middle;">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">空间域名</label>
+				<div class="controls">
+					<textarea name="domain" cols="3" rows="{$info.domain_rows}" style="width: 500px;">{$info.domain}</textarea>
+					<span class="form-required">（下载、播放、展示使用）不带 http:// ，最后无 /</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">空间名称</label>
+				<div class="controls">
+					<input type="text" name="bucket" value="{$info.bucket}">
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">区域上传域名</label>
+				<div class="controls">
+					<input type="text" name="uphost" value="{$info.uphost}">
+					<span class="form-required">（endpoint）如：http://upload-z2.qiniup.com</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">AccessKey</label>
+				<div class="controls">
+					<input type="text" name="accesskey" value="{$info.accesskey}">
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">SecretKey</label>
+				<div class="controls">
+					<input type="text" name="secretkey" value="{$info.secretkey}">
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">状态</label>
+				<div class="controls">
+					<input type="radio" name="status" value="1" <if condition="$info.status eq 1">checked</if> required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">启用</span>
+					<input type="radio" name="status" value="0" <if condition="$info.status eq 0">checked</if> required>&nbsp;<span style="vertical-align: bottom;line-height: 100%;margin-right: 30px;">关闭</span>
+				</div>
+			</div>
+		</fieldset>
+		<div class="form-actions">
+			<input type="hidden" name="id" value="{$id}">
+			<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,waittime:1000}">编辑</button>
+			<a class="btn" href="{:U('index')}">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script>
+
+
+</script>

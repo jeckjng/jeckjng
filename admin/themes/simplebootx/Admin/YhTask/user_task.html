@@ -1,0 +1,114 @@
+<admintpl file="header" />
+</head>
+<style>
+	table th,td{
+		text-align: center !important;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/YhTask/user_task')}
+		</ul>
+		<form class="well form-search" method="post" action="{:U('YhTask/user_task')}">
+			会员ID：
+			<input type="text" name="uid" value="{$param.uid}" style="width: 200px;" autocomplete="off" placeholder="请输入">
+			会员账号：
+			<input type="text" name="user_login" value="{$param.user_login}" style="width: 200px;" autocomplete="off" placeholder="请输入">
+			领取时间：
+			<input type="text" name="start_time" class="js-date date" value="{$param.start_time}" style="width: 80px;" autocomplete="off">-
+			<input type="text" name="end_time" class="js-date date" value="{$param.end_time}" style="width: 80px;" autocomplete="off"> &nbsp; &nbsp;
+			任务分类：
+			<select name="classification" style="width: 120px;">
+				<option value="">全部</option>
+				<volist name="classification_list" id="vo">
+					<option value="{$vo.id}" <if condition="$param.classification eq $vo['id']">selected</if> >{$vo.name}</option>
+				</volist>
+			</select>
+			审核状态：
+			<select name="status" style="width: 96px;">
+				<option value="">全部</option>
+				<volist name="status_list" id="vo">
+					<option value="{$key}" <if condition="$param.status neq '' && $param.status eq $key">selected</if> >{$vo}</option>
+				</volist>
+			</select>
+			<input type="submit" class="btn btn-primary" value="搜索">
+		</form>
+		<form method="post" class="js-ajax-form" action="{:U('Vip/user_listorders')}">
+			<table class="table table-hover table-bordered">
+				<thead>
+				<tr>
+					<th>编号</th>
+					<th>会员ID</th>
+					<th>会员账号</th>
+					<th>VIP等级</th>
+					<th>任务名称</th>
+					<th>任务领取时间</th>
+					<th>任务提交时间</th>
+					<th>任务分类</th>
+					<th>任务价格</th>
+					<th>奖励1</th>
+					<th>奖励2</th>
+					<th>奖励3</th>
+					<th>任务状态</th>
+					<th>备注</th>
+					<th>操作时间</th>
+					<th>操作人</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<foreach name="lists" item="vo">
+					<tr>
+						<td>{$vo['id']}</td>
+						<td>{$vo['uid']}</td>
+						<td>{$vo['userinfo']['user_login']}</td>
+						<td>{$vo['vip_name']}</td>
+						<td>{$vo['task_name']}</td>
+						<td>{$vo['ctime|date="Y-m-d H:i:s",###']}</td>
+						<td>{$vo['submit_time']}</td>
+						<td>{$vo['classification']}</td>
+						<td>{$vo['price']}</td>
+						<td>{$vo['reward1']}</td>
+						<td>{$vo['reward2_upgrade_vip']}</td>
+						<td>{$vo['reward1_number']}</td>
+						<td>{$vo['status_name']}</td>
+						<td>{$vo['remark']}</td>
+						<td>{$vo.mtime|date="Y-m-d H:i:s",###}</td>
+						<td>{$vo['act_userinfo']['user_nicename']}</td>
+						<td>
+							<if condition="$vo.status eq 3">
+								<a href="{:U('YhTask/view_rewardlog',array('id'=>$vo['id']))}" class="color-blue cust-iframe-pop" title="查看" data-iframe="{width:90%,height:150px,top:40%,left:2.5%}">查看</a>
+							</if>
+							<if condition="$vo.only_one eq 0">
+								<if condition="$vo.status eq 1 && in_array($vo['check_num'],[0,2])">
+									<a href="{:U('YhTask/cancel_task',array('id'=>$vo['id']))}"  class="cust-js-ajax" confirm="您确定要取消任务吗？">{$vo['only_one']}取消任务</a>
+								</if>
+								<if condition="$vo.status eq 2">
+									<a href="{:U('YhTask/immediately_check',array('id'=>$vo['id']))}" class="cust-iframe-pop" title="立即审核" data-iframe="{width:700px,height:90%,top:2.5%}">立即审核</a>
+								</if>
+								<else/>
+								<if condition="$vo.status eq 1">
+									<if condition="$vo.today_ischeck eq 1">
+										 <a href="{:U('YhTask/view_rewardlog',array('id'=>$vo['id']))}" class="color-blue cust-iframe-pop" title="查看" data-iframe="{width:90%,height:150px,top:40%,left:2.5%}">查看</a>
+									<else/>
+										<a href="{:U('YhTask/immediately_check',array('id'=>$vo['id']))}" class="cust-iframe-pop" title="立即审核" data-iframe="{width:700px,height:90%,top:2.5%}">立即审核</a>
+									</if>
+								</if>
+							</if>
+
+
+
+						</td>
+					</tr>
+				</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+</script>

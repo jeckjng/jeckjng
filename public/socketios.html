@@ -1,0 +1,54 @@
+<html>
+<script src='http://cdn.bootcss.com/socket.io/1.3.7/socket.io.js'></script>
+<script>
+    // 如果服务端不在本机，请把127.0.0.1改成服务端ip
+    //var socket = io('http://47.243.178.149:2020');
+    // 如果服务端不在本机，请把127.0.0.1改成服务端ip
+    //var socket = io('http://18.140.192.135:2020');
+    //var socket = io('https://livedev.jxmm168.com/php-socket-linch/');
+    //var socket = io('http://18.142.148.178:19968/');
+    // var  socket = io('http://php-socket-linch-4d1891995135b477.elb.ap-southeast-1.amazonaws.com');
+   // var socket = io('https://php-socket.meibocms.com');
+    var socket = io('https://2oshqeze.xylkic.com');
+
+
+    // 触发服务端的chat message事件
+
+    //进入房间模拟
+  //socket.emit('conn', '{"uid":"83513","token":"8c3230fe6d880a54b8f0acd31f41e55c","liveuid":"93694","roomnum":"93694","stream":"89059_1656675392","language":101}');
+    socket.emit('conn', '{"uid":"8808089","token":"ae0b3bafb030013a716b73715f6da745","liveuid":"8246649","roomnum":"8246649","stream":"8246649_1661602099"}');
+   // socket.emit('conn', '{"uid":"23067","token":"49611ab2a625297ec95dc47a6f93cddc","liveuid":"27087","roomnum":"23052","stream":"27087_1635605683"}');
+
+
+    //禁言处理
+    //socket.emit('broadcast', '{"retcode":"000000","retmsg":"ok","msg":[{"_method_":"ShutUpUser","action":"1","msgtype":"4","level":"1","uname":"Eugene","uid":"27698","touid":"22713","toname":"mango","ct":"mango被禁言600秒","avatar":"http://image2.typay2.com/static/heads/head_39.jpg"}]}');
+    //发言模拟
+    //socket.emit('broadcast', '{"retcode":"000000","retmsg":"ok","msg":[{"_method_":"SendMsg","action":"0","msgtype":"2","usertype":"30","isAnchor":"0","level":"7","uname":"SSVIP555","uid":"25318","liangname":"0","vip_type":"1","guard_type":"0","ct":"123"}]}');
+    //socket.emit('broadcast', '{"retcode":"000000","retmsg":"ok","msg":[{"_method_":"StartEndLive","action":"18","uid":"27698","msgtype":"1","uname":"Eugene","roomnum":"27698","ct":"直播关闭","avatar":"http:\\/\\/image2.typay2.com\\/static\\/heads\\/head_39.jpg"}]}');
+
+    //送礼模拟
+    //socket.emit('broadcast', '{"retcode":"000000","retmsg":"ok","msg":[{"_method_":"SendMsg","action":"0","msgtype":"2","usertype":"30","isAnchor":"0","level":"7","uname":"SSVIP555","uid":"25318","liangname":"0","vip_type":"1","guard_type":"0","ct":"123"}]}');
+
+
+    //发送弹幕模拟
+    //socket.emit('broadcast', '{"retcode":"000000","retmsg":"ok","msg":[{"_method_":"SendBarrage","action":"7","msgtype":"1","level":"4","uname":"mango","uid":"22713","uhead":"http:\\/\\/image2.typay2.com\\/static\\/heads\\/head_29.jpg","ct":"eea8553080d75b1d2755a5176c8d6e80","avatar":"http:\\/\\/image2.typay2.com\\/static\\/heads\\/head_29.jpg"}]}');
+
+    // 游戏数据模拟
+   // socket.emit('gamenews', '{"retcode":"000000","retmsg":"ok","msg":[{"_method_":"GameNews2","gamedata":"gamedatainfo","action":"GameNews","msgtype":"2","level":"4","uname":"mango","uid":"22713","uhead":"http:\\/\\/image2.typay2.com\\/static\\/heads\\/head_29.jpg","ct":"eea8553080d75b1d2755a5176c8d6e80","avatar":"http:\\/\\/image2.typay2.com\\/static\\/heads\\/head_29.jpg"}]}');
+
+    //socket.emit('autosend', '{"status":"1","token":"3a2219dd9a1e9ec910d6bfecb4d8dd09"}')
+
+    // socket.emit('broadcast', '{"retcode":"000000","retmsg":"ok","msg":[{"_method_":"ShutUpUser","action":"1","msgtype":"4","level":"1","uname":"18900000001","uid":"27211","touid":"22713","toname":"mango","ct":"mango被禁言1秒","avatar":"http:\\/\\/image2.typay2.com\\/static\\/heads\\/head_41.jpg"}]}')
+
+
+
+    socket.on('broadcastingListen', function(msg){
+        //  console.log('get message:' + msg + ' from server');
+        console.log( msg);
+    });
+</script>
+<body>
+
+<p>socketio  test!</p>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<admintpl file="header" xmlns="http://www.w3.org/1999/html"/>
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Longvideo/addclassify')}
+		<!--<li><a href="{:U('Longvideo/label')}">长视频标签列表</a></li>
+		<li><a href="{:U('Longvideo/addlabel')}">长视频标签添加</a></li>
+		<li><a href="{:U('Longvideo/classify')}">分类列表</a></li>
+		<li class="active" ><a href="{:U('Longvideo/addclassify')}">添加分类</a></li>-->
+	</ul>
+	<form method="post" class="form-horizontal js-ajax-form" action="{:U('Longvideo/add_classify')}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">请选择所属主分类</label>
+				<div class="controls">
+					<select name="labels">
+						<foreach name="labels" item="vo">
+							<option value="{$vo.label}" <if condition="$vo.label eq $info['label']">selected</if>>{$vo.label}</option>
+						</foreach>
+					</select>
+
+
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">请输入子分类名称</label>
+				<div class="controls">
+					<input type="text" name="classify" value="{$info['classify']}">
+					<span class="form-required">*</span>
+				</div>
+			</div>
+
+			<!--<div class="control-group" id="uid">
+				<label class="control-label">添加书签用户id</label>
+				<div class="controls">
+					<input type="text" name="owner_uid" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');" value="{$info['uid']}">
+					<span class="form-required">* 请填写用户id</span>
+				</div>
+			</div>-->
+			<div class="control-group" id="sort">
+				<label class="control-label">排序</label>
+				<div class="controls">
+					<input type="text" name="sort" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');" value="{$info['sort']}">
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">排序</label>
+				<div class="controls">
+					<select class="select_2" name="model_type" class="mar-right-15">
+
+						<option value="1"  <if condition="$info.model_type eq '1'">selected</if> >模板一</option>
+						<option value="2"  <if condition="$info.model_type eq '2'">selected</if>> 模板二</option>
+						<option value="3"  <if condition="$info.model_type eq '3'">selected</if>> 模板三</option>
+						<option value="4"  <if condition="$info.model_type eq '4'">selected</if> >模板四</option>
+						<option value="5"  <if condition="$info.model_type eq '5'">selected</if> >模板五</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">广告</label>
+				<div class="controls">
+					<label class="radio inline"><input type="radio" value="1" <if condition="$info.ad_isopen eq '1'">checked</if> name="ad_isopen" >开启</label>
+					<label class="radio inline"><input type="radio" value="0" <if condition="$info.ad_isopen eq '0'">checked</if> name="ad_isopen">关闭</label>
+
+				</div>
+			</div>
+			<div class="control-group" >
+				<label class="control-label">上传图片</label>
+				<div class="img_div ">
+					<input type="hidden" name="thumb_first" value="{$info['thumb_first']}"  required>
+					<span class="upload_btn cust-upload-img" data-name="thumb_first" data-showimgclass="thumb_img_show" data-progress="1" data-url="{:U('Upload/img_upload')}">
+								<img src="{$info['thumb_first']|default='__TMPL__Public/assets/images/default-thumbnail.png'}" alt="" class="thumb_img_show" width="135" style="max-height: 135px;max-width: 135px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;">
+					</span>
+					<input type="hidden" name="thumb_second" value="{$info['thumb_second']}" required>
+					<span class="upload_btn cust-upload-img" data-name="thumb_second" data-showimgclass="thumb_img_showaa" data-progress="1" data-url="{:U('Upload/img_upload')}">
+								<img src="{$info['thumb_second']|default='__TMPL__Public/assets/images/default-thumbnail.png'}" alt="" class="thumb_img_showaa" width="135" style="max-height: 135px;max-width: 135px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;">
+					</span>
+
+					<input type="hidden" name="thumb_third" value="{$info['thumb_third']}"  required>
+					<span class="upload_btn cust-upload-img" data-name="thumb_third" data-showimgclass="thumb_img_showbb" data-progress="1" data-url="{:U('Upload/img_upload')}">
+								<img src="{$info['thumb_third']|default='__TMPL__Public/assets/images/default-thumbnail.png'}" alt="" class="thumb_img_showbb" width="135" style="max-height: 135px;max-width: 135px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;">
+					</span>
+				</div>
+				<div>
+					图片大小建议：
+					首页  :高400px &nbsp;&nbsp;宽度按比例撑满 &nbsp;&nbsp;
+					直播  :高200px &nbsp;&nbsp;宽度按比例撑满 &nbsp;&nbsp;
+					短视频精选 :高200px &nbsp;&nbsp;宽度按比例撑满 &nbsp;&nbsp;
+					短视频推荐 :高200px 宽300px   &nbsp;&nbsp;
+					我的 :高200px  宽度按比例撑满 &nbsp;&nbsp;
+					长视频广告播放页 &nbsp;&nbsp; :高660p 宽度 1080px &nbsp;&nbsp;
+					创作中心 &nbsp;&nbsp; :高710p 宽度 170px &nbsp;&nbsp;
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">广告链接</label>
+				<div class="controls">
+					<input type="text" style="width: 550px;" name="ad_url" value="{$info['ad_url']}">
+					<span class="form-required">*</span>
+				</div>
+			</div>
+
+		<div class="form-actions">
+			<input type="hidden" name="id" value="{$info['id']}" >
+			<button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+			<a class="btn" href="{:U('Longvideo/classify')}">{:L('BACK')}</a>
+		</div>
+		</fieldset>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+	$(function(){
+
+		$("input[name='video_upload_type']").click(function(){
+			var val=$("input[name='video_upload_type']:checked").val();
+			console.log(val);
+			if(val==0){
+				$(".video_url_area").show();
+				$(".upload_video_area").hide();
+			}else{
+				$(".video_url_area").hide();
+				$(".upload_video_area").show();
+				$("input[name='href']").val('');
+			}
+		});
+
+		$("input[name='owner']").on("click",function(){
+			var val=$(this).val();
+			if(val==1){ //所有者为用户
+				$("#owner_uid").show();
+			}else{
+				$("#owner_uid").hide();
+			}
+		});
+
+	});
+</script>
+</body>
+</html>

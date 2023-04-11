@@ -1,0 +1,134 @@
+<admintpl file="header" />
+</head>
+<style>
+	.line-1{
+		border: 1px lightgray solid;
+		padding: 10px;
+		margin-bottom: 10px;
+	}
+	.table-1,.table-2{
+		width: 100%;
+	}
+	.table-1 th{
+		text-align: center;
+		font-weight: 500;
+	}
+	.table-1 td{
+		text-align: center;
+		font-weight: bold;
+		padding-top: 5px;
+	}
+	.line-2-col-1{
+		display: inline-block;
+		border: 1px lightgray solid;
+	}
+	.line-2-col-2{
+		padding: 15px;
+	}
+	.line-2-col-1 lable{
+		font-weight: bold;
+	}
+	.total{
+		margin-top: 15px;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/ProfitShare/complex_summary')}
+		</ul>
+		<form class="well form-search" name="form1" method="post" action="">
+			<if condition="$role_id == 1">
+				租户
+				<select name="tenant_id" style="width: 120px;margin-right: 15px;">
+					<option value="">全部</option>
+					<volist name="tenant_list" id="vo">
+						<option value="{$vo.id}" <if condition="$param.tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+					</volist>
+				</select>
+			</if>
+			统计时间
+			<input type="text" name="ctime" class="js-date date" value="{$param.ctime}" style="width: 180px;margin-right: 15px;display: {:isset($param['type']['day']) ? 'inline-block' : 'none'};" autocomplete="off">
+			<input type="text" value="{$date_between}" class="date_between" disabled style="width: 180px;margin-right: 15px;display: {:isset($param['type']['day']) ? 'none' : 'inline-block'};" autocomplete="off">
+
+			<input type="submit" name="type[day]" class="btn btn-primary time_select {:isset($param['type']['day']) ? '' : 'bg-color-white color-black'} mar-right-15" value="日汇总" />
+			<input type="submit" name="type[thisweek]" data-t_s="{:date('Y-m-d',$timeselect.tweek_start)}" data-t_e="{:date('Y-m-d',$timeselect.tweek_end)}" class="btn btn-primary time_select {:isset($param['type']['thisweek']) ? '' : 'bg-color-white color-black'} mar-right-15" value="本周" />
+			<input type="submit" name="type[lastweek]" data-t_s="{:date('Y-m-d',$timeselect.yweek_start)}" data-t_e="{:date('Y-m-d',$timeselect.yweek_end)}" class="btn btn-primary time_select {:isset($param['type']['lastweek']) ? '' : 'bg-color-white color-black'} mar-right-15" value="上周" />
+			<input type="submit" name="type[thismonth]" data-t_s="{:date('Y-m-d',$timeselect.tmonth_start)}" data-t_e="{:date('Y-m-d',$timeselect.tmonth_end)}" class="btn btn-primary time_select {:isset($param['type']['thismonth']) ? '' : 'bg-color-white color-black'} mar-right-15" value="本月" />
+			<input type="submit" name="type[lastmonth]" data-t_s="{:date('Y-m-d',$timeselect.ymonth_start)}" data-t_e="{:date('Y-m-d',$timeselect.ymonth_end)}" class="btn btn-primary time_select {:isset($param['type']['lastmonth']) ? '' : 'bg-color-white color-black'} mar-right-15" value="上月" />
+		</form>
+
+		<div class="line-1">
+			<table class="table-1">
+				<tr>
+					<th>开播直播间总数</th>
+					<th>在线直播间总数</th>
+					<th>在线观看人数</th>
+				</tr>
+				<tr>
+					<td>{$data.live_count}</td>
+					<td>{$data.live_now_count}</td>
+					<td>{$data.watching_num|default=0}</td>
+				</tr>
+			</table>
+		</div>
+		<div class="line-2">
+			<table class="table-2">
+				<tr>
+					<td>
+						<div class="line-2-col-1" style="width: 96%;">
+							<div class="line-2-col-2">
+								<p><lable>直播间数据</lable></p>
+								<p>计时房间费用： {$data.timecharge_am}/{$data.timecharge_num}人</p>
+								<p>门票房间费用： {$data.roomcharge_am}/{$data.roomcharge_num}人</p>
+								<p>弹幕发言费用： {$data.sendbarrage_am}/{$data.sendbarrage_num}人</p>
+								<p>礼物费用： {$data.sendgift_am}/{$data.sendgift_num}人</p>
+								<p>坐骑购买： {$data.buycar_am}/{$data.buycar_num}人</p>
+								<p class="total">合计： {$data.live_totalam}</p>
+							</div>
+						</div>
+					</td>
+					<td>
+						<div class="line-2-col-1" style="width: 96%;">
+							<div class="line-2-col-2">
+							<p><lable>主播分成</lable></p>
+							<p>房间费用分成： {$data.pa_roomcharge_am}/{$data.pa_roomcharge_num}人</p>
+							<p>弹幕发言分成： {$data.pa_sendbarrage_am}/{$data.pa_sendbarrage_num}人</p>
+							<p>礼物分成： {$data.pa_sendgift_am}/{$data.pa_sendgift_num}人</p>
+							<p>游戏分成： {$data.pa_bet_am}/{$data.pa_bet_num}人</p>
+							<p>&nbsp;</p>
+							<p class="total">合计： {$data.live_pa_totalam}</p>
+							</div>
+						</div>
+					</td>
+					<td>
+						<div class="line-2-col-1" style="width: 100%;">
+							<div class="line-2-col-2">
+							<p><lable>家族长分成</lable></p>
+							<p>房间费用分成： {$data.pf_roomcharge_am}/{$data.pf_roomcharge_num}人</p>
+							<p>弹幕发言分成： {$data.pf_sendbarrage_am}/{$data.pf_sendbarrage_num}人</p>
+							<p>礼物分成： {$data.pf_sendgift_am}/{$data.pf_sendgift_num}人</p>
+							<p>游戏分成： {$data.pf_bet_am}/{$data.pf_bet_num}人</p>
+							<p>&nbsp;</p>
+							<p class="total">合计： {$data.live_pf_totalam}</p>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>
+<script>
+	$(".time_select").on('click',function () {
+		if($(this).attr('name') == 'type[day]'){
+			$("input[name='ctime']").css('display','inline-block');
+            $(".date_between").css('display','none');
+		}else{
+			$("input[name='ctime']").css('display','none');
+            $(".date_between").css('display','inline-block').val($(this).attr('data-t_s')+' - '+$(this).attr('data-t_e'));
+		}
+	});
+</script>

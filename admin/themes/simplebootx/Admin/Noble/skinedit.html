@@ -1,0 +1,48 @@
+<admintpl file="header" />
+<link href="__PUBLIC__/colpick/colpick.css" rel="stylesheet" type="text/css">
+</head>
+<style>
+
+</style>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Noble/skinedit')}
+	</ul>
+	<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('skinedit')}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">皮肤颜色</label>
+				<div class="controls">
+					<input type="text" name="val" value="{$info.val}" id="picker" required>
+					<input id="colour_block" style="width:25px;height:25px;background:{$info.val};" disabled/>
+					<span class="form-required">填写规则如灰色 #AAAAAA</span>
+				</div>
+			</div>
+		</fieldset>
+		<div class="form-actions">
+			<input type="hidden" name="id" value="{$info.id}">
+			<input type="hidden" name="tenant_id" value="{$info.tenant_id}">
+			<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}">{:L('SAVE')}</button>
+			<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script src="__PUBLIC__/colpick/colpick.js"></script>
+<script>
+	$('#picker').colpick({
+		layout:'hex',
+		submit:0,
+		colorScheme:'dark',
+		onChange:function(hsb,hex,rgb,el,bySetColor) {
+			$("#colour_block").css('background','#'+hex);
+			// Fill the text box just if the color was set using the picker, and not the colpickSetColor function.
+			if(!bySetColor) $(el).val('#'+hex);
+		}
+	}).keyup(function(){
+		$(this).colpickSetColor(this.value);
+	});
+</script>

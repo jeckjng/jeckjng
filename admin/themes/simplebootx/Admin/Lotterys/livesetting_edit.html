@@ -1,0 +1,143 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li ><a href="{:U('Liveing/index')}">列表</a></li>
+        <li class="active"><a >添加</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Lotterys/livesetting_edit')}
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('livesetting_editpost')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">会员ID</label>
+                <div class="controls">
+                    <input type="text" name="uid" readonly="readonly"  value="{$info['uid']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">是否默认模板</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="is_template" <if condition="$info['is_template'] eq 1">checked="checked"</if>>是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="is_template" <if condition="$info['is_template'] eq 2">checked="checked"</if>>否</label>
+                    <span class="form-required" style="color:red;font-size: 15px;" >*默认模板针对租户设置，如果没有加直播间设置的房间号，则默认使用该模板的设置内容</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">租户选择</label>
+                <div class="controls">
+                    <select name="tenamtinfo" id="tenant" readonly="readonly">
+                        <foreach name="tenant" item="vo">
+                            <if condition="$info['tenant_id'] eq $vo['id']">
+                                <option value="{$vo.id}_{$vo.game_tenant_id}_{$vo.name}" selected >{$vo.name}</option>
+                            </if>
+                        </foreach>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">游戏列表</label>
+                <div class="controls" >
+                    <foreach name="lottery_config" item="vo">
+                        <label class="checkbox inline"><input type="checkbox"  value="{$vo.play_id}_{$vo.play_name}_{$vo.play_cname}"  name="game_list[]" <if condition="$vo['list_use'] eq 1">checked="checked"</if>>{$vo.play_cname}</label>
+                    </foreach>
+                </div>
+            </div>-
+            <div class="control-group">
+                <label class="control-label">推荐游戏</label>
+                <div class="controls"  >
+                        <foreach name="lottery_config" item="vo">
+                          <!--  <label class="checkbox inline"><input type="checkbox"  value="{$vo.play_id}_{$vo.play_name}_{$vo.play_cname}" name="game_recommend[]" <if condition="$vo['recommend_use'] eq 1">checked="checked"</if>>{$vo.play_cname}</label>-->
+                            <label class="radio inline"><input type="radio"  value="{$vo.play_id}_{$vo.play_name}_{$vo.play_cname}" name="game_recommend" <if condition="$vo['recommend_use'] eq 1">checked="checked"</if>>{$vo.play_cname}</label>
+
+                        </foreach>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">游戏入口(手柄)</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_open" <if condition="$info['game_open'] eq 1">checked="checked"</if>>是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_open" <if condition="$info['game_open'] eq 2">checked="checked"</if>>否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">显示优惠活动</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_discount" <if condition="$info['game_discount'] eq 1">checked="checked"</if>>是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_discount" <if condition="$info['game_discount'] eq 2">checked="checked"</if>>否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">显示长龙助手</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_longbet"  <if condition="$info['game_longbet'] eq 1">checked="checked"</if>>是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_longbet"  <if condition="$info['game_longbet'] eq 2">checked="checked"</if>>否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">开启举报有奖</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_rewards" <if condition="$info['game_rewards'] eq 1">checked="checked"</if>>是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_rewards" <if condition="$info['game_rewards'] eq 2">checked="checked"</if>>否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">启用跟投</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_follow" <if condition="$info['game_follow'] eq 1">checked="checked"</if>>是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_follow" <if condition="$info['game_follow'] eq 2">checked="checked"</if>>否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">分享投注</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_sharebet" <if condition="$info['game_sharebet'] eq 1">checked="checked"</if>>是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_sharebet" <if condition="$info['game_sharebet'] eq 2">checked="checked"</if>>否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">是否有效</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="1" name="game_iswork" <if condition="$info['game_iswork'] eq 1">checked="checked"</if>>是</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_iswork" <if condition="$info['game_iswork'] eq 2">checked="checked"</if>>否</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">半屏游戏</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" value="0" name="game_halfscreen" <if condition="$info['game_halfscreen'] eq 0">checked="checked"</if>>不显示</label>
+                    <label class="radio inline"><input type="radio" value="1" name="game_halfscreen" <if condition="$info['game_halfscreen'] eq 1">checked="checked"</if>>百家乐</label>
+                    <label class="radio inline"><input type="radio" value="2" name="game_halfscreen" <if condition="$info['game_halfscreen'] eq 2">checked="checked"</if>>龙虎斗</label>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">开始时间</label>
+                <div class="controls">
+                    <input type="datetime-local" value="{$info.time_start}" name="time_start" min="2010-01-01" max="2100-01-01"/>
+                </div>
+            </div>
+                <br/>
+             <div class="control-group">
+                    <label class="control-label">结束时间</label>
+                    <div class="controls">
+                        <input type="datetime-local" value="{$info.time_end}" name="time_end"   min="2010-01-01" max="2100-01-01"/>
+                    </div>
+            </div>
+            <input type="hidden" name="id" value="{$info['id']}" >
+
+
+
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('EDIT')}</button>
+            <a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

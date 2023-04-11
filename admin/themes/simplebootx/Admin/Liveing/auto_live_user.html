@@ -1,0 +1,93 @@
+<admintpl file="header" />
+</head>
+<style>
+	table td{
+		min-width: 70px;
+	}
+</style>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		<!--<li class="active"><a >等级列表</a></li>
+        <li><a href="{:U('Level/experlevel_add')}">等级添加</a></li>-->
+		{:getTableMenu($_GET['menuid'],'Admin/Liveing/auto_live_user')}
+	</ul>
+	<form class="well form-search" name="form1" method="post" action="">
+		<div>
+			<if condition="$role_id == 1">
+				<div class="search-box">
+					租户
+					<select name="tenant_id" style="width: 120px;margin-right: 15px;">
+						<volist name="tenant_list" id="vo">
+							<option value="{$vo.id}" <if condition="$param.tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+						</volist>
+					</select>
+				</div>
+			</if>
+			<div class="search-box">
+				用户ID：
+				<input type="text" name="uid" style="width: 200px;" value="{$param.uid}" placeholder="请输入用户ID">
+			</div>
+			<div class="search-box">
+				用户账号：
+				<input type="text" name="user_login" style="width: 200px;" value="{$param.user_login}" placeholder="请输入用户账号">
+			</div>
+			<div class="search-box">
+				彩票会员ID：
+				<input type="text" name="game_user_id" style="width: 200px;" value="{$param.game_user_id}" placeholder="请输入彩票会员ID">
+			</div>
+			<div class="search-box" style="float: right;">
+				<a href="{:U('auto_live_user_add', array('tenant_id'=>$param['tenant_id']))}" class="btn btn-primary" style="background-color: #1abc9c;">新增</a>
+			</div>
+		</div>
+		<div>
+			<div class="search-box">
+				<input type="submit" class="btn btn-primary" value="搜索">
+			</div>
+		</div>
+	</form>
+	<form method="post" class="cust-js-ajax-form" >
+		<table class="table table-hover table-bordered">
+			<thead>
+			<tr>
+				<th>编号</th>
+				<th>用户ID</th>
+				<th>用户账号</th>
+				<th>彩票会员ID</th>
+				<!--<th>自动开播类型</th>-->
+				<th>封面图</th>
+				<th>添加时间</th>
+				<th>操作人</th>
+                <th>操作</th>
+			</tr>
+			</thead>
+			<tbody>
+			<foreach name="list" item="vo">
+				<tr>
+					<td>{$vo['id']}</td>
+					<td>{$vo['uid']}</td>
+					<td>{$vo['user_login']}</td>
+					<td>{$vo['game_user_id']}</td>
+					<!--<td>{$vo['type_name']}</td>-->
+					<td><img class="img-zoom" width="25" height="25" src="{$vo['thumb']}" /></td>
+					<td>{$vo.create_time|date="Y-m-d H:i:s",###}</td>
+					<td>{$vo['operated_by']}</td>
+					<td align="center">
+						<a href="{:U('auto_live_user_edit', array('id'=>$vo['id']))}" class="  mar-right-5 {:showHidden(U('auto_live_user_edit'))}">编辑</a>
+						<a href="{:U('auto_live_user_del', array('id'=>$vo['id']))}" class="cust-js-ajax del_color {:showHidden(U('auto_live_user_del'))}" data-msg="您确定要删除吗？">删除</a>
+					</td>
+				</tr>
+			</foreach>
+			</tbody>
+		</table>
+		<div class="pagination">{$page}</div>
+
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script src="__PUBLIC__/js/imgzoom/imgzoom.js"></script>
+</body>
+</html>
+<script>
+    new ImgZoom();
+</script>

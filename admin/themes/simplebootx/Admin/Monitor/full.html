@@ -1,0 +1,17 @@
+
+<div class="dialog-tc">
+  <span onclick="closePorpCust(this)" class="closes"><span>
+</div>
+<div class="ckplayer">
+	<div class="live_full" data-uid="{$live['uid']}" data-flvpull="{$live['flvpull']}" data-reflesh="0" id="live_full_{$live['uid']}">
+		<iframe src="{:U('livevideo',array('uid'=>$live['uid'],'key'=>0))}" frameborder="{$key}" style="width: 401px;height: 572.4px;border: 0px;"></iframe>
+	</div>
+</div>
+<script>
+
+	function closePorpCust(obj){
+		$(obj).parent().parent().hide();
+		$(obj).parent().parent().html("");
+	}
+
+</script>

@@ -1,0 +1,126 @@
+<admintpl file="header" />
+</head>
+<style>
+	.expander{
+		background-position: left center;
+		background-repeat: no-repeat;
+		padding-left:15px;
+		zoom: 1; /* IE7 Hack */
+	}
+	.collapsed{
+		display: none;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li class="active"><a >充值记录</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/agent/agent_parent_child')}
+		</ul>
+		<form class="well form-search" name="form1" method="post"  action="">
+			<div>
+				<div class="search-box">
+					<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+				</div>
+			</div>
+		</form>	
+    	
+		<form method="post" class="cust-js-ajax-form" style="white-space: nowrap;overflow-x: auto;" >
+			<div class="table-actions">
+<!--				<button type="button" class="btn btn-success btn-small cust-filter-column" data-table_id="list_content" data-page_name="{:U('red_list')}">列展示</button>-->
+			</div>
+			<table class="table table-hover table-bordered" id="list_content">
+				<thead>
+					<tr>
+						<th data-field="id" class="align-center-i">代理ID</th>
+						<th data-field="user_login" class="align-center-i">代理账号</th>
+						<th data-field="child_count" class="align-center-i">下級数量</th>
+						<th data-field="addtime" class="align-center-i">注册时间</th>
+						<th data-field="invitation_code" class="align-center-i">邀请码</th>
+						<th data-field="status_name" class="align-center-i">状态</th>
+						<th data-field="user_type_name" class="align-center-i">类型</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist name="list" id="vo">
+					<tr>
+						<td data-field="id" class="align-left-i">
+							<if condition="$param['view_type'] == 'parent'">
+								<if condition="$key == 0 && $vo['is_parent'] == 1">
+									<if condition="$vo['one_uid'] gt 0">
+										<a href="{:U('agent_parent_child', array('tenant_id'=>$vo['tenant_id'], 'uid'=>$vo['uid'], 'view_type'=>'parent', 'puid'=>$vo['one_uid']))}" class="mar-right-5">
+											<span data-pid="93957" class="expander" data-type="0" data-left="0" style="background-image: url('/public/images/toggle-expand-dark.png'); cursor: pointer;"></span>
+										</a>
+									</if>
+									<span class="">{$vo.uid}</span>
+								<else/>
+									<span class="expander" data-type="0" data-left="0" style="background-image: url('/public/images/toggle-up-dark.png');"></span>
+									<span class="mar-left-5">{$vo.uid}</span>
+								</if>
+							<else/>
+								<if condition="$key == 0 && $vo['is_parent'] == 1">
+									<span class="expander" data-type="0" data-left="0" style="background-image: url('/public/images/toggle-collapse-dark.png');"></span>
+									<span class="mar-left-5">{$vo.uid}</span>
+								<else/>
+									<if condition="$vo['child_count'] gt 0">
+										<a href="{:U('agent_parent_child', array('tenant_id'=>$vo['tenant_id'], 'uid'=>$vo['uid'], 'view_type'=>'child'))}" class="">
+											<span data-pid="93957" class="expander" data-type="0" data-left="0" style="background-image: url('/public/images/toggle-expand-dark.png'); cursor: pointer;"></span>
+										</a>
+										<span class="mar-left-5">{$vo.uid}</span>
+									<else/>
+										<span class="mar-left-20">{$vo.uid}</span>
+									</if>
+								</if>
+							</if>
+						</td>
+						<td data-field="user_login" class="align-center-i">{$vo['user_login']}</td>
+						<td data-field="child_count" class="align-center-i">{$vo['child_count']}</td>
+						<td data-field="addtime" class="align-center-i">{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+						<td data-field="invitation_code" class="align-center-i">{$vo['invitation_code']}</td>
+						<td data-field="status_name" class="align-center-i">{$vo['status_name']}</td>
+						<td data-field="user_type_name" class="align-center-i">{$vo['user_type_name']}</td>
+					</tr>
+					</volist>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/md5/jquery.md5.js"></script>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script>
+
+	$(document).ready(function (){
+		// 筛选列，是否有隐藏的，如果有则隐藏不显示
+		// var cust_filter_column_obj = $('.cust-filter-column');
+		// var cust_filter_column_key = "cust-filter-column-" + $.md5($(cust_filter_column_obj).attr('data-page_name'));
+		// var checked_no_json = window.localStorage.getItem(cust_filter_column_key)
+		// if(checked_no_json){
+		// 	checked_no_list = JSON.parse(checked_no_json);
+		// 	var table_id = $(cust_filter_column_obj).attr('data-table_id');
+		// 	$.each(checked_no_list, function (index, val){
+		// 		data_field = val
+		// 		$('#'+table_id).children('thead').find("[data-field='" + data_field + "']").addClass('filter-checked-no').removeClass('filter-checked-yes').css('display', 'none');
+		// 		$('#'+table_id).children('tbody').find("[data-field='" + data_field + "']").addClass('filter-checked-no').removeClass('filter-checked-yes').css('display', 'none');
+		// 	})
+		// }
+
+		// 根据菜单权限是否显示按钮
+		var auth_access_json = '{$auth_access_json}';
+		var role_id = '{$role_id}';
+		var auth_access_list = JSON.parse(auth_access_json)
+		$(".auth_access").each(function (index,val){
+			var rule_name = $(this).attr('data-auth_access');
+			rule_name = rule_name.replace(/^\//g, '').toLowerCase();
+			var hash_key = $.md5(role_id+rule_name+'admin_url');
+			if(auth_access_list.hasOwnProperty(hash_key) == true){
+				$(this).css('display','');
+			}else{
+				$(this).css('display','none');
+			}
+		});
+	});
+
+</script>

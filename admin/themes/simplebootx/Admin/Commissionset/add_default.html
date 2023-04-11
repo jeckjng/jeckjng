@@ -1,0 +1,116 @@
+<admintpl file="header" />
+<style>
+input{
+    width:500px;
+}
+</style>
+</head>
+<body>
+	<div class="wrap">
+
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('Commissionset/addpost_defult')}">
+
+			<fieldset>
+
+				<div class="control-group">
+					<label class="control-label">主播彩票佣金</label>
+					<div class="controls">
+						<input type="text" name="anchor_betcommission" onkeyup="savedecimal(this)"  value="{$defautinfo.anchor_betcommission}" >
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">家族彩票佣金</label>
+					<div class="controls">
+						{$anchor_platform_ratio}%  <b style="color: red;margin-left: 20px;">   主播彩票佣金设置不得超过该数</b>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">主播打赏佣金</label>
+					<div class="controls">
+						<input type="text" name="anchor_commission" onkeyup="this.value=this.value.replace(/[^0-9]+/,'');"  value="{$defautinfo.anchor_commission}">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">主播打赏佣金最低</label>
+					<div class="controls">
+						<input type="text" name="anchor_limitcommission" onkeyup="this.value=this.value.replace(/[^0-9]+/,'');"  value="{$defautinfo.anchor_limitcommission}">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">家族打赏佣金</label>
+					<div class="controls">
+						{$anchor_profit_ratio}%   <b style="color: red;margin-left: 20px;">   主播打赏佣金设置不得超过该数</b>
+					</div>
+				</div>
+
+				<if condition="$admin_type neq 1" >
+					<div class="control-group">
+						<label class="control-label">时薪设置</label>
+						<div class="controls">
+							<input type="text" name="hour_money" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');"  value="{$defautinfo.hour_money}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">时长要求</label>
+						<div class="controls">
+							<input type="text" name="hour_limit" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');"  value="{$defautinfo.hour_limit}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">礼物要求</label>
+						<div class="controls">
+							<input type="text" name="gift_limit" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');"  value="{$defautinfo.gift_limit}">
+						</div>
+					</div>
+				</if>
+
+				<if condition="$role_id eq 1" >
+                      <input type="hidden" name="role_id" value="1"/>
+				</if>
+
+			</fieldset>
+			<div class="form-actions">
+
+				<button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+				<a class="btn" href="{:U('Commissionset/index')}">{:L('BACK')}</a>
+
+
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script>
+
+	$("#defult_edit").on("click",function(){
+		$uid = $("input[name='uid']").val();
+		if($uid){
+			alert('设置默认不需要填写会员');
+			return false;
+		}
+		$anchor_betcommission = $("input[name='anchor_betcommission']").val();
+		$anchor_commission = $("input[name='anchor_commission']").val();
+		$hour_money = $("input[name='hour_money']").val();
+		$hour_limit = $("input[name='hour_limit']").val();
+		$gift_limit = $("input[name='gift_limit']").val();
+		$.ajax({
+			url:'/index.php?g=admin&m=Commissionset&a=addpost_defult',
+			data:{"uid": $uid,"anchor_betcommission":$anchor_betcommission,"anchor_commission": $anchor_commission,
+				"hour_money":$hour_money,"hour_limit":$hour_limit,"gift_limit":$gift_limit,},
+			type:'POST',
+			dataType:'json',
+			success:function(data){
+				if(data.error==0){
+					alert("编辑成功");
+				}else{
+					alert(data.msg);
+				}
+
+			}
+		})
+		alert($uid)
+		alert('succ');
+	});
+</script>
+</body>
+</html>

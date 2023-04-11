@@ -1,0 +1,126 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li ><a href="{:U('Car/index')}">列表</a></li>
+			<li class="active"><a >添加</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Red/red_setting')}
+		</ul>
+		<form method="get" action="{:U('red_setting')}" enctype="multipart/form-data" class="form-horizontal cust-js-ajax-form">
+			<if condition="$role_id == 1">
+				<div class="control-group">
+					<label class="control-label">*租户</label>
+					<div class="controls">
+						<select name="tenant_id" onchange="change_tenant_id(this)" >
+							<volist name="tenant_list" id="vo">
+								<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+							</volist>
+						</select>
+						<span class="form-required"></span>
+					</div>
+				</div>
+			</if>
+		</form>
+		<form method="post" enctype="multipart/form-data" class="form-horizontal cust-js-ajax-form">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">时间点</label>
+					<div class="controls">
+						<volist name="red_time" id="vo">
+						    <label class="checkbox inline"><input type="checkbox" value="{$vo}"  name="red_time[]" 	<if condition="in_array($vo,$red_timecheck)"> checked== 'checked'</if> >{$vo}点</label>
+						</volist>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">开抢分钟设置</label>
+					<div class="controls">
+						<input type="text" name="second_time" value="{$list['second_time']}" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+		    	<div class="control-group">
+					<label class="control-label">红包效果时长</label>
+					<div class="controls">
+						<input type="text" name="effect_time" value="{$list['effect_time']}" required>
+						<span class="form-required">*分钟</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">可抢到红包时长</label>
+					<div class="controls">
+						<input type="text" name="win_time" value="{$list['win_time']}" required>
+						<span class="form-required">*分钟</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">红包总金额</label>
+					<div class="controls">
+						<input type="text" name="red_total" value="{$list['red_total']}" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">红包个数</label>
+					<div class="controls">
+						<input type="text" name="red_num" value="{$list['red_num']}" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">红包金额范围</label>
+					<div class="controls">
+						<input type="text" name="money_min" value="{$list['money_min']}" required>  -
+						<input type="text" name="money_max" value="{$list['money_max']}" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">倍数</label>
+					<div class="controls">
+						<input type="number" name="multiple" value="{$list['multiple']}" min="1" max="9999" required>
+						<span class="form-required">*, 范围：1 - 9999</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">指定VIP等级</label>
+					<div class="controls">
+						<volist name="vip_grade_list" id="vo">
+							<if condition="$vo['status']==1">
+							<label class="checkbox inline"><input type="checkbox" value="{$vo.vip_grade}" name="vip_grade[]" <if condition="in_array($vo['vip_grade'], $list['vip_grade_list'])">checked="checked"</if> >{$vo['name']}</label>
+							</if>
+						</volist>
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">指定会员</label>
+					<div class="controls">
+						<textarea name="uids" id="" cols="30" rows="4" style="width: 442px" placeholder="输入用户ID">{$list['uids']}</textarea>
+						<span class="form-required">非必选，多个用户ID，用英文逗号 ” , “ 分隔</span>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<div class="form-actions">
+					<input type="hidden" name="tenant_id" value="{$tenant_id}">
+					<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}">{:L('SAVE')}</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+
+<script type="text/javascript">
+	function change_tenant_id(obj) {
+		var tenant_id = $(obj).val();
+		window.location.href = "{:U('red_setting',array('menuid'=>$param['menuid']))}/tenant_id/"+tenant_id;
+	}
+	function set_save(type){
+		$('form').attr('action',"{:U('Admin/Activity/add_recharge_post/type/"+type+"')}");
+	}
+</script>
+

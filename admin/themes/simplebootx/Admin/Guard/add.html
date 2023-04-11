@@ -1,0 +1,139 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Guard/index')}">列表</a></li>
+			<li class="active"><a >添加</a></li>
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('Guard/do_add')}">
+			<fieldset>
+        <!--        <div class="control-group">
+					<label class="control-label">类型</label>
+					<div class="controls">
+                        <volist name="type_a" id="v">
+						<label class="radio inline" for="type_{$key}"><input type="radio" name="type" value="{$key}" id="type_{$key}" <if condition="$i eq '1'">checked</if> >{$v}</label>
+                        </volist>
+						<span class="form-required">*</span>
+					</div>
+				</div>-->
+				<if condition="$role_id == 1">
+					<div class="control-group">
+						<label class="control-label">*租户</label>
+						<div class="controls">
+							<select name="tenant_id" onchange="change_tenant_id(this)">
+								<volist name="tenant_list" id="vo">
+									<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+								</volist>
+							</select>
+							<span class="form-required"></span>
+						</div>
+					</div>
+				</if>
+				<div class="control-group">
+					<label class="control-label">序号</label>
+					<div class="controls">
+						<input type="text" name="orderno" value="0">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+                
+                <div class="control-group">
+					<label class="control-label">名称</label>
+					<div class="controls">
+						<input type="text" name="name">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">开通价格</label>
+					<div class="controls">
+						<input type="text" name="coin">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+                <div class="control-group">
+					<label class="control-label">时长</label>
+					<div class="controls">
+                        <input type="text" name="length">
+                        <volist name="length_type_a" id="v">
+						<label class="radio inline" for="length_type_{$key}"><input type="radio" name="length_type" value="{$key}" id="length_type_{$key}" <if condition="$i eq '1'">checked</if> >{$v}</label>
+                        </volist>
+
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">守护图标:</label>
+					<div class="controls">
+						<input type="file" name="guard_img" id="guard_img">
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">守护特效:</label>
+					<div class="controls">
+						<input type="file" name="guard_effect" id="guard_effect">
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">坐标1</label>
+					<div class="controls">
+						<input type="text" name="position_first">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">坐标2</label>
+					<div class="controls">
+						<input type="text" name="position_second">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">是否可以送专属礼物</label>
+					<div class="controls">
+						<label class="radio inline"><input type="radio" name="is_gift" value="0" checked >否</label>
+						<label class="radio inline"><input type="radio" name="is_gift" value="1"   >是</label>
+
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">是否防禁言被踢</label>
+					<div class="controls">
+						<label class="radio inline"><input type="radio" name="is_shutup" value="0"  checked >否</label>
+						<label class="radio inline"><input type="radio" name="is_shutup" value="1"  >是</label>
+	                    <span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">守护礼物绑定</label>
+					<div class="controls">
+						<foreach name="listsgift" item="vo">
+							<label class="checkbox inline"><input value="{$vo.id}" type="checkbox" name="giftname[]">{$vo.giftname}</label>
+						</foreach>
+
+					</div>
+
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+				<a class="btn" href="{:U('Guard/index')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script>
+
+    function change_tenant_id(obj) {
+        var tenant_id = $(obj).val();
+        window.location.href = "{:U('add',array('menuid'=>$param['menuid']))}/tenant_id/"+tenant_id;
+    }
+
+
+</script>

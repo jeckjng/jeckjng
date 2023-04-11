@@ -1,0 +1,74 @@
+<admintpl file="header" />
+</head>
+<style>
+	table th,td{
+		text-align: center !important;
+		vertical-align: middle !important;
+	}
+	form{
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+</style>
+<body>
+	<div class="">
+		<div class="top-nav well" style="text-align: center">
+			<span class="cust-title" style="">{$title}</span>
+			<span class="" style="float: right;cursor: pointer;padding: 0 20px;" onclick="$('#cust-js-iframe',window.parent.document).toggle();">
+				<i class="fa fa-times" aria-hidden="true"></i>
+			</span>
+		</div>
+		<form method="post" class="js-ajax-form" action="{:U('Vip/user_listorders')}">
+			<table class="table table-hover table-bordered">
+				<thead>
+				<tr>
+					<th>编号</th>
+					<th>会员ID</th>
+					<th>会员账号</th>
+					<th>会员昵称</th>
+					<th>会员头像</th>
+					<th>会员类型</th>
+					<th>状态</th>
+					<th>加入时间</th>
+<!--					<th>操作时间</th>-->
+<!--					<th>操作人</th>-->
+<!--					<th>操作</th>-->
+				</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td>{:($key+1)}</td>
+						<td>{$vo['sub_uid']}</td>
+						<td>{$vo['userinfo']['user_login']}</td>
+						<td>{$vo['userinfo']['user_nicename']}</td>
+						<td><img src="{$vo['userinfo']['avatar']}" style="max-width:50px;max-height:50px;"></td>
+						<td>{$vo['type_name']}</td>
+						<td>{$vo['status_name']}</td>
+						<td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+<!--						<td>{$vo.mtime|date="Y-m-d H:i:s",###}</td>-->
+<!--						<td>{$vo['act_userinfo']['user_nicename']}</td>-->
+<!--						<td>-->
+<!--							<if condition="$vo['status'] == 1">-->
+<!--								<if condition="$vo['type'] != 3">-->
+<!--									<a href="{:U('Chatroom/friend_mute',array('id'=>$vo['id']))}" class="cust-js-ajax danger_color" confirm="您确定要禁言吗？">禁言</a>-->
+<!--								</if>-->
+<!--							<else/>-->
+<!--								<if condition="$vo['type'] != 3">-->
+<!--									<a href="{:U('Chatroom/friend_cancel_mute',array('id'=>$vo['id']))}" class="cust-js-ajax danger_color" confirm="您确定要取消禁言吗？">取消禁言</a>-->
+<!--								</if>-->
+<!--							</if>-->
+<!--						</td>-->
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

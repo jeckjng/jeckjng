@@ -1,0 +1,85 @@
+<admintpl file="header" />
+</head>
+<style>
+	table th,td{
+		text-align: center !important;
+		vertical-align: middle !important;
+		max-width: 300px;
+		word-wrap: break-word;
+	}
+	table td a{
+		display: inline-block;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Chatroom/index')}
+		</ul>
+		<form class="well form-search" method="post" action="{:U('Chatroom/index')}">
+			<div class="search-box">
+				聊天室ID：
+				<input type="text" name="id" value="{$param.id}" style="width: 100px;" autocomplete="off" placeholder="请输入">
+			</div>
+			<div class="search-box">
+				聊天室名称：
+				<input type="text" name="title" value="{$param.title}" style="width: 200px;" autocomplete="off" placeholder="请输入">
+			</div>
+			<div class="search-box">
+				房主ID：
+				<input type="text" name="uid" value="{$param.uid}" style="width: 200px;" autocomplete="off" placeholder="请输入">
+			</div>
+			<div class="search-box">
+				房主账号：
+				<input type="text" name="user_login" value="{$param.user_login}" style="width: 200px;" autocomplete="off" placeholder="请输入">
+			</div>
+			<div class="search-box">
+				<input type="submit" class="btn btn-primary" value="搜索">
+			</div>
+		</form>
+		<form method="post" class="js-ajax-form" action="{:U('Vip/user_listorders')}">
+			<table class="table table-hover table-bordered">
+				<thead>
+				<tr>
+					<th>聊天室ID</th>
+					<th>聊天室名称</th>
+					<th>房主ID</th>
+					<th>群主账号</th>
+					<th>房主昵称</th>
+					<th>聊天室图标</th>
+					<th>会员数量</th>
+					<th>创建时间</th>
+					<th>操作时间</th>
+					<th>操作人</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td>{$vo['id']}</td>
+						<td>{$vo['title']}</td>
+						<td>{$vo['uid']}</td>
+						<td>{$vo['userinfo']['user_login']}</td>
+						<td>{$vo['userinfo']['user_nicename']}</td>
+						<td><img src="{$vo['avatar']}" style="max-width:50px;max-height:50px;"></td>
+						<td>{$vo['friend_num']}</td>
+						<td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+						<td>{$vo.mtime|date="Y-m-d H:i:s",###}</td>
+						<td>{$vo['act_userinfo']['user_nicename']}</td>
+						<td>
+							<a href="{:U('Chatroom/view_friends',array('id'=>$vo['id'],'title'=>'查看会员'))}" class="cust-iframe-pop" data-iframe="{width:1000px,height:80%,top:10%}">查看会员</a>&nbsp;&nbsp;
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

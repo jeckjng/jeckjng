@@ -1,0 +1,9 @@
+ALTER TABLE cmf_users  ADD  withdrawable_money decimal(12,4) NOT NULL DEFAULT '0.0000' COMMENT '可提现金额';
+ALTER TABLE cmf_users  ADD  frozen_money decimal(12,4) NOT NULL DEFAULT '0.0000' COMMENT '冻结金额';
+ALTER TABLE cmf_users_cashrecord  ADD  bank_id int(11) NOT NULL DEFAULT '0' COMMENT '银卡id';
+ALTER TABLE cmf_users_cashrecord  ADD  coin VARCHAR(100) NOT NULL DEFAULT '' COMMENT '提现币种';
+ALTER TABLE cmf_users_cashrecord  ADD  rate decimal(12,4) NOT NULL DEFAULT '0.0000' COMMENT '汇率';
+ALTER TABLE cmf_users_cashrecord  ADD rnb_money decimal(12,4) NOT NULL DEFAULT '0.0000' COMMENT '人民币金额';
+ALTER TABLE cmf_users  ADD  frozen_coin decimal(12,4) NOT NULL DEFAULT '0.0000' COMMENT '金币冻结金额';
+ALTER TABLE cmf_users  ADD  frozen_votes decimal(12,4) NOT NULL DEFAULT '0.0000' COMMENT '映票冻结金额';
+ALTER TABLE cmf_users_cashrecord  ADD  pay_coin tinyint(4) NOT NULL DEFAULT '1' COMMENT '提现类型';

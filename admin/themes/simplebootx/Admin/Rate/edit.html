@@ -1,0 +1,92 @@
+<admintpl file="header" />
+</head>
+<style>
+	.img_div{
+		display: inline-block;
+		width: 506px;
+		border: 2px solid #dce4ec;
+		height: 36px;
+		line-height: 36px;
+		border-radius: 3px;
+		padding: 0px 2px;
+	}
+	.img_div input{
+		float: left;
+		width: 447px;
+		vertical-align: middle;
+		background: none;
+		border: 0px;
+	}
+	.img_div .upload_btn{
+		padding: 1px 14px;
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid gray;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li ><a href="{:U('Rate/index')}">币种管理</a></li>
+			<li class="active"><a>添加币种</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Rate/edit')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('edit')}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">币种:</label>
+					<div class="controls">
+						<select name="code">
+							<option value=""></option>
+							<volist name="currency_list" id="vo">
+								<option value="{$vo['code']}" <if condition="$vo['code'] == $info['code']">selected</if> >{$vo['name']}（{$vo['code']}）</option>
+							</volist>
+						</select>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">汇率:</label>
+					<div class="controls">
+						<input type="text" name="rate" value="{$info['rate']}">
+						<span class="form-required">*(人民币:本币种)</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" style="line-height: 60px !important;">图标:</label>
+					<div class="controls">
+						<div class="img_div">
+							<input type="text" name="icon" value="{$info.icon}" placeholder="请上传" required>
+							<span class="upload_btn cust-upload-img" data-name="icon" data-showimgclass="img_show_icon" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+						</div>
+						<span class="form-required">*</span>
+						<img src="{$info.icon}" alt="" class="img_show_icon" style="max-height: 70px;max-width: 100px;min-height:50px;padding: 0px;margin: 0px 0px 0px 15px;">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">状态:</label>
+					<div class="controls">
+						<label class="radio inline" for="status_1"><input type="radio" name="status" value="1" id="status_1" <if condition="$info['status'] eq '1'">checked</if> >启用</label>
+						<label class="radio inline" for="status_0"><input type="radio" name="status" value="0" id="status_0" <if condition="$info['status'] eq '0'">checked</if> >禁用</label>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<input type="hidden" name="id" value="{$info['id']}">
+				<input type="hidden" name="tenant_id" value="{$info['tenant_id']}">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('EDIT')},waittime:1000}">{:L('EDIT')}</button>
+				<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script>
+	$(document).ready(function (){
+		controls_obj = $("input[name='icon']").parent().parent();
+		height = $("input[name='icon']").parent().parent().outerHeight() - 10;
+		$(controls_obj).parent().children("label").attr('style', 'line-height: ' + height + 'px !important');
+	});
+</script>

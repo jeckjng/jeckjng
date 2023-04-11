@@ -1,0 +1,143 @@
+﻿<admintpl file="header"/>
+<style>
+ .controls img{
+     max-width:200px;
+ }
+</style>
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'User/Indexadmin/add')}
+			<!--<li><a href="{:U('User/indexadmin/index')}">本站会员</a></li>
+			<li class="active"><a href="{:U('User/indexadmin/add')}">新增会员</a></li>
+			<li><a href="{:U('Admin/Userauth/index')}">身份认证</a></li>
+			<li><a href="{:U('User/Indexadmin/bandcard')}">会员银行卡</a></li>
+			<li><a href="{:U('Admin/Impression/index')}">会员标签</a></li>
+			<li><a href="{:U('Admin/Impression/add')}">添加会员标签</a></li>-->
+		</ul>
+		<form class="form-horizontal cust-js-ajax-form" action="{:U('add_post')}" method="post">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">国家地区: </label>
+					<div class="controls">
+						<select class="select_2" name="zone" class="mar-right-15" onchange="change_zone(this)">
+							<volist name="country_code_list" id="vo" >
+								<option value="{$vo.code}" >{$vo.sc} （{$vo.code}）</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">手机号</label>
+					<div class="controls">
+						<input type="text" name="user_login" value="{$userinfo['user_login']}" id="user_login" required />
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">密码</label>
+					<div class="controls">
+						<input type="password" name="user_pass" value="{$userinfo['user_pass']}" id="user_pass" required />
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">昵称</label>
+					<div class="controls">
+						<input type="text" name="user_nicename" value="{$userinfo['user_nicename']}" id="user_nicename" required />
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">邀请码</label>
+					<div class="controls">
+						<input type="text" name="code" value=""  onkeyup="this.value= this.value.match(/[0-9a-zA-Z]{0,6}?/) ? this.value.match(/[0-9a-zA-Z]{0,6}/)[0] : ''" id="code"/>
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">上级用户id</label>
+					<div class="controls">
+						<input type="text" name="pid" value=""  onkeyup="this.value= this.value.match(/\d+/) ? this.value.match(/\d+/)[0] : ''" id="pid"/>
+						<span class="form-required"></span>
+					</div>
+				</div>
+		
+				<div class="control-group">
+					<label class="control-label">头像/封面</label>
+
+					<div class="controls">
+						<a href="javascript:void(0);" id="swftype_bd_1">
+							<input type="file" name="avatar">
+						</a><span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">性别</label>
+					<div class="controls">
+						<label class="radio inline" for="sex_1"><input type="radio" name="sex" value="1" id="sex_1" required />男</label>
+						<label class="radio inline" for="sex_2"><input type="radio" name="sex" value="2" id="sex_2" required >女</label>
+					</div>
+				</div>								
+				
+				<div class="control-group">
+					<label class="control-label">个性签名</label>
+					<div class="controls">
+						<textarea name="signature" rows="2" cols="20" id="signature" class="inputtext" style="height: 100px; width: 500px;">{$userinfo['signature']}</textarea>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">粉丝数</label>
+					<div class="controls">
+						<input type="text" name="fans" value="{$userinfo['fans']}" id="fans"/>
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">关注数</label>
+					<div class="controls">
+						<input type="text" name="follows" value="{$userinfo['follows']}" id="follows"/>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">是否为官方蓝V账号</label>
+					<div class="controls">
+						<label class="radio inline" for="is_certification_true"><input type="radio" name="is_certification" value="1" id="is_certification_true" />是</label>
+						<label class="radio inline" for="is_certification_false"><input type="radio" name="is_certification" value="0" id="is_certification_false" checked >否</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">官方蓝V账号名称</label>
+					<div class="controls">
+						<input type="text" name="certification_name" value="{$userinfo['certification_name']}" id="certification_name"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">{:L('STATUS')}</label>
+					<div class="controls">
+						<label class="radio inline" for="active_true"><input type="radio" name="user_status" value="1" checked id="active_true" />{:L('ENABLED')}</label>
+						<label class="radio inline" for="active_false"><input type="radio" name="user_status" value="0" id="active_false">{:L('DISABLED')}</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">用户类型</label>
+					<div class="controls">
+						<label class="radio inline" ><input type="radio" name="user_type" value="2" required />真实用户</label>
+						<label class="radio inline" ><input type="radio" name="user_type" value="5" required />包装用户</label>
+						<label class="radio inline" ><input type="radio" name="user_type" value="6" required />代管账号</label>
+						<label class="radio inline" ><input type="radio" name="user_type" value="7" required />测试账号</label>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('ADD')},waittime:1000}">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

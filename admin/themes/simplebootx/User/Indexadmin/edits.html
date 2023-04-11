@@ -1,0 +1,36 @@
+﻿<admintpl file="header"/>
+<style>
+ .controls img{
+     max-width:200px;
+ }
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#">编辑</a></li>
+		</ul>
+		<form class="form-horizontal js-ajax-form" action="{:U('indexadmin/edits_post')}" method="post">
+			<fieldset>
+			   <input type="hidden" name="id" value="{$id}" id="id"/>
+				<div class="control-group">
+					<label class="control-label">开通房间权限</label>
+					<div class="controls">
+						<foreach name="labels" item="vo">
+							<label class="checkbox inline"><input value="{$key}"   <if condition="in_array($key,$userlabels)"> checked== 'checked'</if>
+								type="checkbox" name="label[]">{$vo}</label>
+						</foreach>
+
+					</div>
+
+				</div>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary js-ajax-submit">编辑</button>
+				<a class="btn" href="{:U('indexadmin/index')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

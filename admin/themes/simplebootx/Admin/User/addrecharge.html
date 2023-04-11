@@ -1,0 +1,63 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+
+		<li class="active"><a >余额添加</a></li>
+	</ul>
+	<form method="post" class="form-horizontal js-ajax-form" action="{:U('User/add_recharge')}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">请输入金额</label>
+				<div class="controls">
+					<input type="text" name="money" onkeyup="value=value.replace(/[^\d]/g,'')" >
+					<span class="form-required" style="color:red;">*只能输入数字</span>
+				</div>
+			</div>
+
+			<div class="control-group" id="uid">
+				<label class="control-label">用户id</label>
+				<div class="controls">
+					<input type="text" name="owner_uid" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">
+					<span class="form-required">* 请填写用户id</span>
+				</div>
+			</div>
+
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+			<a class="btn" href="{:U('User/rechargelog')}">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+	$(function(){
+
+		$("input[name='video_upload_type']").click(function(){
+			var val=$("input[name='video_upload_type']:checked").val();
+			console.log(val);
+			if(val==0){
+				$(".video_url_area").show();
+				$(".upload_video_area").hide();
+			}else{
+				$(".video_url_area").hide();
+				$(".upload_video_area").show();
+				$("input[name='href']").val('');
+			}
+		});
+
+		$("input[name='owner']").on("click",function(){
+			var val=$(this).val();
+			if(val==1){ //所有者为用户
+				$("#owner_uid").show();
+			}else{
+				$("#owner_uid").hide();
+			}
+		});
+
+	});
+</script>
+</body>
+</html>

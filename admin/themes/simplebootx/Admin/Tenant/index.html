@@ -1,0 +1,89 @@
+<admintpl file="header" />
+</head>
+<style>
+	table.table.table-bordered th{
+		display:table-cell;
+		vertical-align:middle;
+		text-align: center;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Tenant/index')}
+		</ul>
+		<php>$status=array("1"=>"启用","0"=>"禁用");$type=array("0"=>"平台","1"=>"租户");</php>
+		<form class="well form-search" method="post" action="{:U('Tenant/index')}">
+			租户ID：
+			<input type="text" name="id" style="width: 200px;" value="{$formget.id}" placeholder="请输入租户id">
+			状态：
+			<select class="select_2" name="status">
+				<option value="">全部</option>
+				<foreach name="status" item="vo" key="k" >
+					<option value="{$k}" <if condition="isset($formget[status]) && $formget.status == $k">selected</if> >{$vo}</option>
+				</foreach>
+			</select>
+			<input type="submit" class="btn btn-primary" value="搜索">
+		</form>		
+		<form method="post" class="js-ajax-form" >
+
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th align="center">租户ID</th>
+						<th valign="middle">租户名称</th>
+						<th>租户域名</th>
+						<th>游戏系统租户ID</th>
+						<th>租户类型</th>
+						<th>户名<br/>
+							开户行<br/>
+							收款银行卡
+						</th>
+						<th>租户appkey(预留属性)</th>
+						<th>创建时间</th>
+						<th>是否有直播权限</th>
+						<th>租户状态</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td align="center">{$vo.id}</td>
+						<td>{$vo.name} </td>
+						<td>{$vo.site}</td>
+						<td>{$vo.game_tenant_id}</td>
+						<td>{$type[$vo['type']]}</td>
+						<td>
+							{$vo.account_name}<br/>
+							{$vo.account_bank}<br/>
+							{$vo.bank_card}
+						</td>
+						<td>{$vo.appkey}</td>
+						<td>{$vo.create_time|dateAdjust}</td>
+						 <if condition="$vo['live_jurisdiction'] eq '0'" >
+							 <td class="del_color">关闭</td>
+							<else/>
+						 	 <td class="success_color">开启</td>
+						</if>
+						<if condition="$vo['status'] eq '0'" >
+							<td class="del_color">{$status[$vo['status']]}</td>
+							<else/>
+							<td class="success_color">{$status[$vo['status']]}</td>
+						</if>
+
+						<td>
+							<a href="{:U('Tenant/edit',array('id'=>$vo['id']))}" >编辑</a>
+						</td>
+						</if>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

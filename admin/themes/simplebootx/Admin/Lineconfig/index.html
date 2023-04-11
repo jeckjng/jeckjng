@@ -1,0 +1,163 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li class="active"><a >线路设计</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Lineconfig/index')}
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Lineconfig/add_post')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">租户</label>
+                <div class="controls">
+                    <select name="tenant_id" id="tenant_id">
+                        <volist name="tenant_list" id="vo">
+                            <option value="{$vo.id}">{$vo.name}</option>
+                        </volist>
+                    </select>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+
+            <div class="control-group" id="play_line">
+                <div style="margin-left: 180px;margin-bottom: 20px">播放地址</div>
+                <empty name="line_list.play_line">
+                    <div class="controls" >
+                        <input type="text" name="play_line[0]">
+                        <button id="ceshi" type="button" class="form-required" onclick="add_line('play_line',1)">+</button>
+                    </div>
+                    <else />
+                    <foreach name="line_list.play_line" item="vo" >
+                        <div class="controls">
+                            <input type="text" name="play_line[{$key}]"  value="{$vo}">
+                            <if condition="$key + 1 eq $play_line_count">
+                                <button type="button" class="form-required" onclick="add_line('play_line',{$play_line_count})">+</button>
+                            </if>
+                        </div>
+
+                    </foreach>
+                </empty>
+
+            </div>
+
+            <div class="control-group" id="download_line">
+                <div style="margin-left: 180px;margin-bottom: 20px" >下载地址</div>
+                <empty name="line_list.download_line">
+                    <div class="controls" >
+                        <input type="text" name="download_line[0]">
+                        <button type="button" class="form-required"  onclick="add_line('download_line',1)">+</button>
+                    </div>
+                    <else />
+                    <foreach name="line_list.download_line" item="vo" >
+                        <div class="controls">
+                            <input type="text" name="download_line[{$key}]" value="{$vo}">
+                            <if condition="$key + 1 eq $download_line_count">
+                                <button type="button" class="form-required" onclick="add_line('download_line',{$download_line_count})">+</button>
+                            </if>
+                        </div>
+
+                    </foreach>
+                </empty>
+
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+            <!--<a class="btn" href="{:U('Ads/index')}">{:L('BACK')}</a>-->
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript">
+    function add_line(line,value) {
+        var number = value + 1;
+        $("#"+line+" :last-child button").remove();
+        var html = "<div class='controls'> " +
+           " <input type='text' name='"+line+"["+value+"]'> " +
+           "<button type='button' class='form-required' onclick=add_line('"+ line +"',"+number+")>+" +
+           "</button> " +
+           "</div>";
+        $("#"+line).append(html);
+
+}
+
+    $('#tenant_id').change(function() {
+
+        var  tenant_id = $(this).val();
+        $.ajax({
+            url: '/index.php?g=Admin&m=Lineconfig&a=tenantline',
+            type: 'POST',
+            dataType: 'json',
+            data: {tenant_id:tenant_id},
+            success:function(data){
+                var code=data.code;
+                if(code==0){
+                    $("#play_line").children().remove();
+                    $("#download_line").children().remove();
+                   if (data.info.play_line == null){
+
+                       var  play_line_html = "<div style=\"margin-left: 180px;margin-bottom: 20px\">播放地址</div>\n" +
+                           "                    <div class=\"controls\" >\n" +
+                           "                        <input type=\"text\" name=\"play_line[0]\">\n" +
+                           "                        <button id=\"ceshi\" type=\"button\" class=\"form-required\" onclick=\"add_line('play_line',1)\">+</button>\n" +
+                           "                    </div>"
+
+                   }else{
+                       var  play_line_html = "<div style=\"margin-left: 180px;margin-bottom: 20px\">播放地址</div>" ;
+                       for(var i=0;i<data.info.play_line.length;i++){
+                           var number = i+1;
+                           if (data.info.play_line.length== number){
+                               play_line_html+= "<div class=\"controls\">\n" +
+                                   "<input type=\"text\" name=\"play_line["+ i +"]\" value="+data['info']['play_line'][i]+">\n" +
+                                   " <button type=\"button\" class=\"form-required\" onclick=\"add_line('play_line',"+ number +")\">+</button>\n" +
+                                   " </div>" ;
+                           }else{
+                               play_line_html+= "<div class=\"controls\">\n" +
+                                   "<input type=\"text\" name=\"play_line["+ i +"]\" value="+data['info']['play_line'][i]+">\n" +
+                                   " </div>" ;
+                           }
+
+                       }
+                   }
+                    if (data.info.download_line == null){
+                        var  download_line_html = "<div style=\"margin-left: 180px;margin-bottom: 20px\" >下载地址</div>\n" +
+                            "                    <div class=\"controls\" >\n" +
+                            "                        <input type=\"text\" name=\"download_line[0]\">\n" +
+                            "                        <button type=\"button\" class=\"form-required\"  onclick=\"add_line('download_line',1)\">+</button>\n" +
+                            "                    </div> "
+
+                    }else {
+                        var  download_line_html = "<div style=\"margin-left: 180px;margin-bottom: 20px\">下载地址</div>" ;
+                        for(var i=0;i<data.info.download_line.length;i++){
+                            var number = i+1;
+                            if (data.info.download_line.length== number){
+                                download_line_html+= "<div class=\"controls\">\n" +
+                                    "<input type=\"text\" name=\"download_line["+ i +"]\" value="+data['info']['download_line'][i]+">\n" +
+                                    " <button type=\"button\" class=\"form-required\" onclick=\"add_line('download_line',"+ number +")\">+</button>\n" +
+                                    " </div>" ;
+                            }else{
+                                download_line_html+= "<div class=\"controls\">\n" +
+                                    "<input type=\"text\" name=\"download_line["+ i +"]\" value="+data['info']['download_line'][i]+">\n" +
+                                    " </div>" ;
+                            }
+
+                        }
+                    }
+                    $("#play_line").append(play_line_html)
+                    $("#download_line").append(download_line_html)
+                }
+
+
+            },
+            error:function(e){
+
+                console.log(e);
+            }
+        });
+
+    })
+</script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<admintpl file="header" />
+</head>
+<style>
+  input{
+    width: 500px;
+  }
+  .radio_type{
+    background-color: rgba(245, 245, 245, 1);
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin-right: 15px;
+    padding: 6px 15px;
+    cursor: pointer;
+  }
+  .active_radio{
+    background-color: #2c3e50;
+    color: white;
+  }
+  .radio_type input{
+    width: 0px;
+  }
+  .img_div{
+    display: inline-block;
+    width: 506px;
+    border: 2px solid #dce4ec;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 3px;
+    padding: 0px 2px;
+  }
+  .img_div input{
+    float: left;
+    width: 447px;
+    vertical-align: middle;
+    background: none;
+    border: 0px;
+  }
+  .img_div .upload_btn{
+    padding: 1px 14px;
+    background-color: rgba(245, 245, 245, 1);
+    border: 1px solid gray;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+</style>
+<body>
+<div class="wrap">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#">编辑</a></li>
+  </ul>
+  <form class="form-horizontal js-ajax-form" action="{:U('CustomerService/edit_post')}" method="post">
+    <input type="hidden" name="id" value="{$performer['id']}">
+    <fieldset>
+      <div class="control-group">
+        <label class="control-label">代理线会员</label>
+        <div class="controls">
+          <input type="text" name="puid" value="{$performer['puid']}" disabled="disabled">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">代理客服会员</label>
+        <div class="controls">
+          <input type="text" name="uid" value="{$performer['uid']}" disabled="disabled">
+
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">封面地址</label>
+        <div class="controls">
+          <div class="img_div">
+            <input type="text" name="avatar" value="{$performer['avatar']}" placeholder="请上传">
+            <span class="upload_btn cust-upload-img" data-name="avatar" data-showimgclass="img_show" data-progress="1" data-url="{:U('Admin/Upload/img_upload')}">+</span>
+          </div>
+          &nbsp;&nbsp;<span>任务封面，根据上传的封面前端做出展示</span>
+          <img src="{$performer['avatar']}" alt="" class="img_show" style="max-height: 70px;max-width: 100px;padding: 0px;margin: 0px 0px 0px 15px;display: inline-block;">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">封面标题</label>
+        <div class="controls">
+          <input type="text" name="title" value="{$performer['title']}">
+        </div>
+      </div>
+    </fieldset>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+      <a class="btn" href="{:U('CustomerService/index')}">{:L('BACK')}</a>
+    </div>
+  </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

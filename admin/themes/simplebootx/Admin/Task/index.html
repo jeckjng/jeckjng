@@ -1,0 +1,96 @@
+<admintpl file="header" />
+</head>
+<style>
+	table th,td{
+		text-align: center !important;
+		vertical-align: middle !important;
+	}
+
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li class="active"><a href="{:U('Task/index')}">任务管理</a></li>
+			<li><a href="{:U('Task/add_task')}">新增任务</a></li>
+			<li><a href="{:U('Task/classification')}">分类管理</a></li>
+			<li><a href="{:U('Task/user_task')}">任务领取记录</a></li>
+			<li><a href="{:U('Task/reward_log')}">奖励明细</a></li>
+			<li><a href="{:U('Task/login_reward')}">登录赠送</a></li>
+			<li><a href="{:U('Task/first_recharge')}">首充活动</a></li>
+			<li><a href="{:U('Task/share')}">分享活动</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Task/index')}
+		</ul>
+		<form class="well form-search" method="post" action="{:U('Task/index')}">
+			任务名称：
+			<input type="text" name="name" value="{$param.name}" style="width: 200px;" autocomplete="off" placeholder="请输入">
+			任务时间：
+			<input type="text" name="start_time" class="js-date date" value="{$param.start_time}" style="width: 80px;" autocomplete="off">-
+			<input type="text" name="end_time" class="js-date date" value="{$param.end_time}" style="width: 80px;" autocomplete="off"> &nbsp; &nbsp;
+			任务分类：
+			<select name="classification" style="width: 120px;">
+				<option value="">全部</option>
+				<volist name="classification_list" id="vo">
+					<option value="{$vo.id}" <if condition="$param.classification eq $vo['id']">selected</if> >{$vo.name}</option>
+				</volist>
+			</select>
+			任务状态：
+			<select name="status" style="width: 96px;">
+				<option value="0" <if condition="$param.status eq 0">selected</if> >失效</option>
+				<option value="1" <if condition="$param.status eq 1">selected</if> >生效</option>
+			</select>
+			<input type="submit" class="btn btn-primary" value="搜索">
+		</form>
+		<form method="post" class="js-ajax-form" action="{:U('Vip/user_listorders')}">
+			<table class="table table-hover table-bordered">
+				<thead>
+				<tr>
+					<th>编号</th>
+					<th>任务名称</th>
+					<th>任务时间</th>
+					<th>客户端</th>
+					<th>分类类别</th>
+					<th>任务分类</th>
+					<th>排序</th>
+					<th>完成奖励1</th>
+					<th>完成奖励2</th>
+					<th>人工审核</th>
+					<th>是否需要<br/>上一级任务完成</th>
+					<th>任务状态</th>
+					<th>操作时间</th>
+					<th>操作人</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td>{$vo['id']}</td>
+						<td>{$vo['name']}</td>
+						<td>{$vo.start_time|date="Y-m-d H:i:s",###} - {$vo.end_time|date="Y-m-d H:i:s",###}</td>
+						<td>{$vo['client']}</td>
+						<td>{$vo['type']}</td>
+						<td>{$vo['classification']}</td>
+						<td>{$vo['sort']}</td>
+						<td>{$vo['reward1']}</td>
+						<td>{$vo['reward2_upgrade_vip']}</td>
+						<td>{$vo['is_manual_check']}</td>
+						<td>{$vo['is_upleveltask']}</td>
+						<td>{$vo['status']}</td>
+						<td>{$vo.mtime|date="Y-m-d H:i:s",###}</td>
+						<td>{$vo['act_userinfo']['user_nicename']}</td>
+						<td>
+							<a href="{:U('Task/edit_task',array('id'=>$vo['id']))}" style="display: inline-block;">修改</a>&nbsp;
+							<a href="{:U('Task/del_task',array('id'=>$vo['id']))}" class="cust-js-ajax del_color" confirm="您确定要删除吗？" style="display: inline-block;">删除</a>&nbsp;
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+</script>

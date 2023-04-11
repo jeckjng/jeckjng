@@ -1,0 +1,198 @@
+<admintpl file="header" />
+</head>
+<style>
+    #calroot{
+        width: auto !important;
+    }
+</style>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <if condition="$id">
+            <li class="active"><a>编辑</a></li>
+
+            <else/>
+          <!--  <li> <a  href="{:U('Shotvideo/add')}">上传视频</a></li>
+            <li class="active"><a>添加视频地址</a></li>-->
+            {:getTableMenu($_GET['menuid'],'Admin/Shotvideo/add_address')}
+        </if>
+
+    </ul>
+    <form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('add_address_post')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">请输入标题</label>
+                <div class="controls">
+                    <input type="text" name="title" value="{$videoInfo.title}" required>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+
+            <div class="control-group" id="thumb">
+                <label class="control-label">封面地址</label>
+                <div class="controls">
+                    <input type="text" name="thumb"  value="{$videoInfo.thumb}">
+                </div>
+            </div>
+            <div class="control-group" id="href">
+                <label class="control-label">播放地址</label>
+                <div class="controls">
+                    <input type="text" name="href"  value="{$videoInfo.href}" >
+                </div>
+            </div>
+
+            <div class="control-group" id="download_address">
+                <label class="control-label">下载地址</label>
+                <div class="controls">
+                    <input type="text" name="download_address" value="{$videoInfo.download_address}"  >
+                </div>
+            </div>
+            <div class="control-group" id="duration">
+                <label class="control-label">时长</label>
+                <div class="controls">
+                    <input type="text" name="duration" value="{$videoInfo.duration}"  >
+                    <span class="form-required">时间格式为: <span style="color: red">00:00:00.00</span></span>
+                </div>
+
+            </div>
+            <div class="control-group" id="uid">
+                <label class="control-label">视频所有者用户</label>
+                <div class="controls">
+                    <input type="text" name="owner_uid" value="{$videoInfo.uid}"  onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');" required>
+                    <span class="form-required">* 请填写用户id</span>
+                </div>
+            </div>
+            <div class="control-group" id="uid">
+                <label class="control-label">购买价格</label>
+                <div class="controls">
+                    <input type="text" name="price" value="{$videoInfo.price}"  onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">
+                    <span class="form-required">输入0则无需付费</span>
+                </div>
+            </div>
+            <div class="control-group" id="uid">
+                <label class="control-label">预览时间</label>
+                <div class="controls">
+                    <input type="text" name="try_watch_time" value="{$videoInfo.try_watch_time}"  onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">
+                    <span class="form-required">秒，输入0则无预览，可以观看视频的前多少秒</span>
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label">点赞数量</label>
+                <div class="controls">
+                    <input type="text" name="likes" value="{$videoInfo.likes}" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">
+
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label">收藏数量</label>
+                <div class="controls">
+                    <input type="text" name="collection"  value="{$videoInfo.collection}" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">
+
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label">播放次数</label>
+                <div class="controls">
+                    <input type="text" name="watchtimes"  value="{$videoInfo.watchtimes}" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">上传时间</label>
+                <div class="controls">
+                    <input type="text" name="create_date" value="{$videoInfo.create_date}"   class="js-datetime date" placeholder="请输入">&nbsp;&nbsp;<span></span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">标签</label>
+                <div class="controls">
+                    <foreach name="labels" item="vo">
+                        <label class="checkbox inline"><input value="{$vo.label}"   <if condition="in_array($vo['label'],$videoLabel)"> checked== 'checked'</if>      type="checkbox" name="label[]">{$vo.label}</label>
+                    </foreach>
+                    <a style="margin-left: 10px;margin-top: 120px;" href="{:U('Shotvideo/addlabel')}">添加标签</a>
+                </div>
+
+            </div>
+            <div class="control-group" id="desc">
+                <label class="control-label">剧情简介</label>
+                <div class="controls">
+                    <textarea style="width: 400px;height: 50px" type="text" name="desc" >{$videoInfo.desc}</textarea>
+
+                </div>
+            </div>
+            <div class="control-group" id="years">
+                <label class="control-label">年代</label>
+                <div class="controls">
+                    <input type="text" name="years"  value="{$videoInfo.years}">
+                </div>
+            </div>
+            <div class="control-group" id="region">
+                <label class="control-label">地区</label>
+                <div class="controls">
+                    <input type="text" name="region"  value="{$videoInfo.region}">
+
+                </div>
+            </div>
+            <div class="control-group" id="actor ">
+                <label class="control-label">演员</label>
+                <div class="controls">
+                    <select name="performer" class="labels">
+                        <option value="">请选择演员</option>
+                        <foreach name="performer" item="vo">
+                            <option value="{$vo.id}">{$vo.name}</option>
+                        </foreach>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">短视频分类</label>
+                <div class="controls">
+                    <foreach name="classify" item="vo">
+                        <label class="checkbox inline"><input value="{$vo.classify}"   <if condition="in_array($vo['classify'],$videoclassify)"> checked== 'checked'</if>      type="checkbox" name="classify[]">{$vo.classify}</label>
+                    </foreach>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">备注</label>
+                <div class="controls">
+                    <textarea cols="2" rows="5" name="remark" style="width: 400px;height: 50px">{$videoInfo.remark}</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">绑定商城类型</label>
+                <div class="controls">
+                    <label class="radio inline" ><input type="radio" name="shoptype" value="0" <if condition="$videoInfo['shoptype'] eq '0'"> checked== 'checked'</if> />不绑定</label>
+                    <label class="radio inline" ><input type="radio" name="shoptype" value="1" <if condition="$videoInfo['shoptype'] eq '1'"> checked== 'checked'</if> />商品ID</label>
+                    <label class="radio inline" ><input type="radio" name="shoptype" value="2" <if condition="$videoInfo['shoptype'] eq '2'"> checked== 'checked'</if> />店铺ID</label>
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label">绑定商城ID值</label>
+                <div class="controls">
+                    <input type="text" name="shop_value" value="{$videoInfo.shop_value}">
+                    <span class="form-required">* 请填写商品ID或者店铺ID</span>
+                </div>
+            </div>
+            <div class="control-group" >
+                <label class="control-label">绑定商城网址</label>
+                <div class="controls">
+                    <input type="text" name="shop_url" value="{$videoInfo.shop_url}" >
+                    <span class="form-required">* 请填写商城网址</span>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <input type="hidden" name="id" value="{$id}" >
+            <input type="hidden" name="origin"  value="{$videoInfo.origin}">
+            <button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:isset($id) && $id ? L('SAVE') : L('ADD')},waittime:1000}">{:isset($id) && $id ? L('SAVE') : L('ADD')}</button>
+            <a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<admintpl file="header" />
+
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li class="active"><a >礼物列表</a></li>
+        <li><a href="{:U('Welfare/add')}">添加福利</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Welfare/index')}
+    </ul>
+    <form method="post" class="js-ajax-form" action="{:U('Gift/listorders')}">
+       <!-- <div class="table-actions">
+            <button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+        </div>-->
+
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+             <!--   <th>排序</th>-->
+                <th align="center">ID</th>
+
+                <th>名称</th>
+                <th>描述</th>
+                <th>积分</th>
+                <th>图片</th>
+                <th>兑换次数</th>
+                <th>发布时间</th>
+
+                <th align="center">{:L('ACTIONS')}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="lists" item="vo">
+                <tr>
+             <!--       <td><input name="listorders[{$vo['id']}]" type="text" size="3" value="{$vo['orderno']}" class="input input-order"></td>-->
+                    <td align="center">{$vo.id}</td>
+
+                    <td>{$vo['name']}</td>
+                    <td>{$vo['desc']}</td>
+                    <td>{$vo['integral']}</td>
+                    <td><img width="25" height="25" src="{$vo['img']}" /></td>
+
+                    <td>{$vo['frequency']}</td>
+                    <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+
+                    <td align="center">
+                       <!-- <a href="{:U('Gift/edit',array('id'=>$vo['id']))}" >编辑</a>-->
+                        |
+                        <a href="{:U('Welfare/del',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn del_color" data-msg="您确定要删除吗？">删除</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+        <div class="table-actions">
+           <!-- <button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>-->
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

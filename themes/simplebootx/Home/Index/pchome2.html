@@ -1,0 +1,120 @@
+<tc_include file="Public:head" />
+<title>{$site_name}</title>
+<style>
+
+    li{
+        list-style: none;
+    }
+    .container{
+        width: 100%;max-width:1200px;margin: 0 auto;
+    }
+    .header ul{
+        display: flex;align-items: center;min-height: 50px;
+        background-color: #e63636;
+        flex-wrap: wrap;height: auto;
+    }
+    .header .nav-list{
+        padding: 5px 10px;cursor: pointer;
+    }
+    .header .nav-list.active{
+        color: #f00;
+    }
+
+    .banner .banner-item img{
+        height: 100%; width: 100%;
+    }
+    .lists{
+        display: flex;flex-wrap: wrap;
+
+    }
+    .lists .lists-item{
+        width: 100%;height: 100%;
+        margin-left: 2px;
+        position: relative;
+    }
+    .lists .lists-one{
+        width: calc(25% - 10px);height: 100px;padding: 5px;
+        margin-top: 40px;
+
+        position: relative;
+    }
+    .lists .lists-item:nth-child(4n){
+        margin: 0 0 10px;
+    }
+    .lists .lists-item:hover:before {
+        content: '';
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        background: url(__PUBLIC__/public/home/images/index/play.png) center 55% no-repeat;
+        background-color: rgba(41,37,43,0.7);
+    }
+</style>
+<link type="text/css" rel="stylesheet" href="__PUBLIC__/home/css/index.css"/>
+</head>
+<body style="width: 100%;min-width: 0">
+<form >
+    <div class="main ">
+        <div class="container wrapper">
+            <div>
+            <img src="__PUBLIC__/home/images/index/slogo.png">
+            </div>
+            <div id="doc-hd" class="header" style="margin-bottom: 10px">
+                <ul class="hd-nav">
+                    <li class="item lists-item"><a href="/Index/pchome/class/0"<if condition="$class eq '0'"> class="current" </if> >
+                        <span style="color: white">  <font size="3px">  首页</font></span></a></li>
+                    <foreach name="label" item="vo">
+                        <li  class="item lists-item"><a  href="/Index/pchome/class/{$vo.label}" <if condition="$vo.label eq  $class"> class="current" </if> >
+                           <span style="color: white"> <font size="3px"> {$vo.label}</font></span>
+                            </a>
+                        </li>
+                    </foreach>
+                </ul>
+            </div>
+            <div class="banner ">
+                <foreach name="ads" item="adsvo">
+                    <div class="banner-item" ><a href="{$adsvo.url}"><img src="{$adsvo.thumb}" alt=""></a></div>
+                </foreach>
+
+                <div class="lists" >
+                    <foreach name="video" item="videovo">
+                        <div class="lists-one">
+
+                            <a href="/Index/playvidoe/id/{$videovo.id}">
+                                <img  style=" width: 100%;height: 100%;" src="{$videovo.thumb}" alt="">
+                                <div align="center"> <font size="2">{$videovo.title}</font></div>
+                            </a>
+                        </div>
+                    </foreach>
+
+                </div>
+                {$page}
+                <div style="margin-top:40px ">
+                <foreach name="footads" item="footadsvo">
+                    <div class="banner-item"><a href="{$footadsvo.url}"><img src="{$footadsvo.thumb}" alt=""></a></div>
+                </foreach>
+                </div>
+                <div class="banner-item" style="background-color: red ;height:100%">
+                    <p style="text-align: center"><font size="4">友情链接：</font></p>
+                    <p style="text-align: center"><font size="4">警告：色偷偷亚洲男人的天堂2021,欧美三级电影,色尼玛图,色播五月亚洲综合网站 网站包含成人内容，18岁以下禁止进入！
+                    </font>
+
+                    </p>
+                    <p style="text-align:center">
+                        <font size="4">
+                        Warning：This Site Contains Adult Contents，No Entry For Less Than 18-Years-Old ！
+                            <font size="4">
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+</body>

@@ -1,0 +1,87 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+
+        {:getTableMenu($_GET['menuid'],'Admin/Liveing/liveconfig')}
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Liveing/set_liveconfig')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">游戏列表</label>
+                <div class="controls">
+                    <foreach name="lottery" item="vo">
+                        <input  style="margin-left: 20px;margin-top: 0px"  type="checkbox" name="lottery_id[]"  <if condition="in_array($vo['id'],$users_live_info['lottery_id'])">checked</if> value="{$vo.id}"><span style="margin-left: 5px">{$vo.play_cname}</span>
+                    </foreach>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">推荐游戏</label>
+                <div class="controls">
+
+                    <foreach name="lottery" item="vo">
+                        <input type="checkbox"  style="margin-left: 20px;margin-top: 0px"  name="recommend_lottery_id[]" value="{$vo.id}" <if condition="in_array($vo['id'],$users_live_info['recommend_lottery_id'])">checked</if> ><span style="margin-left: 5px">{$vo.play_cname}</span>
+                    </foreach>
+
+                </div>
+            </div>
+
+
+
+            <div class="control-group">
+                <label class="control-label">是否展示游戏入口</label>
+                <div class="controls">
+                    <label class="radio inline" ><input type="radio" name="show_game_entry" value="1" <if condition="$users_live_info.show_game_entry eq '1'">checked </if> >是</label>
+                    <label class="radio inline" ><input type="radio" name="show_game_entry" value="0"  <if condition="$users_live_info.show_game_entry eq '0'">checked </if>  >否</label>
+
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">是否显示优惠活动</label>
+                <div class="controls">
+                    <label class="radio inline" ><input type="radio" name="show_offers" value="1"  <if condition="$users_live_info.show_offers eq '1'">checked </if> >是</label>
+                    <label class="radio inline" ><input type="radio" name="show_offers" value="0"  <if condition="$users_live_info.show_offers eq '0'">checked </if>  >否</label>
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">是否显示长龙助手</label>
+                <div class="controls">
+                    <label class="radio inline" ><input type="radio" name="show_dragon_assistant" value="1"   <if condition="$users_live_info.show_dragon_assistant eq '1'">checked </if>>是</label>
+                    <label class="radio inline" ><input type="radio" name="show_dragon_assistant" value="0"    <if condition="$users_live_info.show_dragon_assistant eq '0'">checked </if> >否</label>
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">是否显示举报有奖</label>
+                <div class="controls">
+                    <label class="radio inline" ><input type="radio" name="show_reward_reporting" value="1"   <if condition="$users_live_info.show_reward_reporting eq '1'">checked </if>>是</label>
+                    <label class="radio inline" ><input type="radio" name="show_reward_reporting" value="0"   <if condition="$users_live_info.show_reward_reporting eq '0'">checked </if> >否</label>
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">是否启用跟投</label>
+                <div class="controls">
+                    <label class="radio inline" ><input type="radio" name="enable_follow" value="1"  <if condition="$users_live_info.enable_follow eq '1'">checked </if>>启用</label>
+                    <label class="radio inline" ><input type="radio" name="enable_follow" value="0" <if condition="$users_live_info.enable_follow eq '0'">checked </if>  >禁用</label>
+
+                </div>
+            </div>
+            <input type="hidden" name="uid" value="{$users_live_info.uid}">
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+                <a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+</script>
+</body>
+</html>

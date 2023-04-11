@@ -1,0 +1,119 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+	<!--	<li><a href="{:U('shotvideo/classify')}">短视频分类</a></li>
+		<li  class="active"><a href="{:U('shotvideo/addclassify')}">短视频添加</a></li>-->
+		{:getTableMenu($_GET['menuid'],'Admin/Shotvideo/addclassify')}
+
+	</ul>
+	<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('Shotvideo/addclassify_post')}">
+		<fieldset>
+			<if condition="!isset($info['id']) && $role_id == 1">
+				<div class="cust mar-bottom-15">
+					<label class="control-label">*租户</label>
+					<div class="controls">
+						<select name="tenant_id" >
+							<volist name="tenant_list" id="vo">
+								<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+							</volist>
+						</select>
+						<span class="form-required"></span>
+					</div>
+				</div>
+			</if>
+
+			<div class="control-group">
+				<label class="control-label">输入分类名称</label>
+				<div class="controls">
+					<input type="text" name="classify" value="{$info['classify']}" >
+					<span class="form-required">*</span>
+				</div>
+			</div>
+
+
+			<div class="control-group" id="sort">
+				<label class="control-label">排序</label>
+				<div class="controls">
+					<input type="text" name="sort" value="{$info['sort']}" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">
+
+				</div>
+			</div>
+
+
+			<div class="control-group">
+				<label class="control-label"></label>
+				<div class="controls">
+
+						<label class="checkbox inline"><input <if condition="$info['is_lowerlevel'] eq '1'">checked== 'checked'</if> value="1" type="checkbox" name="is_lowerlevel">仅允许下级</label>
+					<em style="font-size: 15px;margin-left: 30px;margin-top: 10px;">勾起允许选项后，登陆用户查看该分类视频时，仅允许查看作者是该用户直属上级的视频</em>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label"></label>
+				<div class="controls">
+					<label class="checkbox inline"><input <if condition="$info['agent_line_visible'] eq '1'">checked== 'checked'</if> value="1" type="checkbox" name="agent_line_visible">代理线可见</label>
+					<em style="font-size: 15px;margin-left: 30px;margin-top: 10px;">勾起允许选项后，登陆用户查看该分类视频时，仅允许查看作者所有上级和所有下级的视频</em>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label"></label>
+				<div class="controls">
+
+					<label class="checkbox inline"><input <if condition="$info['is_list'] eq '1'">checked== 'checked'</if> value="1" type="checkbox" name="is_list">列表展示</label>
+					<em style="font-size: 15px;margin-left: 30px;margin-top: 10px;">勾起选项后，短视频按照列表的形式展示，不勾选则是默认上下滑动短视频播放</em>
+				</div>
+
+			</div>
+			<div class="control-group">
+				<label class="control-label"></label>
+				<div class="controls">
+					<label class="checkbox inline"><input <if condition="$info['type'] eq '0'">checked== 'checked'</if> value="1" type="checkbox" name="type">不展示在前端</label>
+					<em style="font-size: 15px;margin-left: 30px;margin-top: 10px;">勾起选项后，将不在前端展示该分类，不勾选则是默认展示</em>
+				</div>
+
+			</div>
+		<div class="form-actions">
+			<input type="hidden" name="id" value="{$info['id']}" >
+			<if condition="$info['id'] ">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('EDIT')},waittime:1000}">{:L('EDIT')}</button>
+			<else/>
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('ADD')},waittime:1000}">{:L('ADD')}</button>
+			</if>
+
+			<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+	$(function(){
+
+		$("input[name='video_upload_type']").click(function(){
+			var val=$("input[name='video_upload_type']:checked").val();
+			console.log(val);
+			if(val==0){
+				$(".video_url_area").show();
+				$(".upload_video_area").hide();
+			}else{
+				$(".video_url_area").hide();
+				$(".upload_video_area").show();
+				$("input[name='href']").val('');
+			}
+		});
+
+		$("input[name='owner']").on("click",function(){
+			var val=$(this).val();
+			if(val==1){ //所有者为用户
+				$("#owner_uid").show();
+			}else{
+				$("#owner_uid").hide();
+			}
+		});
+
+	});
+</script>
+</body>
+</html>

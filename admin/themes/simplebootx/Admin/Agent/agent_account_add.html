@@ -1,0 +1,52 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li><a href="{:U('user/index')}">{:L('ADMIN_USER_INDEX')}</a></li>
+        <li class="active"><a href="{:U('user/add')}">{:L('ADMIN_USER_ADD')}</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/agent/agent_account_add')}
+    </ul>
+    <form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('agent/agent_account_add')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">用户名</label>
+                <div class="controls">
+                    <input type="text" name="user_login" required>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">{:L('PASSWORD')}</label>
+                <div class="controls">
+                    <input type="password" name="user_pass" required>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">昵称</label>
+                <div class="controls">
+                    <input type="text" name="user_nicename" required>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">角色</label>
+                <div class="controls">
+                    <foreach name="roles" item="vo">
+                        <label class="radio inline"><input value="{$vo.id}" type="radio" name="role_id[]" required>{$vo.name}</label>
+                    </foreach>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('ADD')}</button>
+            <a class="btn" href="{:U('agent/agent_account')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

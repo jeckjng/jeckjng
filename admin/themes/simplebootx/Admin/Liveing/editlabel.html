@@ -1,0 +1,44 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li ><a href="{:U('Liveing/index')}">列表</a></li>
+			<li class="active"><a >编辑</a></li>
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('editlabel_post')}">
+
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">用户ID</label>
+					<div class="controls">
+						<input type="text" name="uid" value="{$live['uid']}" readonly>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div>
+					<div class="control-group">
+							<label class="control-label">彩种标签名称</label>
+							<div class="controls">				
+								<input type="text" name="label_name" value="{$live['label_name']}" id="label_name">
+							</div>
+					</div>
+				</div>
+
+	<div>
+
+	</fieldset>
+	<div class="form-actions">
+		<button type="submit" class="btn btn-primary js-ajax-submit" >{:L('EDIT')}</button>
+		<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+	</div>
+		</form>
+	</div>
+
+
+
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+
+</body>
+</html>

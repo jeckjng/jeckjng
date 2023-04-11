@@ -1,0 +1,88 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Family/auth')}
+			<!--<li><a href="{:U('User/indexadmin/index')}">本站会员</a></li>
+			<li><a href="{:U('User/indexadmin/add')}">新增会员</a></li>
+			<li class="active"><a href="{:U('Admin/Userauth/index')}">身份认证</a></li>
+			<li><a href="{:U('User/Indexadmin/bandcard')}">会员银行卡</a></li>
+			<li><a href="{:U('Admin/Impression/index')}">会员标签</a></li>
+			<li><a href="{:U('Admin/Impression/add')}">添加会员标签</a></li>-->
+		</ul>
+		<form class="well form-search" method="post" action="{:U('auth')}">
+		  	审核状态：
+			<select class="select_2" name="status" class="mar-right-15">
+				<option value="">全部</option>
+				<option value="0" <if condition="$param.status eq '0'">selected</if> >处理中</option>
+				<option value="1" <if condition="$param.status eq '1'">selected</if> >审核成功</option>
+				<option value="2" <if condition="$param.status eq '2'">selected</if> >审核失败</option>
+			</select>
+			提交时间：
+			<input type="text" name="start_time" class="js-date date" value="{$param.start_time}" style="width: 80px;" autocomplete="off">-
+			<input type="text" class="js-date date" name="end_time" value="{$param.end_time}" style="width: 80px;" autocomplete="off"> &nbsp; &nbsp;
+			关键字： 
+			<input type="text" name="keyword" style="width: 200px;" value="{$param.keyword}" placeholder="请输入会员ID、手机">
+			<br>
+			彩票会员ID：
+			<input type="text" name="game_user_id" class="mar-right-15" style="width: 200px;" value="{$param.game_user_id}" placeholder="请输入彩票会员ID">
+			线路分类：
+			<select name="ct_type" class="mar-right-15" style="width: 120px;">
+				<option value="">全部</option>
+				<volist name="ct_type_list" id="vo">
+					<option value="{$key}" <if condition="$param.ct_type eq $key">selected</if> >{$vo}</option>
+				</volist>
+			</select>
+			<input type="submit" class="btn btn-primary" value="搜索">
+			<a href="{:U('auth_add')}" class="btn btn-primary" style="background-color: #1abc9c;float: right;">新增认证</a>
+		</form>				
+		<form method="post" class="js-ajax-form" >
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th align="center">会员ID</th>
+						<th>会员</th>
+						<th>彩票会员ID</th>
+						<th>手机号码</th>
+						<th>审核状态</th>
+						<th>线路分类</th>
+						<th>提交时间</th>
+						<th>处理时间</th>
+						<th>备注</th>
+						<th align="center">{:L('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<php>$status=array("0"=>"<span class=\"color-green\">处理中</span>","1"=>"<span class=\"color-green\">审核成功</span>", "2"=>"<span class=\"color-red\">审核失败</span>");</php>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td align="center">{$vo.uid}</td>
+						<td>{$vo['userinfo']['user_nicename']} </td>
+						<td>{:$vo['game_user_id'] ? $vo['game_user_id'] : ''}</td>
+						<td>{$vo['mobile']}</td>
+						<td>{$status[$vo['status']]}</td>
+						<td>{$ct_type_list[$vo['ct_type']]}</td>
+						<td>{$vo.addtime|date="H:i:s",###}<br>{$vo.addtime|date="Y-m-d",###}</td>
+						<td>
+						 <if condition="$vo['status'] eq '0'" >
+						    -
+						 <else/>
+							 {$vo.uptime|date="H:i:s",###}<br>{$vo.uptime|date="Y-m-d",###}
+						 </if>						
+						 </td>
+						<td>{$vo['remark']}</td>
+						<td align="center">
+						    <a href="{:U('auth_edit',array('id'=>$vo['id']))}" >编辑</a>
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

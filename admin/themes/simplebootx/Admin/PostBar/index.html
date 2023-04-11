@@ -1,0 +1,140 @@
+<admintpl file="header" />
+</head>
+<body>
+<style>
+    input{
+        width:500px;
+    }
+    .form-horizontal textarea{
+        width:500px;
+    }
+    .nav-tabs>.current>a{
+        color: #95a5a6;
+        cursor: default;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-bottom-color: transparent;
+    }
+    .nav li
+    {
+        cursor:pointer
+    }
+    .nav li:hover
+    {
+        cursor:pointer
+    }
+    .hide{
+        display:none;
+    }
+</style>
+
+
+<div class="wrap js-check-wrap">
+    <!-- <ul class="nav nav-tabs">
+        <li class="active"><a href="{:U('Config/index')}">设置</a></li>
+        <li><a href="{:U('Config/lists')}">管理</a></li>
+        <li><a href="{:U('Config/add')}">添加</a></li>
+    </ul> -->
+    <ul class="nav nav-tabs js-tabs-nav">
+
+            <li><a>贴吧配置</a></li>
+
+
+    </ul>
+
+    <form method="post" class="form-horizontal js-ajax-form" >
+
+        <div class="js-tabs-content">
+            <!-- 网站信息 -->
+            <div>
+                <fieldset>
+
+                    <div class="control-group" >
+                        <h3>贴吧配置</h3>
+                        <label style="width: 110px" class="control-label">贴吧</label>
+                        <div class="controls" style="margin-left: 130px">
+                            <label class="radio inline"><input type="radio" value="1" name="post[is_open_seeking_slice]" <eq name="config['is_open_seeking_slice']" value="1">checked="checked"</eq>>开启</label>
+                            <label class="radio inline"><input type="radio" value="0" name="post[is_open_seeking_slice]" <eq name="config['is_open_seeking_slice']" value="0">checked="checked"</eq>>关闭</label>
+
+                        </div>
+                    </div>
+                    <div class="control-group" >
+                        <h3>帖子配置</h3>
+                        <label style="width: 110px" class="control-label">发帖策略</label>
+                        <div class="controls" style="margin-left: 130px">
+                            <label class="radio inline"><input type="radio" value="2" name="post[posting_strategy]" <eq name="config['posting_strategy']" value="2">checked="checked"</eq>>按vip</label>
+                            <label class="radio inline"><input type="radio" value="1" name="post[posting_strategy]" <eq name="config['posting_strategy']" value="1">checked="checked"</eq>>全开启</label>
+                            <label class="radio inline"><input type="radio" value="0" name="post[posting_strategy]" <eq name="config['posting_strategy']" value="0">checked="checked"</eq>>全关闭</label>
+                        </div>
+                    </div>
+                    <div class="control-group" >
+                        <label style="width: 110px" class="control-label">评论策略</label>
+                        <div class="controls" style="margin-left: 130px">
+                            <label class="radio inline"><input type="radio" value="2" name="post[comment_strategy]" <eq name="config['comment_strategy']" value="2">checked="checked"</eq>>按vip</label>
+                            <label class="radio inline"><input type="radio" value="1" name="post[comment_strategy]" <eq name="config['comment_strategy']" value="1">checked="checked"</eq>>全开启</label>
+                            <label class="radio inline"><input type="radio" value="0" name="post[comment_strategy]" <eq name="config['comment_strategy']" value="0">checked="checked"</eq>>全关闭</label>
+
+                        </div>
+                    </div>
+                    <div class="control-group" >
+                        <h3>求片配置</h3>
+                        <label style="width: 110px" class="control-label">求片策略</label>
+                        <div class="controls" style="margin-left: 130px">
+                            <label class="radio inline"><input type="radio" value="2" name="post[seeking_slice_strategy]" <eq name="config['seeking_slice_strategy']" value="2">checked="checked"</eq>>按vip</label>
+                            <label class="radio inline"><input type="radio" value="1" name="post[seeking_slice_strategy]" <eq name="config['seeking_slice_strategy']" value="1">checked="checked"</eq>>全开启</label>
+                            <label class="radio inline"><input type="radio" value="0" name="post[seeking_slice_strategy]" <eq name="config['seeking_slice_strategy']" value="0">checked="checked"</eq>>全关闭</label>
+
+                        </div>
+                    </div>
+                    <div class="control-group" >
+                        <label style="width: 110px" class="control-label">推片策略</label>
+                        <div class="controls" style="margin-left: 130px">
+                            <label class="radio inline"><input type="radio" value="2" name="post[push_strategy]" <eq name="config['push_strategy']" value="2">checked="checked"</eq>>按vip</label>
+                            <label class="radio inline"><input type="radio" value="1" name="post[push_strategy]" <eq name="config['push_strategy']" value="1">checked="checked"</eq>>全开启</label>
+                            <label class="radio inline"><input type="radio" value="0" name="post[push_strategy]" <eq name="config['push_strategy']" value="0">checked="checked"</eq>>全关闭</label>
+
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label">求片有效期</label>
+                        <div class="controls">
+                            <input type="text" style="width: 100px" name="post[seeking_slice_effective_time]"onkeyup="this.value= this.value.match(/\d+/) ? this.value.match(/\d+/)[0] : ''" value="{$config['seeking_slice_effective_time']/86400}">天
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">悬赏金额范围</label>
+                        <div class="controls">
+                            <input type="text" style="width: 100px" name="post[seeking_slice_bonus_min]" onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''"value="{$config['seeking_slice_bonus_min']}">
+                            -
+                            <input type="text" style="width: 100px" name="post[seeking_slice_bonus_max]"onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" value="{$config['seeking_slice_bonus_max']}">
+
+                        </div>
+                    </div>
+                    <div class="control-group" >
+                        <label style="width: 110px" class="control-label">悬赏金额提现</label>
+                        <div class="controls" style="margin-left: 130px">
+                            <label class="radio inline"><input type="radio" value="1" name="post[reward_is_withdrawal]" <eq name="config['reward_is_withdrawal']" value="1">checked="checked"</eq>>可提</label>
+                            <label class="radio inline"><input type="radio" value="0" name="post[reward_is_withdrawal]" <eq name="config['reward_is_withdrawal']" value="0">checked="checked"</eq>>不可提</label>
+
+
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="form-actions">
+                    <button onclick="set_save()" class="btn btn-primary js-ajax-submit">{:L('SAVE')}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script>
+    function set_save(){
+        // $('form').attr('action',"{:U('Admin/TenantConfig/set_post/type/"+type+"')}");
+        $('form').attr('action',"{:U('Admin/PostBar/index')}");
+    }
+</script>
+</body>
+</html>

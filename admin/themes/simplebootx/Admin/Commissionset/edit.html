@@ -1,0 +1,107 @@
+<admintpl file="header" />
+<style>
+input{
+    width:500px;
+}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a >编辑</a></li>
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('Commissionset/editpost')}">
+		   <input type="hidden" name="id" value="{$cash['id']}">
+		   <input type="hidden" name="uid" value="{$cash['uid']}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">会员</label>
+					<div class="controls">
+						<if condition="$whichTenant eq 1" >
+								<if condition="$admin_type eq 1" >
+									<input type="text" name="uid"  value="{$cash['game_user_id']}" readonly="readonly">
+									<else />
+									<input type="text" name="uid"  value="{$cash['game_user_id']}" >
+
+								</if>
+							<else />
+								<if condition="$admin_type eq 1" >
+									<input type="text" name="uid"  value="{$cash['uid']}" readonly="readonly">
+									<else />
+									<input type="text" name="uid"  value="{$cash['uid']}" >
+
+								</if>
+						</if>
+
+						<span class="form-required">* 彩票会员ID</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">主播彩票佣金</label>
+					<div class="controls">
+						<if condition="$admin_type eq 1" >
+						    <input type="text" name="anchor_betcommission"  onkeyup="savedecimal(this)"  value="{$cash['anchor_betcommission']}" readonly="readonly" >
+							<else />
+							<input type="text" name="anchor_betcommission"  onkeyup="savedecimal(this)"  value="{$cash['anchor_betcommission']}"  >
+
+						</if>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">家族彩票佣金</label>
+					<div class="controls">
+						{$anchor_platform_ratio}% <b style="color: red;margin-left: 20px;">主播彩票佣金设置不得超过该数</b>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">主播打赏佣金</label>
+					<div class="controls">
+						<input type="text" name="anchor_commission"  onkeyup="this.value=this.value.replace(/[^0-9]+/,'');" value="{$cash['anchor_commission']}">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">家族打赏佣金</label>
+					<div class="controls">
+						{$anchor_profit_ratio}% <b style="color: red;margin-left: 20px;">主播打赏佣金设置范围({$defautinfo.anchor_limitcommission}-{$anchor_profit_ratio})</b>
+
+					</div>
+				</div>
+				<if condition="$admin_type neq 1" >
+				<div class="control-group">
+					<label class="control-label">时薪设置</label>
+					<div class="controls">
+						<input type="text" name="hour_money" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');"  value="{$cash['hour_money']}">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">时长要求</label>
+					<div class="controls">
+						<input type="text" name="hour_limit" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');"  value="{$cash['hour_limit']}">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">礼物要求</label>
+					<div class="controls">
+						<input type="text" name="gift_limit" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');"  value="{$cash['gift_limit']}">
+					</div>
+				</div>
+				</if>
+
+
+
+
+			</fieldset>
+			<div class="form-actions">
+				<input type="hidden" name="rnb_money"  value="{$cash['rnb_money']}">
+				<input type="hidden" name="votes"  value="{$cash['votes']}">
+				<input type="hidden" name="pay_coin"  value="{$cash['pay_coin']}">
+				<button type="submit" class="btn btn-primary js-ajax-submit">{:L('EDIT')}</button>
+				<a class="btn" href="{:U('Commissionset/index')}">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

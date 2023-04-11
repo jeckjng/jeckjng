@@ -1,0 +1,135 @@
+<admintpl file="header" />
+</head>
+<style>
+	input{
+		width: 500px;
+	}
+	label{
+		width: 200px !important;
+	}
+	.controls{
+		margin-left: 220px !important;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li><a href="{:U('Task/index')}">任务管理</a></li>
+			<li><a href="{:U('Task/add_task')}">新增任务</a></li>
+			<li><a href="{:U('Task/classification')}">分类管理</a></li>
+			<li><a href="{:U('Task/user_task')}">任务领取记录</a></li>
+			<li><a href="{:U('Task/reward_log')}">奖励明细</a></li>
+			<li class="active"><a href="{:U('Task/login_reward')}">登录赠送</a></li>
+			<li><a href="{:U('Task/first_recharge')}">首充活动</a></li>
+			<li><a href="{:U('Task/share')}">分享活动</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Task/login_reward')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('Task/login_reward')}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">注册奖励-可提现金额</label>
+					<div class="controls">
+						<span class="mar-right-15">一等奖</span>
+						<input type="number" name="reg_withdrawable_coin" value="{$info.reg_withdrawable_coin}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						<span class="mar-right-15 mar-left-17">二等奖</span>
+						<input type="number" name="reg_withdrawable_coin2" value="{$info.reg_withdrawable_coin2}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						<span class="mar-right-15 mar-left-17">三等奖</span>
+						<input type="number" name="reg_withdrawable_coin3" value="{$info.reg_withdrawable_coin3}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						&nbsp;&nbsp;<span>新用户注册可提现额奖励，设置三个随机金额派发一个给用户（整数）</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">注册奖励-可提现金额打码量</label>
+					<div class="controls">
+						<input type="number" name="reg_withdrawable_coding" value="{$info.reg_withdrawable_coding}" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						&nbsp;&nbsp;<span>新用户注册可提现金额奖励打码量，不设置则可以直接提现（整数）</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">注册奖励-不可提现金额</label>
+					<div class="controls">
+						<span class="mar-right-15">一等奖</span>
+						<input type="number" name="reg_nowithdrawable_coin" value="{$info.reg_nowithdrawable_coin}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						<span class="mar-right-15 mar-left-17">二等奖</span>
+						<input type="number" name="reg_nowithdrawable_coin2" value="{$info.reg_nowithdrawable_coin2}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						<span class="mar-right-15 mar-left-17">三等奖</span>
+						<input type="number" name="reg_nowithdrawable_coin3" value="{$info.reg_nowithdrawable_coin3}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+
+						&nbsp;&nbsp;<span>新用户注册不可提现金额奖励，设置三个随机金额派发一个给用户（整数）</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">首次登录-可提现金额</label>
+					<div class="controls">
+						<span class="mar-right-15">一等奖</span>
+						<input type="number" name="firstlog_withdrawable_coin" value="{$info.firstlog_withdrawable_coin}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						<span class="mar-right-15 mar-left-17">二等奖</span>
+						<input type="number" name="firstlog_withdrawable_coin2" value="{$info.firstlog_withdrawable_coin2}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						<span class="mar-right-15 mar-left-17">三等奖</span>
+						<input type="number" name="firstlog_withdrawable_coin3" value="{$info.firstlog_withdrawable_coin3}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						&nbsp;&nbsp;<span>首次登录可提现金额奖励，设置三个随机金额派发一个给用户（整数）</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">首次登录-可提现金额打码量</label>
+					<div class="controls">
+						<input type="number" name="firstlog_withdrawable_coding" value="{$info.firstlog_withdrawable_coding}" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						&nbsp;&nbsp;<span>首次登录可提现金额奖励，不设置则可以直接提现（整数）</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">首次登录-不可提现金额</label>
+					<div class="controls">
+						<span class="mar-right-15">一等奖</span>
+						<input type="number" name="firstlog_nowithdrawable_coin" value="{$info.firstlog_nowithdrawable_coin}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						<span class="mar-right-15 mar-left-17">二等奖</span>
+						<input type="number" name="firstlog_nowithdrawable_coin2" value="{$info.firstlog_nowithdrawable_coin2}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						<span class="mar-right-15 mar-left-17">三等奖</span>
+						<input type="number" name="firstlog_nowithdrawable_coin3" value="{$info.firstlog_nowithdrawable_coin3}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						&nbsp;&nbsp;<span>首次登录不可提现金额奖励，设置三个随机金额派发一个给用户（整数）</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">非首次登录-可提现金额</label>
+					<div class="controls">
+						<span class="mar-right-15">一等奖</span>
+						<input type="number" name="otherlog_withdrawable_coin" value="{$info.otherlog_withdrawable_coin}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						<span class="mar-right-15 mar-left-17">二等奖</span>
+						<input type="number" name="otherlog_withdrawable_coin2" value="{$info.otherlog_withdrawable_coin2}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						<span class="mar-right-15 mar-left-17">三等奖</span>
+						<input type="number" name="otherlog_withdrawable_coin3" value="{$info.otherlog_withdrawable_coin3}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						&nbsp;&nbsp;<span>非首次登录可提现金额奖励，设置三个随机金额派发一个给用户（整数）</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">非首次登录-可提现金额打码量</label>
+					<div class="controls">
+						<input type="number" name="otherlog_withdrawable_coding" value="{$info.otherlog_withdrawable_coding}" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						&nbsp;&nbsp;<span>非首次登录可提现金额奖励，不设置则可以直接提现（整数）</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">非首次登录-不可提现金额</label>
+					<div class="controls">
+						<span class="mar-right-15">一等奖</span>
+						<input type="number" name="otherlog_nowithdrawable_coin" value="{$info.otherlog_nowithdrawable_coin}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						<span class="mar-right-15 mar-left-17">二等奖</span>
+						<input type="number" name="otherlog_nowithdrawable_coin2" value="{$info.otherlog_nowithdrawable_coin2}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						<span class="mar-right-15 mar-left-17">三等奖</span>
+						<input type="number" name="otherlog_nowithdrawable_coin3" value="{$info.otherlog_nowithdrawable_coin3}" class="width-80i" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						&nbsp;&nbsp;<span>非首次登录不可提现金额奖励，设置三个随机金额派发一个给用户（整数）</span>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<input type="hidden" name="id" value="{$info.id}">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

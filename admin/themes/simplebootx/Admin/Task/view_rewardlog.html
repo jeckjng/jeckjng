@@ -1,0 +1,115 @@
+<admintpl file="header" />
+</head>
+<style>
+	.top-nav{
+		color: #333;
+		font: 14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+		height: 43px;
+		line-height: 43px;
+		padding: 0 0 0 20px;
+	}
+	form{
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+	table tr>td>.star{
+		color: red;
+	}
+	input,textarea{
+		width: 80%;
+	}
+	.radio_type{
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid lightgray;
+		border-radius: 5px;
+		margin-right: 25px;
+		padding: 6px 25px;
+		cursor: pointer;
+	}
+	.active_radio{
+		background-color: #2c3e50;
+		color: white;
+	}
+	.radio_type input{
+		width: 0px;
+	}
+	.img_div{
+		display: inline-block;
+		width: 80%;
+		border: 2px solid #dce4ec;
+		height: 36px;
+		line-height: 36px;
+		border-radius: 3px;
+		padding: 0px 5px;
+	}
+	.img_div input{
+		float: left;
+		width: 480px;
+		vertical-align: middle;
+		background: none;
+		border: 0px;
+	}
+	.img_div .upload_btn{
+		padding: 1px 14px;
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid gray;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+</style>
+<body>
+<div class="">
+	<div class="top-nav well" style="text-align: center;margin-bottom: 0px">
+		<span class="cust-title" style="">{$title}</span>
+		<span class="" style="float: right;cursor: pointer;padding: 0 20px;" onclick="$('#cust-js-iframe',window.parent.document).toggle();">
+				<i class="fa fa-times" aria-hidden="true" style="font-size: 22px;vertical-align: middle;"></i>
+			</span>
+	</div>
+	<form method="post" class="js-ajax-form" action="{:U('Vip/user_listorders')}">
+		<table class="table table-hover table-bordered">
+			<thead>
+			<tr>
+				<th>会员ID</th>
+				<th>会员账号</th>
+				<th>VIP等级</th>
+				<th>客户端</th>
+				<th>完成时间</th>
+				<th>解锁金额</th>
+				<th>奖励前金额</th>
+				<th>奖励结果</th>
+				<th>奖励后金额</th>
+				<th>奖励后VIP等级</th>
+				<th>发放类型</th>
+			</tr>
+			</thead>
+			<tbody>
+			<foreach name="lists" item="vo">
+				<tr>
+					<td>{$vo['uid']}</td>
+					<td>{$vo['userinfo']['user_login']}</td>
+					<td>{$vo['vip_id']}</td>
+					<td>{$vo['client']}</td>
+					<td>{$vo.mtime|date="Y-m-d H:i:s",###}</td>
+					<td>{$vo['unlock_amount']}</td>
+					<td>{$vo['reward_start_amount']}</td>
+					<td>{$vo['reward_result']}</td>
+					<td>{$vo['reward_end_amount']}</td>
+					<td>{$vo['reward_end_vip']}</td>
+					<td>{$vo['giveout_type']}</td>
+				</tr>
+			</foreach>
+			</tbody>
+		</table>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+	$(".radio_type").on('click',function (){
+		$(".radio_type").removeClass('active_radio');
+		$(this).addClass('active_radio');
+		$(this).children("input").attr('checked',true);
+	})
+
+</script>

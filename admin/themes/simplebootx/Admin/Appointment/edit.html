@@ -1,0 +1,309 @@
+<admintpl file="header" />
+<style>
+    .img_div{
+        display: inline-block;
+        width: 506px;
+        border: 2px solid #dce4ec;
+        height: 36px;
+        line-height: 36px;
+        border-radius: 3px;
+        padding: 0px 2px;
+    }
+    .img_div input{
+        float: left;
+        width: 447px;
+        vertical-align: middle;
+        background: none;
+        border: 0px;
+    }
+    .img_div .upload_btn {
+        padding: 1px 14px;
+        background-color: rgba(245, 245, 245, 1);
+        border: 1px solid gray;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .divHidden{
+        display:none;
+
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+
+        {:getTableMenu($_GET['menuid'],'Admin/Appointment/add')}
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Appointment/edit')}">
+        <fieldset>
+
+            <div class="control-group">
+                <label class="control-label">标题名称</label>
+                <div class="controls">
+                    <input type="text" name="title" value="{$info['title']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">妹妹年龄</label>
+                <div class="controls">
+                    <input type="text" name="age" value="{$info['age']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">所属地区</label>
+                <div class="controls">
+                    <select name="province" id="province" onchange="selectType(this,1)">
+                        <volist name="province" id="provincevo">
+                            <option value="{$provincevo['id']}"  date-value="{$provincevo['province_id']}" <if condition="$provincevo['id'] eq $info['province_id']">selected</if> >{$provincevo['province']}</option>
+                        </volist>
+
+                    </select>
+
+                    <select name="city"  id="city" onchange="selectType(this,2)">
+                        <volist name="city" id="cityvo">
+                            <option value="{$cityvo['id']}" date-value="{$cityvo['city_id']}" <if condition="$cityvo['id'] eq $info['city_id']">selected</if>  >{$cityvo['city']}</option>
+                        </volist>
+                    </select>
+                    <select name="area"  id="area" >
+                        <volist name="area" id="areavo">
+                            <option value="{$areavo['id']}" <if condition="$areavo['id'] eq $info['area_id']">selected</if> >{$areavo['area']}</option>
+                        </volist>
+
+                    </select>
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">价格</label>
+                <div class="controls">
+                    <input type="text" name="price" value="{$info['price']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+          <!--  <div class="control-group">
+                <label class="control-label">综合评分</label>
+                <div class="controls">
+                    <input type="text" name="score"   value="{$info['score']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>-->
+
+            <div class="control-group">
+                <label class="control-label">商铺</label>
+                <div class="controls">
+                    <select name="shop_id"  >
+                        <volist name="shop" id="shopvo">
+                            <option value="{$shopvo['id']}" <if condition="$shopco['id'] eq $info['shop_id']" > selected</if>>{$shopvo['name']}</option>
+                        </volist>
+
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"> 类型</label>
+                <div class="controls">
+                    <foreach name="type" item="typeVo"  key ='keyvo'>
+                        <label class="checkbox inline"><input value="{$keyvo}"  type="checkbox" <if condition="in_array($keyvo,$info['type'])">checked</if>  name="type[]">{$typeVo}</label>
+                    </foreach>
+                </div>
+
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"> 分类</label>
+                <div class="controls">
+                    <foreach name="classification" item="classificationVo"  key ='classificationkey'>
+                        <label class="checkbox inline"><input value="{$classificationkey}"  type="checkbox" <if condition="in_array($classificationkey,$info['classification'])">checked</if>   name="classification[]">{$classificationVo}</label>
+                    </foreach>
+                </div>
+
+            </div>
+            <div class="control-group">
+                <label class="control-label">服务项目</label>
+                <div class="controls">
+                    <textarea type="text" name="service_items">{$info['service_items']}</textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+
+                <label class="control-label"> 联系方式</label>
+                <div class="controls">
+                    <input type="text" name="phone" value="{$info['phone']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">地址信息</label>
+                <div class="controls">
+                    <textarea type="text" name="address">{$info['address']}</textarea>
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">妹妹短视频(多个视频用|隔开)</label>
+                <div class="controls">
+                    <textarea type="text"  style="width: 300px;height: 100px" name="video">{$info['video']}</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">图片</label>
+                <div class="controls" id="addimg">
+                    <foreach name="info.img" item="imgVo"  key ='imgkey'>
+                    <div class="img_div">
+                        <input type="text" name="img[]"  data-timenum="{$imgkey+1}" value="{$imgVo}"  placeholder="请上传" required>
+                        <span class="upload_btn cust-upload-img" data-name="img[]" data-timenum="{$imgkey+1}"  data-showimgclass="img_show_img"
+                              data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+                    </div>
+
+                    <img src="{$imgVo}" alt="" class="img_show_img" data-showimgclassnum="{$imgkey+1}" style="max-height: 70px;max-width: 100px;padding: 0px;margin: 0px 0px 0px 15px;">
+                    </foreach>
+                    <button  type="button" onclick="addimg()">添加</button>
+                </div>
+
+            </div>
+
+
+            <div class="control-group">
+                <label class="control-label">浏览量</label>
+                <div class="controls">
+                    <input type="text" name="viewing_times" value="{$info['viewing_times']}">
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">解锁量</label>
+                <div class="controls">
+                    <input type="text" name="unlock_times" value="{$info['unlock_times']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">排序</label>
+                <div class="controls">
+                    <input type="text" name="sort" value="{$info['sort']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">是否置顶</label>
+                <div class="controls">
+                    <label class="radio inline" for="is_top_1"><input type="radio" name="is_top" value="1" <if condition="$info['is_top'] eq 1" > checked</if>   >是</label>
+                    <label class="radio inline" for="is_top_2"><input type="radio" name="is_top" value="2"  <if condition="$info['is_top'] eq  2" > checked</if>    >否</label>
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">是否认证</label>
+                <div class="controls">
+                    <label class="radio inline" for="is_authentication_1"><input type="radio" name="is_authentication" value="1"<if condition="$info['is_authentication'] eq 1" > checked</if> >是</label>
+                    <label class="radio inline" for="is_authentication_2"><input type="radio" name="is_authentication" value="2"  <if condition="$info['is_authentication'] eq 2" > checked</if> >否</label>
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">是否显示</label>
+                <div class="controls">
+                    <label class="radio inline" for="status_1"><input type="radio" name="status" value="1" id="status_1" <if condition="$info['status'] eq  1" > checked</if>  >是</label>
+                    <label class="radio inline" for="status_2"><input type="radio" name="status" value="2" id="status_2"  <if condition="$info['status'] eq 2 " > checked</if> >否</label>
+                </div>
+            </div>
+            <input type="hidden" name="id" value="{$info['id']}">
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+
+                <a class="btn" href="{:U('Appointment/index')}">{:L('BACK')}</a>
+
+            </div>
+        </fieldset>
+
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>
+<script type="text/javascript" src="__PUBLIC__/js/wangeditor/wangEditor.min.js"></script> <!--富文本编辑器-->
+<script>
+
+
+    function addimg(){
+        let timeNum = new Date().getTime();
+        $('#addimg').append(' <div class="img_div">\n' +
+            '  <input type="text" data-timenum="'+ timeNum +'" name="img[]" placeholder="请上传" required>\n' +
+            '  <span class="upload_btn cust-upload-img" data-timenum="'+ timeNum +'" data-name="img" data-showimgclass="img_show_img" data-progress="1" data-url="{:U(\'Upload/img_upload\')}">+</span>\n' +
+            '</div>\n' +
+            '<img src="" alt="" data-showimgclassnum="'+ timeNum +'" class="img_show_img" style="max-height: 70px;max-width: 100px;padding: 0px;margin: 0px 0px 0px 15px;">\n'
+        )
+        window.CUST_UPLOAD();
+    }
+    function  selectType( _this,type) {
+        let val = $(_this).val();
+        let opts = $(_this).find('option[value=' + val + ']')
+        var father_id = opts.attr('date-value');
+        $.ajax({
+            url: "/Admin/Appointment/getcity",
+            type: "get",
+            data: {type: type, father_id: father_id},
+            dataType: "json",
+            success: function (data) {
+                $('#area').empty()
+                var areaList = data.area;
+                var areaHtml = ''
+                if (type == 1) {
+                    $('#city').empty()
+                    var cityList = data.city;
+                    var cityHtml = ''
+                    $.each(cityList, function (city_key, city_val) {
+                        cityHtml += '<option value="' + city_val.id + '" date-value="' + city_val.city_id + '">' + city_val.city + '</option>'
+                    })
+                    $('#city').append(cityHtml)
+                }
+                $.each(areaList, function (area_key, area_val) {
+                    areaHtml += '<option value="' + area_val.id + '" date-value="' + area_val.area_id + '">' + area_val.area + '</option>'
+                })
+                $('#area').append(areaHtml)
+            },
+            error: function () {
+
+            }
+        });
+
+    }
+
+    /*
+    * 富文本编辑
+    * */
+
+
+    function check_imfsrc(obj){
+        var src = $(obj).attr('src');
+        if(!src){
+            return ;
+        }
+        var class_name = $(obj).attr('class');
+        var arr = src.split('.');
+        var end_str = arr[arr.length - 1];
+        var html = '<div id="'+class_name+'" style="max-height: 150px;max-width: 150px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;display: inline-block;vertical-align: top;"></div>';
+        $("#"+class_name).remove();
+        if(end_str.toLowerCase() == 'svga'){
+            $(obj).after(html);
+            var player =new SVGA.Player('#'+class_name);
+            var parser =new SVGA.Parser('#'+class_name);
+            parser.load(src, function(videoItem) {
+                player.setVideoItem(videoItem);
+                player.startAnimation();
+            })
+        }else{
+            $(obj).parent().parent().children("input[name='special_effect_swf']").val('');
+        }
+        return;
+    }
+
+
+
+
+</script>

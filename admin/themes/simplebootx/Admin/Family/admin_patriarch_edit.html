@@ -1,0 +1,42 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Family/admin_patriarch')}
+	</ul>
+	<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('admin_patriarch_edit')}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">后台账号</label>
+				<div class="controls">
+					<input type="text" value="{$info.user_login}" readonly>
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">密码</label>
+				<div class="controls">
+					<input type="password" name="user_pass" required>
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">备注</label>
+				<div class="controls">
+					<textarea name="remark" id="" cols="30" rows="10"></textarea>
+					<span class="form-required"></span>
+				</div>
+			</div>
+		</fieldset>
+		<div class="form-actions">
+			<input type="hidden" name="id" value="{$info.id}">
+			<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,waittime:1000}">{:L('SAVE')}</button>
+			<a class="btn" href="{:U('auth')}">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

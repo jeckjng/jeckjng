@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>socket.io</title>
+</head>
+<body>
+<div id="sse">
+    <!--  <a href="javascript:WebSocketTest()">运行 WebSocket</a>-->
+</div>
+<div id="notice"></div>
+<div id="content" style="margin: 50px 0px 0px 200px;background-color: lightgrey;width: 700px;">
+    <!--  <p>聊天开始：</p>-->
+</div>
+
+</body>
+</html>
+<script src='https://cdn.bootcss.com/socket.io/2.0.3/socket.io.js'></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<!--<script src='./socket.io.js'></script>-->
+<!--<script src="./jquery.min.js"></script>-->
+<script>
+    var port_arr = ['3031','3032','3033','3034','3035','3036','3037','3038','3039','30310'];
+
+    // var url = 'http://socketio2020.vm1.com:3031'; // 本地-vm1
+    // var url = 'http://13.212.227.122:8282'; // 四方测试
+    var url = 'https://php-socket.meibocms.com'; // 直播测试
+
+    // var url = 'https://shwiahq.dezhoudianzi.com'; // 直播-独立生产  'http://10.0.202.255:2020'; //
+
+    // var url = 'http://dowqeja.dezhoudianzi.com'; // 'http://lurs56anve.dezhoudianzi.com'; // 直播生产1
+    // var url = 'http://18.163.250.67:2020'; // 直播生产2
+    // var url = 'http://3.0.135.117:2020'; // https://elb-liveprod-socket-2020-a90290143f250f64.elb.ap-southeast-1.amazonaws.com'; // 直播生产3
+
+    // var url = 'http://16.163.240.181:2023';
+
+    // var url =  'https://yyvahafr.xylkic.com';
+
+    // var url = 'https://u1aemflh.dezhoudianzi.com';
+
+    // var url = 'https://j93wb8jt.xylkic.com'; // 这个即是后台域名，也是socket 2020的域名，通过nginx做的ip_hash，你用测试2020的那个html看一下，有没有问题，如果没有问题，明天就把socket2021也这样做
+
+    // var url = 'http://18.167.48.253:2020'; // 1
+    // var url = 'http://18.163.20.242:2020'; // 2
+    // var url = 'http://18.167.209.67:2020'; // 3
+
+    // var url = 'https://2oshqeze.xylkic.com'; //
+
+    // var url = 'https://yd2t8g4l9f.zgzxcm.com'; //
+
+    // var url = 'https://f7lfk19d3r.dezhoudianzi.com'; //
+
+    var connect_num = 0;
+    var act_num = connect_num;
+    var errro_status = false;
+
+    $("#sse").append('<p style="color: #00bb00">您的浏览器支持 WebSocket!</p>');
+    $("#content").html('<p class="input_p">' +
+        '<div>测试最大连接数：<input type="radio" name="test_max_conn" value="0" checked>不启用'+
+        '<input type="radio" name="test_max_conn" value="1">启用&nbsp;&nbsp;'+
+        '最大值：<input type="number" id="max_conn" value="1000" style="width: 80px;">&nbsp;默认可以不设置<br>'+
+        '<button id="send_btn" data-status="0">开始</button>' +
+        '&nbsp;&nbsp;&nbsp;&nbsp;连接数量： <span  id="connect_num">'+connect_num+'</span></div>' +
+        '<div>&nbsp;&nbsp;&nbsp;&nbsp;<p style="display: none;">报错内容： </p><p  id="error_ct"></p></div>' +
+        '</p>');
+
+    function socketio(){
+        act_num++;
+        if(errro_status == true){
+            console.log('连接错误，停止增加连接');
+            return false;
+        }
+        var max_conn = $("#max_conn").val() ? $("#max_conn").val() : 1000;
+        if(connect_num >= max_conn || act_num >= max_conn){
+           console.log('达到最大连接数，停止增加连接');
+           errro_status = true;
+           return false;
+        }
+
+        if(act_num==1){
+            console.log('url: '+url);
+        }
+
+        // var socket = io(url);
+        var socket = io(url, {transports: ['websocket']});
+
+        console.log('var socket = io(url, {transports: [\'websocket\']});');
+
+        // // 当连接服务端成功时触发connect默认事件
+        socket.on('connect', function(){
+            console.log('connect success');
+            connect_num ++;
+            console.log('socketio 连接成功，连接数量：'+connect_num+' , url: '+url);
+            $("#connect_num").text(connect_num);
+            console.log($("input[name='test_max_conn']:radio:checked").val());
+            if($("input[name='test_max_conn']:radio:checked").val()=='1'){
+                setTimeout('socketio()',10);
+            }
+        });
+        socket.on('connect_error', function(msg){
+            console.log('socketio 连接错误，连接数量：'+connect_num+' , url: '+url);
+            errro_status = true;
+            $("#error_ct").html('socketio 连接错误:<br>'+msg).css('display','inline-block');
+            console.log(msg);
+        });
+        socket.on('connect_timeout', function(msg){
+            console.log('socketio 连接超时，连接数量：'+connect_num+' , url: '+url);
+            errro_status = true;
+            $("#error_ct").html('socketio 连接超时:<br>'+msg).css('display','inline-block');
+            console.log(msg);
+        });
+        socket.on('error', function(msg){
+            console.log('socketio 错误，连接数量：'+connect_num+' , url: '+url);
+            errro_status = true;
+            $("#error_ct").html('socketio 错误:<br>'+msg).css('display','inline-block');
+            console.log(msg);
+        });
+
+        // 服务端通过message_from_server事件触发客户端
+        socket.on('redis_message_from_server', function(msg){
+            console.log('onmessage 数据已接收...');
+        });
+
+        // 服务端通过 broadcastingListen 事件触发客户端
+        socket.on('broadcastingListen', function(msg){
+            console.log('onmessage 数据已接收...');
+        });
+
+        // 断开连接
+        socket.on('disconnect', function(msg){
+            connect_num--;
+            act_num--;
+            console.log('onclose 连接已关闭... ，连接数量：'+connect_num);
+            $("#connect_num").text(connect_num);
+        });
+    }
+
+
+    $("#send_btn").on('click',function (obj) {
+        if($(this).attr('data-status')=='1'){
+            console.log('停止，连接数量：'+connect_num+' , url: '+url);
+            $(this).attr('data-status',0).text('开始');
+            errro_status = true;
+        }else{
+            console.log('开始，连接数量：'+connect_num+' , url: '+url);
+            $(this).attr('data-status',1).text('停止');
+            errro_status = false;
+            socketio();
+        }
+    });
+
+</script>

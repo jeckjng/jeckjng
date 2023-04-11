@@ -1,0 +1,71 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:U('Receptionmeun/index')}">前台菜单</a></li>
+			<li><a href="{:U('Receptionmeun/add')}">{:L('ADMIN_MENU_ADD')}</a></li>
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('Receptionmeun/edit_post')}">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">上级:</label>
+					<div class="controls">
+						<select name="parentid">
+							<option value="0">作为一级菜单</option>{$select_categorys}
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">名称:</label>
+					<div class="controls">
+						<input type="text" name="name" value="{$data.name}">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">状态:</label>
+					<div class="controls">
+						<select name="status">
+							<option value="1">启用</option>
+							<php>$status_selected=empty($data['status'])?"selected":"";</php>
+							<option value="0" {$status_selected}>禁用</option>
+						</select>
+					</div>
+				</div>
+
+			</fieldset>
+			<div class="form-actions">
+				<input type="hidden" name="id" value="{$data.id}" />
+				<button type="submit" class="btn btn-primary js-ajax-submit">{:L('SAVE')}</button>
+				<button class="btn js-ajax-close-btn" type="submit">{:L('CLOSE')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script>
+		$(function() {
+			$(".js-ajax-close-btn").on('click', function(e) {
+				e.preventDefault();
+				Wind.use("artDialog", function() {
+					art.dialog({
+						id : "question",
+						icon : "question",
+						fixed : true,
+						lock : true,
+						background : "#CCCCCC",
+						opacity : 0,
+						content : "您确定需要关闭当前页面嘛？",
+						ok : function() {
+							setCookie('refersh_time_admin_menu_index', 1);
+							window.close();
+							return true;
+						}
+					});
+				});
+			});
+		});
+	</script>
+</body>
+</html>

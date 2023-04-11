@@ -1,0 +1,120 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li ><a href="{:U('Car/index')}">列表</a></li>
+			<li class="active"><a >添加</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Activity/add_recharge_gift')}
+		</ul>
+		<form method="get" action="{:U('add_recharge_gift')}" enctype="multipart/form-data" class="form-horizontal">
+
+				<if condition="$role_id == 1">
+					<div class="control-group">
+						<label class="control-label">*租户</label>
+						<div class="controls">
+							<select name="tenant_id" onchange="change_tenant_id(this)" >
+								<volist name="tenant_list" id="vo">
+									<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+								</volist>
+							</select>
+							<span class="form-required"></span>
+						</div>
+					</div>
+				</if>
+
+
+		</form>
+		<form method="post" enctype="multipart/form-data" class="form-horizontal js-ajax-form">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">充值范围</label>
+					<div class="controls">
+						<input type="text" name="price">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">首充类型</label>
+					<div class="controls">
+						<label class="radio inline"><input type="radio" value="0"  name="type" required >不显示</label>
+						<label class="radio inline"><input type="radio" value="1"  name="type" required >热门</label>
+						<label class="radio inline"><input type="radio" value="2" name="type" required>推荐</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">是否启用</label>
+					<div class="controls">
+						<label class="radio inline"><input type="radio" value="1" name="is_open" required>启用</label>
+						<label class="radio inline"><input type="radio" value="2" name="is_open" required>关闭</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">*礼物名称</label>
+					<div class="controls">
+						<select name="gift_id" >
+							<volist name="giftlist" id="vo">
+								<option value="{$vo.id}" <if condition="$gift_id eq $vo['id']">selected</if> >{$vo.giftname}</option>
+							</volist>
+						</select>
+                         赠送个数	<input type="text" name="gift_num">
+						<span class="form-required">*</span>
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">*坐骑名称</label>
+					<div class="controls">
+						<select name="car_id" >
+							<volist name="car_list" id="vo">
+								<option value="{$vo.id}" <if condition="$gift_id eq $vo['id']">selected</if> >{$vo.name}</option>
+							</volist>
+						</select>
+						座机体验天数<input type="text" name="car_num">
+						<span class="form-required">*</span>
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">*贵族名称</label>
+					<div class="controls">
+						<select name="nobel_id" >
+							<volist name="getNobleList" id="vo">
+								<option value="{$vo.id}" <if condition="$gift_id eq $vo['id']">selected</if> >{$vo.name}</option>
+							</volist>
+						</select>
+						贵族体验天数	<input type="text" name="nobel_days">
+						<span class="form-required">*</span>
+
+					</div>
+				</div>
+				<input type="hidden" name="tenant_id" value="{$tenant_id}">
+
+			</fieldset>
+			<div class="form-actions">
+				<div class="form-actions">
+					<button onclick="set_save(1)" class="btn btn-primary js-ajax-submit">{:L('SAVE')}</button>
+					<a class="btn" href="{:U('Activity/recharge_gift')}">{:L('BACK')}</a>
+				</div>
+
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+
+	<script type="text/javascript">
+		function change_tenant_id(obj) {
+			var li_key = $("li.current").attr('data-key');
+			var tenant_id = $(obj).val();
+			window.location.href = "{:U('add_recharge_gift',array('menuid'=>$param['menuid']))}/tenant_id/"+tenant_id+"/li_key/"+li_key;
+		}
+		function set_save(type){
+			 $('form').attr('action',"{:U('Admin/Activity/add_recharge_post/type/"+type+"')}");
+
+		}
+	</script>
+
+</body>
+</html>
+

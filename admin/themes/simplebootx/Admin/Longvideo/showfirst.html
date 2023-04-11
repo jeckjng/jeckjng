@@ -1,0 +1,37 @@
+<admintpl file="header" />
+</head>
+<style>
+	.top-nav{
+		color: #333;
+		font: 14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+		height: 43px;
+		line-height: 43px;
+		padding: 0 20px;
+	}
+	form{
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+</style>
+<body>
+<div class="">
+	<div class="top-nav well" style="text-align: center;">
+		<span class="cust-title" style="">{$param.title}</span>
+		<span class="" style="float: right;cursor: pointer;" onclick="$('#cust-js-iframe',window.parent.document).toggle();">
+				<i class="fa fa-times" aria-hidden="true"></i>
+			</span>
+	</div>
+	<form class="form-horizontal cust-js-ajax-form" method="post" action="">
+
+				<img src="{$url}" style="width: 400px;height: 350px;"/>
+
+
+
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

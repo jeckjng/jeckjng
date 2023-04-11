@@ -1,0 +1,176 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/ChargeWithdrawalRecord/draw_money')}
+	</ul>
+	<form class="well form-search" name="form1" method="post" style="float:left" action="">
+		<div style="">
+			<div class="search-box">
+				<input type="text" name="start_time" class="js-date date" id="start_time" value="{$param.start_time}" style="width: 80px;" autocomplete="off">
+			</div>
+			<div class="search-box">
+				<input type="button" data-time_type="today" class="btn btn-primary cust-time-select {:$param['time_type']=='today' ? '' : 'bg-color-white color-black'}" value="今日" data-time_start="{:explode(' ',$time_se['today_start'])[0]}" data-time_end="{:explode(' ',$time_se['today_end'])[0]}" />
+			</div>
+			<div class="search-box">
+				<input type="button" data-time_type="tweek" class="btn btn-primary cust-time-select {:$param['time_type']=='tweek' ? '' : 'bg-color-white color-black'}" value="本周" data-time_start="{:explode(' ',$time_se['tweek_start'])[0]}" data-time_end="{:explode(' ',$time_se['tweek_end'])[0]}" />
+			</div>
+			<div class="search-box">
+				<input type="button" data-time_type="tmonth" class="btn btn-primary cust-time-select {:$param['time_type']=='tmonth' ? '' : 'bg-color-white color-black'}" value="本月" data-time_start="{:explode(' ',$time_se['tmonth_start'])[0]}" data-time_end="{:explode(' ',$time_se['tmonth_end'])[0]}" />
+			</div>
+			<if condition="$_SESSION[role_id] == 1 ">
+				<div class="search-box">
+					租户：
+					<select class="select_2" name="tenant_id" id="tenant_id">
+						<volist name="tenant_list" id="v">
+							<option value="{$v['id']}" <if condition="$param.tenant_id eq $v['id']">selected</if> >{$v['name']}</option>
+						</volist>
+					</select>
+				</div>
+			</if>
+			<div class="search-box">
+				币种：
+				<select class="select_2" name="rate_code">
+					<volist name="rate_list" id="v">
+						<option value="{$v['code']}" <if condition="$param.rate_code eq $v['code']">selected</if> >{$v['name']}({$v['code']})</option>
+					</volist>
+				</select>
+			</div>
+			<div class="search-box">
+				用户类型：
+				<select class="select_2 width-120" name="user_type">
+					<option value="-1" <if condition="$param['user_type'] eq '-1'">selected</if>>全部</option>
+					<volist name="user_type_list" id="vo">
+						<option value="{$vo.type}" <if condition="$param['user_type'] eq $vo['type']">selected</if> >{$vo['name']}</option>
+					</volist>
+				</select>
+			</div>
+		</div>
+		<div>
+			<div class="search-box">
+				<input type="text" class="js-date date" name="end_time" id="end_time" value="{$param.end_time}" style="width: 80px;" autocomplete="off">
+			</div>
+			<div class="search-box">
+				<input type="button" data-time_type="ytoday" class="btn btn-primary cust-time-select {:$param['time_type']=='ytoday' ? '' : 'bg-color-white color-black'}" value="昨日" data-time_start="{:explode(' ',$time_se['ytoday_start'])[0]}" data-time_end="{:explode(' ',$time_se['ytoday_end'])[0]}" />
+			</div>
+			<div class="search-box">
+				<input type="button" data-time_type="yweek" class="btn btn-primary cust-time-select {:$param['time_type']=='yweek' ? '' : 'bg-color-white color-black'}" value="上周" data-time_start="{:explode(' ',$time_se['yweek_start'])[0]}" data-time_end="{:explode(' ',$time_se['yweek_end'])[0]}" />
+			</div>
+			<div class="search-box">
+				<input type="button" data-time_type="ymonth" class="btn btn-primary cust-time-select {:$param['time_type']=='ymonth' ? '' : 'bg-color-white color-black'}" value="上月" data-time_start="{:explode(' ',$time_se['ymonth_start'])[0]}" data-time_end="{:explode(' ',$time_se['ymonth_end'])[0]}" />
+			</div>
+
+			<div class="search-box">
+				<input type="hidden" name="time_type" id="time_type" value="{$param['time_type']}"/>
+			</div>
+			<div class="search-box">
+				<input type="submit" class="btn btn-primary" value="搜索" onclick="form1.action='{:U('draw_money')}';form1.submit();">
+			</div>
+			<div class="search-box">
+				<input type="button" class="btn btn-primary" style="background-color: #1dccaa;" value="导出" onclick="form1.action='{:U('draw_export')}';form1.submit();"/>
+			</div>
+		</div>
+	</form>
+
+	<form method="post" class="js-ajax-form" >
+		<table class="table table-hover table-bordered">
+			<thead>
+			<tr>
+				<th>租户</th>
+				<th>时间</th>
+				<th>提现方式</th>
+				<th>总价（CNY）</th>
+<!--				<th>总价（{$param.rate_code}）</th>-->
+				<th>单数/人数</th>
+				<th>成功金额（CNY）</th>
+<!--				<th>成功金额（{$param.rate_code}）</th>-->
+				<th>失败金额（CNY）</th>
+<!--				<th>失败金额（{$param.rate_code}）</th>-->
+			</tr>
+			</thead>
+			<tbody>
+			<foreach name="lists" item="vo">
+				<tr>
+					<td>{$vo.tenant_name}</td>
+					<td>{$vo['start_time']|date="Y-m-d",###}<br/>
+						{$vo['end_time']|date="Y-m-d",###}
+					</td>
+					<td>线上提现</td>
+					<td>{$vo[rnb_money_sum]}</td>
+<!--					<td>{$vo[money_sum]}</td>-->
+					<td>{$vo['order_sum']}/{$vo['user_sum']}</td>
+					<td>{$vo['success_rnb_money']}</td>
+<!--					<td>{$vo['success_money']}</td>-->
+					<td>{$vo['error_rnb_money']}</td>
+<!--					<td>{$vo['error_money']}</td>-->
+				</tr>
+			</foreach>
+			</tbody>
+		</table>
+		<div class="pagination">{$page}</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script>
+	var list='{$proxylistj}';
+	var proxyid='{$param['proxyid']}';
+	var promoterid='{$param['promoterid']}';
+	var lists='';
+	if(list){
+		lists=typeof(list)=='object'?list:JSON.parse(list);
+	}
+
+
+	function cteateProxyid(){
+		if(!lists){
+			return !1;
+		}
+		var proxy_html='<option value="">全部</option>';
+		for(var k in lists){
+			var v=lists[k];
+			if(k==proxyid){
+				proxy_html+='<option value="'+v.id+'" selected>'+v.user_nicename+'</option>';
+			}else{
+				proxy_html+='<option value="'+v.id+'">'+v.user_nicename+'</option>';
+			}
+		}
+
+		$("#proxyid").html(proxy_html);
+		if(proxyid){
+			cteatePromoterid();
+		}
+	}
+
+	function cteatePromoterid(){
+		if(!lists){
+			return !1;
+		}
+		var promoter_html='<option value="">全部</option>';
+
+		if(proxyid){
+			var list2=lists[proxyid]['list'];
+
+			for(var k in list2){
+				var v=list2[k];
+				if(k==promoterid){
+					promoter_html+='<option value="'+v.id+'" selected>'+v.user_nicename+'</option>';
+				}else{
+					promoter_html+='<option value="'+v.id+'">'+v.user_nicename+'</option>';
+				}
+
+			}
+		}
+		$("#promoterid").html(promoter_html);
+	}
+
+	cteateProxyid();
+
+	$("#proxyid").change(function(){
+		proxyid=$(this).val();
+		cteatePromoterid();
+	})
+
+</script>
+</body>
+</html>

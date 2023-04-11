@@ -1,0 +1,198 @@
+<admintpl file="header" />
+</head>
+<style>
+	.img_div{
+		display: inline-block;
+		width: 506px;
+		border: 2px solid #dce4ec;
+		height: 36px;
+		line-height: 36px;
+		border-radius: 3px;
+		padding: 0px 2px;
+	}
+	.img_div input{
+		float: left;
+		width: 447px;
+		vertical-align: middle;
+		background: none;
+		border: 0px;
+	}
+	.img_div .upload_btn{
+		padding: 1px 14px;
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid gray;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li ><a href="{:U('Gift/index')}">礼物列表</a></li>
+			<li class="active"><a >礼物添加</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Gift/add')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('add_post')}">
+			<fieldset>
+				<if condition="$role_id == 1">
+					<div class="control-group">
+						<label class="control-label">*租户</label>
+						<div class="controls">
+							<select name="tenant_id">
+								<volist name="tenant_list" id="vo">
+									<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+								</volist>
+							</select>
+							<span class="form-required"></span>
+						</div>
+					</div>
+				</if>
+				<div class="control-group" style="display:none;">
+					<label class="control-label">礼物分类</label>
+					<div class="controls">
+						<select name="sid">
+							<option value="0">默认分类</option>
+						   	<volist name="gift_sort" id="vo">
+							     <option value="{$key}">{$vo}</option>
+							 </volist>
+						</select>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">礼物类型</label>
+					<div class="controls">
+						<volist name="type_list" id="vo">
+							<label class="radio inline" for="type_{$key}">
+								<input type="radio" name="type" value="{$key}" id="type_{$key}" required <if condition="$key eq '0'">checked</if> >{$vo}
+							</label>
+						</volist>
+					</div>
+				</div>
+                <div class="control-group">
+					<label class="control-label">礼物标识</label>
+					<div class="controls">
+						<volist name="mark_list" id="vo">
+							<label class="radio inline" for="mark_{$key}">
+								<input type="radio" name="mark" value="{$key}" id="mark_{$key}" required <if condition="$key eq '0'">checked</if> >{$vo}
+							</label>
+						</volist>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">序号</label>
+					<div class="controls">
+						<input type="text" name="orderno" value="0" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">礼物名称</label>
+					<div class="controls">
+						<input type="text" name="giftname" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">所需点数</label>
+					<div class="controls">
+						<input type="text" name="needcoin" required onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group" style="display:none;"> 
+					<label class="control-label">小图</label>
+					<div class="controls">
+                        <input type="hidden" name="gifticon_mini" id="thumb1" value="">
+                        <a href="javascript:void(0);" onclick="flashupload('thumb_images', '附件上传','thumb1',thumb_images,'1,jpg|jpeg|gif|png,1,,,1','','','');return false;">
+                                <img src="__TMPL__Public/assets/images/default-thumbnail.png" id="thumb1_preview" width="135" style="cursor: hand" />
+                        </a>
+                        <input type="button" class="btn btn-small" onclick="$('#thumb1_preview').attr('src','__TMPL__Public/assets/images/default-thumbnail.png');$('#thumb1').val('');return false;" value="取消图片">
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">图片</label>
+					<div class="controls">
+						<div class="img_div">
+							<input type="text" name="gifticon" placeholder="请上传" required>
+							<span class="upload_btn cust-upload-img" data-name="gifticon" data-showimgclass="img_show_gifticon" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+						</div>
+						<img src="" alt="" class="img_show_gifticon" style="max-height: 70px;max-width: 100px;padding: 0px;margin: 0px 0px 0px 15px;">
+					</div>
+				</div>
+                <div class="control-group" name="swftype">
+					<label class="control-label">动画类型</label>
+					<div class="controls">
+						<volist name="swftype_list" id="vo">
+							<label class="radio inline" for="swftype_{$key}">
+								<input type="radio" name="swftype" value="{$key}" id="swftype_{$key}" required <if condition="$key eq '0'">checked</if> >{$vo}
+							</label>
+						</volist>
+					</div>
+				</div>
+                <div class="control-group">
+					<label class="control-label">动画图片</label>
+					<div class="controls">
+						<div class="img_div">
+							<input type="text" name="swf" placeholder="请上传">
+							<span class="upload_btn cust-upload-img" data-name="swf" data-accept="image/gif" data-showimgclass="img_show_swf" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+						</div>
+						<img src="" alt="" data-changefunc="check_imfsrc" class="img_show_swf" style="max-height: 70px;max-width: 300px;padding: 0px;margin: 0px 0px 0px 15px;vertical-align: top;">
+					</div>
+				</div>
+                <div class="control-group">
+					<label class="control-label">动画时间</label>
+					<div class="controls">
+						<input type="text" name="swftime" value="0">秒  精度：小数点后两位
+						<span class="form-required">*</span>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,waittime:1000}">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script src="__PUBLIC__/js/svgaplayerweb/svga.min.js"></script>
+<script>
+	(function(){
+		$("input[name='swftype']").on('click',function(){
+			var v = $(this).val();
+			if(v == '0'){
+				$("input[name='swf']").parent().children('.upload_btn').attr('data-accept', 'image/gif');
+			}else if(v == '1'){
+				$("input[name='swf']").parent().children(".upload_btn[data-name='swf']").attr('data-accept', '*');
+			}
+		})
+	})()
+
+	function check_imfsrc(obj){
+		var src = $(obj).attr('src');
+		if(!src){
+			return ;
+		}
+		var class_name = $(obj).attr('class');
+		var arr = src.split('.');
+		var end_str = arr[arr.length - 1];
+		var html = '<div id="'+class_name+'" style="max-height: 150px;max-width: 150px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;display: inline-block;vertical-align: top;"></div>';
+		$("#"+class_name).remove();
+		if(end_str.toLowerCase() == 'svga'){
+			$(obj).after(html);
+			var player =new SVGA.Player('#'+class_name);
+			var parser =new SVGA.Parser('#'+class_name);
+			parser.load(src, function(videoItem) {
+				player.setVideoItem(videoItem);
+				player.startAnimation();
+			})
+		}else{
+			$(obj).parent().parent().children("input[name='special_effect_swf']").val('');
+		}
+		return;
+	}
+</script>

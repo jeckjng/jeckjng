@@ -1,0 +1,46 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <if condition="$id">
+            <li class="active"><a>编辑</a></li>
+
+            <else/>
+          <!--  <li> <a  href="{:U('Shotvideo/add')}">上传视频</a></li>
+            <li class="active"><a>添加视频地址</a></li>-->
+            {:getTableMenu($_GET['menuid'],'User/Indexadmin/index')}
+        </if>
+
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('User/Indexadmin/editroomtype_post')}">
+        <fieldset>
+
+
+            <div class="control-group">
+                <label class="control-label">开通房间权限</label>
+                <div class="controls">
+                    <foreach name="labels" item="vo">
+                        <label class="checkbox inline"><input value="{$vo.label}"   <if condition="in_array($vo['label'],$videoLabel)"> checked== 'checked'</if>      type="checkbox" name="label[]">{$vo.label}</label>
+                    </foreach>
+
+                </div>
+
+            </div>
+
+        </fieldset>
+        <div class="form-actions">
+           <!-- <input type="hidden" name="id" value="{$id}" >
+            <input type="hidden" name="origin"  value="{$videoInfo.origin}">-->
+            <button type="submit" class="btn btn-primary js-ajax-submit">保存</button>
+            <a class="btn" href="{:U('indexadmin/index')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

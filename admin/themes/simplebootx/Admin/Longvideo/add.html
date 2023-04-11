@@ -1,0 +1,412 @@
+<admintpl file="header" />
+</head>
+<style>
+	#calroot{
+		width: auto !important;
+	}
+	.img_div{
+		display: inline-block;
+		width: 506px;
+		border: 2px solid #dce4ec;
+		height: 36px;
+		line-height: 36px;
+		border-radius: 3px;
+		padding: 0px 2px;
+	}
+	.img_div input{
+		float: left;
+		width: 447px;
+		vertical-align: middle;
+		background: none;
+		border: 0px;
+	}
+	.img_div .upload_btn{
+		padding: 1px 14px;
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid gray;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+</style>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Longvideo/add')}
+		<!--<li class="active"><a >上传视频</a></li>
+		<li class=""><a href="{:U('Longvideo/add_address')}">添加视频地址</a></li>-->
+	</ul>
+	<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('Longvideo/updatefile')}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">请输入标题</label>
+				<div class="controls">
+					<input type="text" required name="title">
+					<span class="form-required">*</span>
+				</div>
+			</div>
+
+			<div class="control-group upload_video_area">
+				<label class="control-label">上传视频</label>
+				<div class="controls">
+					<div class="img_div">
+						<input type="text" required name="fileStoreKey" readonly placeholder="请上传" required >
+						<span class="upload_btn cust-upload-img" data-name="fileStoreKey" data-accept="video/mp4" data-showimgclass="img_show_fileStoreKey" data-filename="file" data-progress="1" data-url="{:$url_is_ip == 1 ? U('Upload/video_upload_to_java') : $url_of_push_to_java_cut_video}" data-cust_change_file_func="cust_change_file_to_java">+</span>
+					</div>
+					<img src="" alt="" data-changefunc="" class="img_show_fileStoreKey" style="max-height: 70px;max-width: 300px;padding: 0px;margin: 0px 0px 0px 15px;vertical-align: top;">
+				</div>
+			</div>
+<!--
+			<div class="control-group upload_video_area">
+				<label class="control-label"></label>
+				<div class="controls">
+
+					<span class="form-required">1、视频清晰度高</span><br/>
+					<span class="form-required">2、不可以上传儿童，暴恐，血腥类的视频</span><br/>
+					<span class="form-required">3、视频大小不能超过50M</span><br/>
+					<span class="form-required">4、视频时长在300秒以内</span><br/>
+				</div>
+			</div>
+-->
+
+			<div class="control-group" id="uid">
+				<label class="control-label">视频所有者用户</label>
+				<div class="controls">
+					<input type="text" required name="owner_uid" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">
+					<span class="form-required">* 请填写用户id</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">选择主分类</label>
+				<div class="controls">
+					<input id="submit_lable" type="hidden" value="" name="labels">
+					<foreach name="labels" item="vo">
+						<label class="checkbox inline"><input class="labels-all" value="{$vo.label}" type="checkbox">{$vo.label}</label>
+					</foreach>
+					<!-- <select name="labels" required class="labels">
+						<option value="">请选择主分类</option>
+						<foreach name="labels" item="vo">
+						<option value="{$vo.label}">{$vo.label}</option>
+						</foreach>
+					</select> -->
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">子分类</label>
+				<div class="controls">
+					<input id="classify_sub" type="hidden" value="" name="classify">
+					<div id="classify"></div>
+					<!-- <select name="classify" required id="classify">
+						<option value="">请查看</option>
+					</select> -->
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">三级标签</label>
+				<div class="controls">
+							<foreach name="tags" item="vo">
+								<label class="checkbox inline"><input value="{$vo.label}" type="checkbox" name="tag[]">{$vo.label}</label>
+							</foreach>
+					   <a style="margin-left: 10px;margin-top: 120px;" href="{:U('Longvideo/addtag')}">添加三级标签</a>
+				</div>
+
+			</div>
+			<div class="control-group">
+				<label class="control-label">是否打码</label>
+				<div class="controls">
+					<select name="iscoding" id="iscoding">
+						<option value="">--请选择--</option>
+						<option value="1">无码</option>
+						<option value="2">有码</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group" id="uid">
+				<label class="control-label">购买价格</label>
+				<div class="controls">
+					<input type="text" name="price" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">
+					<span class="form-required">输入0则无需付费</span>
+				</div>
+				<label class="control-label" style="margin-top: -35px;margin-left: 420px;">vip 折扣 </label>
+				<div class="controls" style="margin-left: 600px;margin-top: -35px;">
+					<input type="text" value="0" name="vip_rate" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">%
+					<span class="form-required">默认是0%，就是vip免费</span>
+				</div>
+			</div>
+
+			<div class="control-group" id="">
+				<label class="control-label">预览时间</label>
+				<div class="controls">
+					<input type="text" name="try_watch_time" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">
+
+				</div>
+			</div>
+			<div class="control-group" >
+				<label class="control-label">点赞数量</label>
+				<div class="controls">
+					<input type="text" name="likes" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">
+
+				</div>
+			</div>
+			<div class="control-group" >
+				<label class="control-label">收藏数量</label>
+				<div class="controls">
+					<input type="text" name="collection" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">
+
+				</div>
+			</div>
+
+			<div class="control-group" >
+				<label class="control-label">播放次数</label>
+				<div class="controls">
+					<input type="text" name="watchtimes"  value="{$videoInfo.watchtimes}" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');">
+
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">上传时间</label>
+				<div class="controls">
+					<input type="text" name="create_date" class="js-datetime date" placeholder="请输入">&nbsp;&nbsp;<span></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">是否设为首页banner图</label>
+				<div class="controls">
+					<label class="radio inline" for="status_1"><input type="radio" name="banner_status" value="1" id="status_1">是</label>
+					<label class="radio inline" for="status_2"><input type="radio" name="banner_status" value="2" id="status_2" checked >否</label>
+
+				</div>
+			</div>
+			<div class="control-group" id="desc">
+				<label class="control-label">剧情简介</label>
+				<div class="controls">
+					<textarea style="width: 400px;height: 50px" type="text" name="desc" ></textarea>
+
+				</div>
+			</div>
+			<div class="control-group" id="years">
+				<label class="control-label">年代</label>
+				<div class="controls">
+					<input type="text" name="years" >
+				</div>
+			</div>
+			<div class="control-group" id="region">
+				<label class="control-label">地区</label>
+				<div class="controls">
+					<input type="text" name="region">
+
+				</div>
+			</div>
+			<div class="control-group" id="actor ">
+				<label class="control-label">演员</label>
+				<div class="controls">
+					<select name="performer" class="labels">
+					<option value="">请选择演员</option>
+					<foreach name="performer" item="vo">
+						<option value="{$vo.id}">{$vo.name}</option>
+					</foreach>
+					</select>
+				</div>
+			</div>
+			<div class="control-group" id="tourist_time ">
+				<label class="control-label">游客观看时长</label>
+				<div class="controls">
+					<input type="text" name="tourist_time">
+					<span class="form-required">单位(秒)</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">是否短视频展示</label>
+				<div class="controls">
+					<label class="radio inline" for="status_1"><input type="radio" name="shot_status" value="1" id="status_1">是</label>
+					<label class="radio inline" for="status_2"><input type="radio" name="shot_status" value="0" id="status_2" checked >否</label>
+
+				</div>
+			</div>
+		</fieldset>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary cust-js-ajax-submit" id="submit_id" data-option="{confirm:true,msg:{:L('ADD')},waittime:1000}">{:L('ADD')}</button>
+			<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+	$(function () {
+       $('.labels').change(function () {
+       	  $("#classify").empty();
+       	  $('#classify').append("<option>"+'请查看'+"</option>");
+
+		   var labels = $(this).val();
+           $.ajax({
+			   url: '/index.php?g=Admin&m=Longvideo&a=getclassify',
+			   type: 'POST',
+			   dataType: 'json',
+			   data: {labels:labels},
+			   success:function(data){
+				   console.log(data);
+				   var code = data.code;
+				   if(code==0){
+					   var arrayinfo = data.info;
+					   for(var i=0;i<arrayinfo.length;i++){
+                           $('#classify').append("<option value="+arrayinfo[i]['classify'] +">"+arrayinfo[i]['classify']+"</option>");
+					   }
+				   }else {
+					   alert(data.msg);
+				   }
+			   },
+               error:function(e){
+                   alert('操作过快，请重新刷新页面');
+               }
+		   });
+
+	   })
+	});
+
+	var check_classify = []
+	$(function () {
+		$('#classify').on('click',".checkbox",function() {
+			$("input[class='labels-sub']:checked").each(function (index, item) {
+				check_classify.push($(this).val())
+			});
+
+		});
+	});
+
+	$(function () {
+		$('.labels-all').on('change', function() {
+			var str = ""
+			var labels = []
+			$("input[class='labels-all']:checked").each(function (index, item) {
+				labels.push($(this).val())
+				if (str.length == 0) {
+					str += $(this).val();
+				} else {
+					str += ","+$(this).val();
+				}
+			});
+			if(labels.length ==0){
+				check_classify = []
+			}
+			
+			$("#classify").each(function (index, item) {
+				//check_classify.push($(this).val())
+				//alert($(this).attr("label"))
+			});
+
+
+			$("#classify").each(function(index,item){
+				if(item==undefined){
+					return
+				}
+				for(i in labels){
+					if(labels.indexOf($(this).attr("label")==-1)){
+						$(this).empty()
+					}
+				}
+			});
+
+			var classify_label = []
+			
+			$("#classify").each(function(index,item){
+				if(item==undefined){
+					return
+				}
+				classify_label.push($(this).attr("label"))
+			});
+
+			for(index in labels){
+				if(classify_label.indexOf(labels[index]) == -1){
+					var label = labels[index]
+					$.ajax({
+						url: '/index.php?g=Admin&m=Longvideo&a=getclassify',
+						type: 'POST',
+						dataType: 'json',
+						data: {labels:label},
+						success:function(data){
+							console.log(data);
+							var code = data.code;
+							if(code==0){
+								var arrayinfo = data.info;
+								for(var i=0;i<arrayinfo.length;i++){
+									if(check_classify[0] != undefined && check_classify.indexOf(arrayinfo[i]['classify'])>-1){
+										$('#classify').append('<label class="checkbox inline"><input class="labels-sub" checked label="'+label+'" value="'+arrayinfo[i]['classify']+'" type="checkbox"">'+arrayinfo[i]['classify']+'</label>')
+									}else{
+										$('#classify').append('<label class="checkbox inline"><input class="labels-sub" label="'+label+'" value="'+arrayinfo[i]['classify']+'" type="checkbox"">'+arrayinfo[i]['classify']+'</label>')									
+									}
+									
+							//$('#classify').append("<option value="+arrayinfo[i]['classify'] +">"+arrayinfo[i]['classify']+"</option>");
+								}
+							}else {
+								alert(data.msg);
+							}
+						},
+						error:function(e){
+							alert('操作过快，请重新刷新页面');
+						}
+					});
+				}
+
+			}
+
+			
+		})
+
+
+
+	 });
+
+	 $(function () {
+		$('#submit_id').on('click', function() {
+			$('form').on('submit', function() {
+				var str = ""
+				$("input[class='labels-all']:checked").each(function (index, item) {
+					if (str.length == 0) {
+						str += $(this).val();
+					} else {
+						str += ","+$(this).val();
+					}
+				});
+				$("#submit_lable").val(str)
+				var classify = ""
+				$("input[class='labels-sub']:checked").each(function (index, item) {
+					if (classify.length == 0) {
+						classify += $(this).val();
+					} else {
+						classify += ","+$(this).val();
+					}
+				});
+				$("#classify_sub").val(classify)
+			});
+		});
+	});
+
+
+	$(function(){
+
+		$("input[name='video_upload_type']").click(function(){
+			var val=$("input[name='video_upload_type']:checked").val();
+			console.log(val);
+			if(val==0){
+				$(".video_url_area").show();
+				$(".upload_video_area").hide();
+			}else{
+				$(".video_url_area").hide();
+				$(".upload_video_area").show();
+				$("input[name='href']").val('');
+			}
+		});
+
+		$("input[name='owner']").on("click",function(){
+			var val=$(this).val();
+			if(val==1){ //所有者为用户
+				$("#owner_uid").show();
+			}else{
+				$("#owner_uid").hide();
+			}
+		});
+
+	});
+</script>
+</body>
+</html>

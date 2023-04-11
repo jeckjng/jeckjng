@@ -1,0 +1,5 @@
+ALTER TABLE cmf_video  ADD  performer VARCHAR(100) NOT NULL DEFAULT '' COMMENT '演员名称' ;
+ALTER TABLE cmf_video  ADD  is_performer TINYINT(4) NOT NULL DEFAULT 0 COMMENT '是否设置演员 1 有 0 没有' ;
+
+ALTER TABLE cmf_video_long  ADD  sort TINYINT(4) NOT NULL DEFAULT 1 COMMENT '排序' ;
+ALTER TABLE cmf_video  ADD  sort TINYINT(4) NOT NULL DEFAULT 1 COMMENT '排序' ;

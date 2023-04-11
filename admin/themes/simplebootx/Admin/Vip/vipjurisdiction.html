@@ -1,0 +1,100 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li class="active"><a >列表</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Vip/vipjurisdiction')}
+    </ul>
+    <form name="formcontent" method="post" class="cust-js-ajax-form" action="{:U('Vip/vipjurisdictionset')}">
+        <div class="table-actions">
+<!--            <button class="btn btn-primary btn-small cust-js-ajax-form" type="submit">保存</button>-->
+<!--            <button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:保存,waittime:1000}">保存</button>-->
+            <button type="submit" class="btn btn-primary" onclick="batch_check(this, formcontent)" data-option="{confirm:true,msg:'保存',waittime:1000}">保存</button>
+        </div>
+
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th style="min-width: 60px;">会员等级</th>
+                <th style="min-width: 60px;">一级权限</th>
+                <th style="min-width: 300px;">二级权限</th>
+                <th style="min-width: 300px;">三级权限</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="lists" item="vo">
+                <tr>
+                    <input type="hidden" name="{$vo['name']}_users_jurisdiction_id" value="{$vo.users_jurisdiction_id}">
+                    <td> <if condition="$vo['name'] eq  'vip0'">{$config['initial_membership']}
+                        <else />{$vo['name']} </if>
+                    </td>
+                    <td style="min-width: 65px;">
+                        <foreach name="first_menu" item="first_menu_vo">
+                            <div style="height: 30px">
+                                <if condition="$first_menu_vo.id neq  18">
+                                    <input  type="checkbox" name="{$vo['name']}[]"  <if condition="in_array($first_menu_vo['id'],$vo['jurisdiction_id'])"> checked="checked" </if> value="{$first_menu_vo.id}" >
+                                    {$first_menu_vo.name}
+                                </if>
+                            </div>
+                        </foreach>
+                    </td>
+                    <td>
+                        <foreach name="second_menu" item="second_menu_vo">
+                            <div style="height: 30px">
+                                <foreach name="second_menu_vo" item="second_menu_vo_value">
+                                    <if condition="$second_menu_vo_value.id neq  45 &&  $second_menu_vo_value.id neq  53 ">
+                                     <input  type="checkbox"  name="{$vo['name']}[]"  <if condition="in_array($second_menu_vo_value['id'],$vo['jurisdiction_id'])"> checked="checked" </if>  value="{$second_menu_vo_value.id}">&nbsp;&nbsp;{$second_menu_vo_value.name}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    </if>
+                                </foreach>
+                            </div>
+                        </foreach>
+                    </td>
+                    <td style=" height: 150px">
+                        <foreach name="third_menu" item="third_menu_vo">
+                            <if condition="$third_menu_vo">
+                            <div style="height: 30px;line-height: 28px" >
+                                <foreach name="third_menu_vo" item="third_menu_vo_value">
+                                    <input  type="checkbox" name="{$vo['name']}[]"  <if condition="in_array($third_menu_vo_value['id'],$vo['jurisdiction_id'])"> checked="checked" </if>   value="{$third_menu_vo_value.id}">&nbsp;&nbsp;{$third_menu_vo_value.name}
+                                    <if condition="$third_menu_vo_value.id eq  54 ">
+                                        <input  type="text" name="{$vo['name']}_bar_number" style="width: 40px; height: 28px; padding: 0;border-width: 1px;margin: 0; font-size: 12px;"  value="{$vo.bar_number}">
+                                    </if>
+                                    <if condition="$third_menu_vo_value.id eq  55 ">
+                                        <input  type="text" name="{$vo['name']}_bar_slice_number" style="width: 40px; height: 28px; padding: 0;border-width: 1px;margin: 0; font-size: 12px;" value="{$vo.bar_slice_number}">
+                                    </if>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                </foreach>
+                            </div>
+                            </if>
+                        </foreach>
+                        <div style="height: 36px;margin-top: 30px;">
+                            限制数量<input  type="text" name="{$vo['name']}_number" style="width: 40px ;height: 20px"  value="{$vo.watch_number}">部&nbsp;&nbsp;&nbsp;&nbsp;
+                            观影时长<input  type="text" name="{$vo['name']}_duration" style="width: 40px ;height: 20px" value="{$vo.watch_duration}">分&nbsp;&nbsp;&nbsp;&nbsp;
+                            每观看<input  type="text" name="{$vo['name']}_watchnum_ad" style="width: 40px ;height: 20px"  value="{$vo.watchnum_ad}">部弹广告&nbsp;&nbsp;&nbsp;&nbsp;
+                            每观看<input  type="text" name="{$vo['name']}_watchnum_show_ad_video" style="width: 40px ;height: 20px"  value="{$vo.watchnum_show_ad_video}">部播放广告视频&nbsp;&nbsp;&nbsp;&nbsp;
+                            <if condition="$vo['name'] == 'vip0'">
+                            限制上传视频</span><input  type="text" name="{$vo['name']}_limit_upload_video_count" style="width: 40px ;height: 20px"  value="{$vo.limit_upload_video_count}">部&nbsp;&nbsp;&nbsp;&nbsp;
+                            </if>
+                        </div>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+        <div class="table-actions">
+            <input type="hidden" name="tenant_id" value="{$tenant_id}">
+            <button type="submit" class="btn btn-primary" onclick="batch_check(this, formcontent)" data-option="{confirm:true,msg:'保存',waittime:1000}">保存</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script>
+    function batch_check(btnobj, formcontentobj){
+        $(formcontentobj).find("button[type='submit']").removeClass('cust-js-ajax-submit');
+        $(btnobj).addClass('cust-js-ajax-submit');
+    }
+</script>

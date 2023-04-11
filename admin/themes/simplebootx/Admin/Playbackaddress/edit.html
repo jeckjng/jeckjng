@@ -1,0 +1,72 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <li ><a href="{:U('Playbackaddress/index')}">播放配置</a></li>
+        <li class="active"><a>编辑</a></li>
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Playbackaddress/edit')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">名称:</label>
+                <div class="controls">
+                    <input type="text" name="name" value="{$playback_address['name']}" class="width-500">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">播放域名:</label>
+                <div class="controls">
+                    <input type="text" name="url" id="url" value="{$playback_address['url']}" class="width-500">
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">java返回对应字段:</label>
+                <div class="controls">
+                    <input type="text" name="java_field" id="java_field" value="{$playback_address['java_field']}" class="width-500">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">空间名称:</label>
+                <div class="controls">
+                    <input type="text" name="space_name" id="space_name" value="{$playback_address['space_name']}" class="width-500">
+                    如：liveprod-store-1039
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">要替换的旧域名</label>
+                <div class="controls">
+                    <textarea name="replace_domain" cols="3" rows="{$playback_address['replace_domain_rows']}" style="width: 500px !important;">{$playback_address['replace_domain']}</textarea>
+                    如：https://www.baidu.com，多个地址则在下一行输入 （视频文件里的旧域名换成新域名）
+                </div>
+            </div>
+        <!--    <div class="control-group">
+                <label class="control-label">视频表字段:</label>
+                <div class="controls">-->
+                    <input type="hidden" name="viode_table_field" id="viode_table_field" value="{$playback_address['viode_table_field']}">
+
+             <!--   </div>
+            </div>-->
+            <!--<div class="control-group">
+                <label class="control-label">是否设为主用线路:</label>
+                <div class="controls">
+                    <select name="is_enable">
+                        <option value="1" <if condition="$playback_address['is_enable'] eq '1'">selected</if>>是</option>
+                        <option value="0" <if condition="$playback_address['is_enable'] eq '0'">selected</if>>否</option>
+                    </select>
+                </div>
+            </div>
+-->
+        </fieldset>
+        <div class="form-actions">
+            <input type="hidden" name="id" value="{$playback_address['id']}">
+            <button type="submit" class="btn btn-primary js-ajax-submit">提交</button>
+            <a class="btn" href="{:U('Playbackaddress/index')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

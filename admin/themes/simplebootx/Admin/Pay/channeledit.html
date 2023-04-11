@@ -1,0 +1,104 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li ><a href="{:U('Pay/channellist')}">渠道管理</a></li>
+        <li class="active"><a>渠道添加</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Pay/channeladd')}
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Pay/channeledit')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">类型:</label>
+                <div class="controls">
+                    <select name="type">
+                        <option value="1" <if condition="$channel['type'] eq  1"> selected</if> >线上</option>
+                        <option value="2" <if condition="$channel['type'] eq  2"> selected</if>>线下</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">渠道名称:</label>
+                <div class="controls">
+                    <input type="text" name="chanel_name" value="{$channel['channel_name']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">渠道编号:</label>
+                <div class="controls">
+                    <input type="text" name="code" id="code" value="{$channel['code']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">币种:</label>
+                <div class="controls">
+                    <select name="coin_id">
+                        <foreach name="rateInfo" item="vo">
+                            <option value="{$vo.id}" <if condition="$channel['coin_id'] eq  $vo['id']"> selected</if>  >{$vo.name}  汇率{$vo.rate}</option>
+                        </foreach>
+                    </select>
+                </div>
+            </div>
+
+            <div class=" control-group" >
+                <label class="control-label">上传图片</label>
+                <div class="img_div controls">
+                    <input type="hidden" name="icon" value="{$channel['icon']}"  required>
+                    <span class="upload_btn cust-upload-img" data-name="icon" data-showimgclass="icon_img_show" data-progress="1" data-url="{:U('Upload/img_upload')}">
+								<img src="{$channel['icon']|default='__TMPL__Public/assets/images/default-thumbnail.png'}" alt="" class="thumb_img_show" width="135" style="max-height: 135px;max-width: 135px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;">
+							</span>
+                </div>
+
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">状态:</label>
+                <div class="controls">
+                    <select name="status">
+                        <option value="1" <if condition="$channel['type'] eq  1"> selected</if>  >启用</option>
+                        <option value="0">禁用</option>
+                    </select>
+                </div>
+            </div>
+            <if condition="$gameid eq 104">
+                <label class="control-label">前台域名</label>
+
+                <div class="control-group">
+
+                    <div class="controls">
+                        <foreach name="regurlList" item="vo" key = 'k'>
+
+
+                            <if condition="($k+  1) % 10  eq  0"><br></if>
+                            <input type="checkbox" name="key_id[]" <if condition="in_array($vo['id'],$url_id)" >checked </if>  value="{$vo['id']}"   maxlength="9" >  {$vo.reg_url} &nbsp;&nbsp;
+                        </foreach>
+                    </div>
+
+                </div>
+                <div class="control-group">
+                    <label class="control-label">绑定vip</label>
+                    <div class="controls"> <foreach name="viplist" item="vipvo">
+
+
+                        <input type="checkbox" name="vip_id[]" value="{$vipvo['id']}" <if condition="in_array($vipvo['id'],$vip_id)" >checked </if>   maxlength="9"> {$vipvo.name}({$vipvo.length})月 &nbsp;&nbsp;
+                    </foreach>
+
+                    </div>
+
+                </div>
+
+            </if>
+        </fieldset>
+        <div class="form-actions">
+            <input type="hidden" name="id" value="{$channel.id}">
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+            <a class="btn" href="{:U('Pay/channellist')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

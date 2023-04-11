@@ -1,0 +1,95 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+
+		<li class="active"><a >彩种添加</a></li>
+	</ul>
+	<form method="post" class="form-horizontal js-ajax-form" action="{:U('Betconfig/add_betconfig')}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">彩种名称</label>
+				<div class="controls">
+					<input type="text" name="rulename" value="{$tenant['rulename']}">
+					<span class="form-required">*</span>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">租户选择</label>
+				<div class="controls">
+					<select name="tenamtinfo" id="tenamtinfo">
+						<option value="">请查看</option>
+						<foreach name="tenamtinfo" item="vo">
+							<option value="{$vo.id}" <if condition="$tenant.tenant_id eq $vo['id']">selected</if>>{$vo.name}</option>
+						</foreach>
+
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">用户选择</label>
+				<div class="controls">
+					<input type="text" name="num" value="{$tenant['num']}">
+					<span class="form-required">*虚拟用户人数选择</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">动作选择</label>
+				<div class="controls">
+					<input type="text"  readonly="readonly" value="进入直播">
+					<input type="text"  readonly="readonly" value="赠送礼物">
+					<input type="text"  readonly="readonly" value="留言">
+					<input type="text"  readonly="readonly" value="退出直播">
+					<input type="text"  readonly="readonly" value="跟投和中奖">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">时间设置</label>
+				<div class="controls">
+					<input type="text"  onkeyup = "value=value.replace(/[^\d]/g,'')" name="enterroom"   value="{$tenant['enterroom']}">
+					<input type="text" onkeyup = "value=value.replace(/[^\d]/g,'')" name="sendgift" value="{$tenant['sendgift']}">
+					<input type="text"  onkeyup = "value=value.replace(/[^\d]/g,'')" name="sendbarrage" value="{$tenant['sendbarrage']}">
+					<input type="text" onkeyup = "value=value.replace(/[^\d]/g,'')"  name="logout" value="{$tenant['logout']}">
+					<input type="text" onkeyup = "value=value.replace(/[^\d]/g,'')"  name="logout" value="{$tenant['timebet']}">
+					<span class="form-required" style="color:red;">单位为秒</span>
+				</div>
+			</div>
+			<div class="form-actions">
+
+				<a class="btn" href="{:U('atmosphere/index')}">{:L('BACK')}</a>
+			</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+	$(function(){
+
+		$("input[name='video_upload_type']").click(function(){
+			var val=$("input[name='video_upload_type']:checked").val();
+			console.log(val);
+			if(val==0){
+				$(".video_url_area").show();
+				$(".upload_video_area").hide();
+			}else{
+				$(".video_url_area").hide();
+				$(".upload_video_area").show();
+				$("input[name='href']").val('');
+			}
+		});
+
+		$("input[name='owner']").on("click",function(){
+			var val=$(this).val();
+			if(val==1){ //所有者为用户
+				$("#owner_uid").show();
+			}else{
+				$("#owner_uid").hide();
+			}
+		});
+
+	});
+</script>
+</body>
+</html>

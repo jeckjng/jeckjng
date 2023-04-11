@@ -1,0 +1,77 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Atmosphere/reward_edit')}
+		<!--<li class="active"><a >直播氛围添加</a></li>-->
+	</ul>
+	<form method="post" class="form-horizontal js-ajax-form" action="{:U('Atmosphere/rewardedit_post')}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">用户ID</label>
+				<div class="controls">
+					<input type="text" name="uid" value="{$list['uid']}">
+					<span class="form-required">*</span>
+				</div>
+			</div>
+
+
+
+
+<!--			<div class="control-group">
+				<label class="control-label">打赏调整时间</label>
+				<div class="controls">
+					<input type="text"  onkeyup = "value=value.replace(/[^\d]/g,'')" name="time_start"  value="{$list['time_start']}"> ~
+					<input type="text" onkeyup = "value=value.replace(/[^\d]/g,'')" name="time_end"  value="{$list['time_end']}">
+					<span class="form-required">* 10 ~ 99999</span>
+				</div>
+			</div>-->
+			<div class="control-group">
+				<label class="control-label">打赏调整幅度</label>
+				<div class="controls">
+					<input type="text"  onkeyup = "value=value.replace(/[^\d]/g,'')" name="coin_start"  value="{$list['coin_start']}"> ~
+					<input type="text" onkeyup = "value=value.replace(/[^\d]/g,'')" name="coin_end"  value="{$list['coin_end']}">
+					<span class="form-required">* 1 ~ 999</span>
+				</div>
+			</div>
+			<input type="hidden" name="id" value="{$list['id']}">
+			<input type="hidden" name="old_uid" value="{$list['uid']}">
+
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary js-ajax-submit">{:L('EDIT')}</button>
+				<a class="btn" href="{:U('atmosphere/rewardlist')}">{:L('BACK')}</a>
+			</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+	$(function(){
+
+		$("input[name='video_upload_type']").click(function(){
+			var val=$("input[name='video_upload_type']:checked").val();
+			console.log(val);
+			if(val==0){
+				$(".video_url_area").show();
+				$(".upload_video_area").hide();
+			}else{
+				$(".video_url_area").hide();
+				$(".upload_video_area").show();
+				$("input[name='href']").val('');
+			}
+		});
+
+		$("input[name='owner']").on("click",function(){
+			var val=$(this).val();
+			if(val==1){ //所有者为用户
+				$("#owner_uid").show();
+			}else{
+				$("#owner_uid").hide();
+			}
+		});
+
+	});
+</script>
+</body>
+</html>

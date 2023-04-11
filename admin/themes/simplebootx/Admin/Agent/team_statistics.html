@@ -1,0 +1,277 @@
+<admintpl file="header" />
+<style>
+    .flex-box {
+        display: flex;
+        margin-top: 20px;
+    }
+    .flex-box .item {
+        flex: 1;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border:  1px solid #eeeeee;
+        margin:0 10px ;
+
+    }
+    .flex-div{
+        text-align: center;
+    }
+    .flex-color{
+        color: red;
+    }
+   /* .btn-color{
+       color: red;
+    }*/
+</style>
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li class="active"><a >图片列表</a></li>
+        <li><a href="{:U('Ads/add')}">图片添加</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Ads/index')}
+    </ul>
+    <div style="display: none;">
+        UsersAgentCache_sql: {$data['UsersAgentCache_sql']}<br>
+        allSubUids: {$data['allSubUids']}<br>
+        users_sql: {$data['users_sql']}<br>
+        video_profit_count_sql: {$data['video_profit_count_sql']}<br>
+        users_charge_count_sql: {$data['users_charge_count_sql']}<br>
+        video_uplode_reward_sql: {$data['video_uplode_reward_sql']}<br>
+    </div>
+    <form class="well form-search" name="form1" method="post" action="{:U('team_statistics')}">
+        <div style="">
+            <div class="search-box">
+                <input type="text" name="start_time" class="js-date date" id="start_time" value="{$param.start_time}" style="width: 80px;" autocomplete="off">
+            </div>
+            <div class="search-box">
+                <input type="button" data-time_type="today" class="btn btn-primary cust-time-select {:$param['time_type']=='today' ? '' : 'bg-color-white color-black'}" value="今日" data-time_start="{:explode(' ',$time_se['today_start'])[0]}" data-time_end="{:explode(' ',$time_se['today_end'])[0]}" />
+            </div>
+            <div class="search-box">
+                <input type="button" data-time_type="tweek" class="btn btn-primary cust-time-select {:$param['time_type']=='tweek' ? '' : 'bg-color-white color-black'}" value="本周" data-time_start="{:explode(' ',$time_se['tweek_start'])[0]}" data-time_end="{:explode(' ',$time_se['tweek_end'])[0]}" />
+            </div>
+            <div class="search-box">
+                <input type="button" data-time_type="tmonth" class="btn btn-primary cust-time-select {:$param['time_type']=='tmonth' ? '' : 'bg-color-white color-black'}" value="本月" data-time_start="{:explode(' ',$time_se['tmonth_start'])[0]}" data-time_end="{:explode(' ',$time_se['tmonth_end'])[0]}" />
+            </div>
+            <if condition="$role_id == 1">
+                <div class="search-box">
+                    租户：
+                    <select class="select_2 width-200" name="tenant_id" id="tenant_id">
+                        <volist name="tenant_list" id="vo">
+                            <option value="{$vo['id']}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo['name']}</option>
+                        </volist>
+                    </select>
+                </div>
+            </if>
+            <div class="search-box">
+                用户类型：
+                <select class="select_2 width-120" name="user_type">
+                    <option value="-1" <if condition="$param['user_type'] eq '-1'">selected</if>>全部</option>
+                    <volist name="user_type_list" id="vo">
+                        <option value="{$vo.type}" <if condition="$param['user_type'] eq $vo['type']">selected</if> >{$vo['name']}</option>
+                    </volist>
+                </select>
+            </div>
+            <div class="search-box">
+                代理名称：
+                <input type="text" name="user_login" style="width: 200px;" value="{$param.user_login}" placeholder="代理名称">
+            </div>
+        </div>
+        <div>
+            <div class="search-box">
+                <input type="text" class="js-date date" name="end_time" id="end_time" value="{$param.end_time}" style="width: 80px;" autocomplete="off">
+            </div>
+            <div class="search-box">
+                <input type="button" data-time_type="ytoday" class="btn btn-primary cust-time-select {:$param['time_type']=='ytoday' ? '' : 'bg-color-white color-black'}" value="昨日" data-time_start="{:explode(' ',$time_se['ytoday_start'])[0]}" data-time_end="{:explode(' ',$time_se['ytoday_end'])[0]}" />
+            </div>
+            <div class="search-box">
+                <input type="button" data-time_type="yweek" class="btn btn-primary cust-time-select {:$param['time_type']=='yweek' ? '' : 'bg-color-white color-black'}" value="上周" data-time_start="{:explode(' ',$time_se['yweek_start'])[0]}" data-time_end="{:explode(' ',$time_se['yweek_end'])[0]}" />
+            </div>
+            <div class="search-box">
+                <input type="button" data-time_type="ymonth" class="btn btn-primary cust-time-select {:$param['time_type']=='ymonth' ? '' : 'bg-color-white color-black'}" value="上月" data-time_start="{:explode(' ',$time_se['ymonth_start'])[0]}" data-time_end="{:explode(' ',$time_se['ymonth_end'])[0]}" />
+            </div>
+
+            <div class="search-box">
+                <input type="hidden" name="time_type" id="time_type" value="{$param['time_type']}"/>
+            </div>
+            <div class="search-box">
+                <input type="submit" class="btn btn-primary" value="搜索">
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-hover table-bordered">
+        <div class="flex-box">
+
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['son_count']}</div>
+                    <div class="flex-div" >下级总人数</div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="flex-box">
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['vip_margin']}</div>
+                    <div class="flex-div" >个人已交保证金(元)</div>
+                </div>
+            </div>
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['team_vip_margin']}</div>
+                    <div class="flex-div" >团队保证金(元）</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="flex-box">
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['agent_video_count']}</div>
+                    <div class="flex-div" >团队上传视频数(个)</div>
+                </div>
+            </div>
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['agent_amount']}</div>
+                    <div class="flex-div" >个人代理收益(元)</div>
+                </div>
+            </div>
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['commission']}</div>
+                    <div class="flex-div" >个人佣金(元）</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="flex-box">
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['son_charge_amount']}</div>
+                    <div class="flex-div" >团队充值金额(元)</div>
+                </div>
+            </div>
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['team_uplode_reward']}</div>
+                    <div class="flex-div" >团队上传视频收益(元)</div>
+                </div>
+            </div>
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['son_charge_count']}</div>
+                    <div class="flex-div" >团队充值人数(人）</div>
+                </div>
+            </div>
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['son_time_count']}</div>
+                    <div class="flex-div" >团队注册人数(人）</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="flex-box">
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color" >{$data['team_like_amount']}</div>
+                    <div class="flex-div" >团队点赞收益(元)</div>
+                </div>
+            </div>
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['team_uplode_count'] }</div>
+                    <div class="flex-div" >团队上传视频人数(人)</div>
+                </div>
+            </div>
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['cash_amount']}</div>
+                    <div class="flex-div" >团队提现金额(元）</div>
+                </div>
+            </div>
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['son_coin'] }</div>
+                    <div class="flex-div" >团队团队余额(元）</div>
+                </div>
+            </div>
+            <div  class="item">
+                <div>
+                    <div class="flex-div flex-color"  >{$data['team_like_count']}</div>
+                    <div class="flex-div" >团队点赞(个）</div>
+                </div>
+            </div>
+
+        </div>
+    </table>
+
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+    function updatetime(timeString) {
+        var date=new Date();//当前时间
+        if (timeString=='today'){
+            var daySent=timeFormat(date) ;
+            $("input[name='start_time']").val(daySent);
+            $("input[name='end_time']").val(daySent);
+        }else if (timeString=='yesterday') {
+            var oneDay=1000*24*60*60;//一天的时间戳
+            var date=new Date();//当前时间
+            let today=date-oneDay;
+            date.setTime(today);
+            var daySent =   timeFormat(date)
+            $("input[name='start_time']").val(daySent);
+            $("input[name='end_time']").val(daySent);
+
+        }else  if (timeString=='thisweek'){
+            var date=new Date();//当前时间
+            var weekday = date.getDay()||7;//获取星期几,getDay()返回值是 0
+            date.setDate(date.getDate()-weekday+1);//往前算（weekday-1）天，年份、月份会自动变化
+            var weekonedaye=timeFormat(date);
+
+            var todate=new Date();
+            todate=timeFormat(todate);
+            $("input[name='start_time']").val(weekonedaye);
+            $("input[name='end_time']").val(todate);
+        }else{
+            var date=new Date();//当前时间
+            var weekday = date.getDay()||7;//获取星期几,getDay()返回值是 0
+            date.setDate(date.getDate()-weekday);//往前算（weekday-1）天，年份、月份会自动变化
+            var weekonedaye=timeFormat(date);
+            n = 7;
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = now.getMonth() + 1;
+            var day = now.getDay(); //返回星期几的某一天;
+            n = day == 0 ? n + 6 : n + (day - 1)
+
+            now.setDate(now.getDate() - n);
+            date = now.getDate();
+            var e = year + "-" + (month < 10 ? ('0' + month) : month) + "-" + (date < 10 ? ('0' + date) : date);
+            $("input[name='start_time']").val(e);
+            $("input[name='end_time']").val(weekonedaye);
+
+        }
+
+
+
+    }
+    function timeFormat(date) {
+        if (!date || typeof(date) === "string") {
+            this.error("参数异常，请检查...");
+        }
+        var y = date.getFullYear(); //年
+        var m = date.getMonth() + 1; //月
+        var d = date.getDate(); //日
+        return y + "-" + m + "-" + d;
+    }
+</script>
+</body>
+</html>

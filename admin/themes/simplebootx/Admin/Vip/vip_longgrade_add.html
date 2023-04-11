@@ -1,0 +1,94 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li ><a href="{:U('Vip/vip_grade')}">列表</a></li>
+        <td><if condition="$id">
+            <li class="active"><a >编辑</a></li>
+
+            <else/>
+            <li class="active"><a >添加</a></li>
+        </if></td>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Vip/vip_longgrade_add')}
+    </ul>
+    <form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('vip_longgrade_add_post')}">
+        <fieldset>
+            <if condition="$role_id == 1 && !$id">
+                <div class="control-group">
+                    <label class="control-label">*租户</label>
+                    <div class="controls">
+                        <select name="tenant_id">
+                            <volist name="tenant_list" id="vo">
+                                <option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+                            </volist>
+                        </select>
+                        <span class="form-required"></span>
+                    </div>
+                </div>
+            </if>
+
+            <div class="control-group">
+                <label class="control-label">vip名称</label>
+                <div class="controls">
+                    <input type="text" name="name" value="{$vip_grade_info.name}" required>
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">vip等级</label>
+                <div class="controls">
+                    <input type="text" name="vip_grade"  required value="{$vip_grade_info.vip_grade}" <if condition="$id">disabled </if>  >
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">是否是永久会员</label>
+                <div class="controls">
+                    <label class="radio inline" for="status_1"><input type="radio" name="is_forever_member" required value="1" id="status_1"
+                        <if condition="$vip_grade_info.is_super_member == 1">checked</if>>是</label>
+                    <label class="radio inline" for="status_0"><input type="radio" name="is_forever_member" required value="0" id="status_0"
+                        <if condition="$vip_grade_info.is_super_member == 0">checked</if>
+                        >否</label>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">有效天数</label>
+                <div class="controls">
+                    <input type="text" name="effect_days" value="{$vip_grade_info.effect_days}"  required  onkeyup="this.value= this.value.match(/\d+/) ? this.value.match(/\d+/)[0] : ''">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">vip价格</label>
+                <div class="controls">
+                    <input type="text" name="price" value="{$vip_grade_info.price}"  required  onkeyup="this.value= this.value.match(/\d+/) ? this.value.match(/\d+/)[0] : ''">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">是否启用</label>
+                <div class="controls">
+                    <label class="radio inline"><input type="radio" name="status" required value="1"
+                        <if condition="$vip_grade_info.status == 1">checked</if>>是</label>
+                    <label class="radio inline"><input type="radio" name="status" required value="0"
+                        <if condition="$vip_grade_info.status == 0">checked</if>
+                        >否</label>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <input type="hidden" name="id" value="{$id}" >
+            <button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}">{:L('SAVE')}</button>
+            <a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

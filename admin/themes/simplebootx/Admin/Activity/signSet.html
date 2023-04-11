@@ -1,0 +1,115 @@
+<admintpl file="header" />
+</head>
+<style>
+    .controls input{
+        width: 120px;
+    }
+    label{
+        width: 310px !important;
+    }
+    .controls{
+        margin-left: 325px !important;
+    }
+    .cust input{
+        width: 120px;
+    }
+    .cust label{
+        width: auto !important;
+    }
+    .cust{
+        margin-left: 15px;
+    }
+    .cust .controls{
+        display: inline-block;
+        margin-left: 15px !important;
+    }
+</style>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        {:getTableMenu($_GET['menuid'],'Admin/Activity/share')}
+    </ul>
+    <form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('Activity/signSet')}">
+        <fieldset>
+
+            <div>
+
+                <div class="control-group">
+                    <label  class="control-label">奖励金额类型</label>
+                    <div class="controls">
+                        <label style="width: auto!important;" class="radio inline">
+                            <input type="radio"style="width: auto !important;" <if condition="$config['sing_award_type'] eq 1">checked</if> name="sing_award_type" value="1" >转盘
+                        </label>
+                        <label style="width: auto!important;" class="radio inline">
+                            <input type="radio"style="width: auto !important;" <if condition="$config['sing_award_type'] eq 2">checked</if>  name="sing_award_type"  value="2" >砖石
+                        </label>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">第一天签到奖励
+                        <input type="number" name="first_times" value="{$info.first_times}" required min="0" max="999999" style="width: 60px;">
+                    </label>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">第二天签到奖励
+                        <input type="number" name="second_times" value="{$info.second_times}" required min="0" max="999999" style="width: 60px;">
+                    </label>
+                </div>
+
+
+                <div class="control-group">
+                    <label class="control-label">第三天签到奖励
+                        <input type="number" name="third_times" value="{$info.third_times}" required min="0" max="999999" style="width: 60px;">
+                    </label>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">第四天签到奖励
+
+                        <input type="number" name="fourth_times" value="{$info.fourth_times}" required min="0" max="999999" style="width: 60px;">
+
+                    </label>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">第五天签到奖励
+                        <input type="number" name="fifth_times" value="{$info.fifth_times}" required min="0" max="999999" style="width: 60px;">
+                    </label>
+                </div>
+                <div class="control-group">
+                <label class="control-label">第六天签到奖励
+                    <input type="number" name="sixth_times" value="{$info.sixth_times}" required min="0" max="999999" style="width: 60px;">
+                </label>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">第七天签到奖励
+
+                        <input type="number" name="seventh_times" value="{$info.seventh_times}" required min="0" max="999999" style="width: 60px;">
+                    </label>
+                </div>
+
+            <div class="control-group">
+                <label  class="control-label">是否显示</label>
+                <div class="controls">
+                    <label style="width: auto!important;" class="radio inline">
+                        <input type="radio"style="width: auto !important;" <if condition="$config['sing_is_show'] eq 1">checked</if> name="sing_is_show" value="1" >是
+                    </label>
+                    <label style="width: auto!important;" class="radio inline">
+                        <input type="radio"style="width: auto !important;" <if condition="$config['sing_is_show'] eq 2">checked</if>  name="sing_is_show"  value="2" >否
+                    </label>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

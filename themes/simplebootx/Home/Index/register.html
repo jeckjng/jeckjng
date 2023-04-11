@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>捷铭嘉科技</title>
+</head>
+<style>
+    *{
+        margin: 0;padding: 0;
+    }
+    html, body{
+        font-size: 14px;
+    }
+    li{
+        list-style: none;
+    }
+    .container{
+        width: 1200px;margin: 0 auto;
+    }
+    .header ul{
+        display: flex;align-items: center;min-height: 50px;
+    }
+    .header .nav-list{
+        padding: 5px 10px;cursor: pointer;
+    }
+    .header .nav-list.active{
+        color: #f00;
+    }
+    .banner .banner-item{
+        height: 90px;margin-bottom: 10px;
+    }
+    .banner .banner-item img{
+        height: 100%; width: 100%;
+    }
+    .lists{
+        display: flex;flex-wrap: wrap;
+    }
+    .lists .lists-item{
+        width: 292px;height: 220px;background: #cc0;margin: 0 10px 10px 0;
+    }
+    .lists .lists-item:nth-child(4n){
+        margin: 0 0 10px;
+    }
+    .reg-main{
+        display: flex;width:100%;height:100vh;overflow: hidden;background: url('../../admin/themes/simplebootx/Public/assets/images/bj.jpg') no-repeat 0 0 / 100% 100%;
+        align-items: center;justify-content: center;
+    }
+    .reg-main .wraps-2{
+        width: 450px;height: 300px;background: #fff;padding: 50px;display: flex;justify-content: center;
+    }
+    .reg-main .js-ajax-form{
+        width: 320px;margin: 0 auto;
+    }
+    .reg-main .js-ajax-form .form-item{
+        display: flex;align-items: center;height: 42px;margin-bottom: 10px;
+        width: 360px;
+    }
+    .reg-main .js-ajax-form .form-item span{
+        width: 80px;margin-right: 10px;text-align: right;
+    }
+    .reg-main .js-ajax-form .form-item .input1{
+        flex: 1;border: 1px solid #ddd;background: transparent;height: 32px;line-height: 32px;outline: none;text-indent: 10px;
+    }
+    .reg-main .js-ajax-form .form-item .input1:focus{
+        border-color: aquamarine;
+    }
+    .reg-main .sendcode{
+        margin-left: 10px;border: 1px solid #ddd;height:32px;line-height: 32px;
+        color:#333;text-decoration: none;
+    }
+    .reg-main .btn{
+        border: 0;
+        display: block;
+        margin: 20px auto;
+        background: #FFD350;
+        border-radius: 4px;
+        width: 140px;
+        height: 32px;
+        color: #fff;
+    }
+</style>
+<body>
+<div class="reg-main">
+    <div class="wraps-2">
+        <form method="post" name="login" action="/Admin/public/dologin" autocomplete="off" class="js-ajax-form">
+            <div class="wraps-2-1">
+                <div class="form-item">
+                    <span>手机号码：</span>
+                    <input class="input1" type="text" name="mobile" required="" placeholder="" title="" value="">
+                </div>
+                <div class="form-item">
+                    <span>呢称：</span>
+                    <input class="input1" type="text" name="user_login" required="" placeholder="" title="">
+                </div>
+                <div class="form-item">
+                    <span>验证码：</span>
+                    <input class="input1" type="text" name="code" required="" placeholder="" title="">
+                    <span class="sendcode" onclick="sendcode()">发送验证码</span>
+                </div>
+                <div class="form-item">
+                    <span>密码：</span>
+                    <input class="input1" type="password" name="password" required="" placeholder="" title="">
+                </div>
+                <div class="form-item">
+                    <span>确认密码：</span>
+                    <input class="input1" type="password1" name="password" required="" placeholder="" title="">
+                </div>
+                <div class="form-item">
+                    <button type="submit" name="submit" class="btn js-ajax-submit">登录</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="/public/home/js/jquery.js"></script>
+<script type="text/javascript">
+    function  sendcode() {
+        alert(11);
+    }
+</script>
+</html>

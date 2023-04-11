@@ -1,0 +1,65 @@
+<admintpl file="header" />
+</head>
+<style>
+	.top-nav{
+		color: #333;
+		font: 14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+		height: 43px;
+		line-height: 43px;
+		padding: 0 20px;
+	}
+	form{
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+</style>
+<body>
+	<div class="">
+		<div class="top-nav well">
+			<span class="layui-layer-title" style="">基础配置</span>
+			<span class="layui-layer-setwin" style="float: right;cursor: pointer;" onclick="$('#shade',window.parent.document).toggle();">
+				<i class="fa fa-times" aria-hidden="true"></i>
+			</span>
+		</div>
+		<form class="form-horizontal js-ajax-form" method="post" action="">
+			<table class="table table-bordered innertable">
+				<tbody>
+					<tr>
+						<td style="text-align: center;width: 150px;">初级任务</td>
+						<td style="text-align: left;">
+							<span>须完成任务数</span>&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="number" name="primary_num" value="{$info.primary_num}" min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" style="width: 70%;" placeholder="请输入">
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;">中级任务</td>
+						<td style="text-align: left;">
+							<span>须完成任务数</span>&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="number" name="intermediate_num" value="{$info.intermediate_num}" min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" style="width: 70%;" placeholder="请输入">
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;width: 150px;">高级任务</td>
+						<td style="text-align: left;">
+							<span>须完成任务数</span>&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="number" name="advanced_num" value="{$info.advanced_num}" min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" style="width: 70%;" placeholder="请输入">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div style="color: #FF0000;">
+				如是设置每个等级任务个数为6个，返回给前端为随机6个。每个人每次都随机，除了已完成的或审核中的，
+
+				每个人只有六个任务。
+			</div>
+			<div class="" style="padding: 20px 0px;text-align: center;background-color: #dde4e6;margin-top: 15px;">
+				<button type="submit" class="btn btn-primary js-ajax-submit" data-waittime="1000" >{:L('SUBMIT')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

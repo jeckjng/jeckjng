@@ -1,0 +1,51 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li ><a href="{:U('Integral/index')}">积分明细</a></li>
+			<li class="active"><a >注册积分设置</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Integral/integral_config')}
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label">1级赠送</label>
+					<div class="controls">
+						<input type="number" name="level_1" value="{$info.level_1}" required min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)">&nbsp;&nbsp;<span>分</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">2级赠送</label>
+					<div class="controls">
+						<input type="number" name="level_2" value="{$info.level_2}" required min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)">&nbsp;&nbsp;<span>分</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">3级赠送</label>
+					<div class="controls">
+						<input type="number" name="level_3" value="{$info.level_3}" required min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" >&nbsp;&nbsp;<span>分</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">4级赠送</label>
+					<div class="controls">
+						<input type="number" name="level_4" value="{$info.level_4}" required min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" >&nbsp;&nbsp;<span>分</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">5级赠送</label>
+					<div class="controls">
+						<input type="number" name="level_5" value="{$info.level_5}" required min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" >&nbsp;&nbsp;<span>分</span>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

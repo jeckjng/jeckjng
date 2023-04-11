@@ -1,0 +1,42 @@
+<admintpl file="header" />
+</head>
+<style>
+	.top-nav{
+		color: #333;
+		font: 14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+		height: 43px;
+		line-height: 43px;
+		padding: 0 20px;
+	}
+	form{
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+</style>
+<body>
+	<div class="">
+		<div class="top-nav well" style="text-align: center;">
+			<span class="layui-layer-title" style="">添加VIP等级</span>
+			<span class="layui-layer-setwin" style="float: right;cursor: pointer;" onclick="$('#shade',window.parent.document).toggle();">
+				<i class="fa fa-times" aria-hidden="true"></i>
+			</span>
+		</div>
+		<form class="form-horizontal js-ajax-form" method="post" action="">
+			<volist  name="vip_list" id="vo">
+				<div style="text-align: center;">
+					<span><input type="checkbox" readonly="readonly" name="vip[{$vo.vip_grade}]" value="{$vo.vip_grade}" style="width: 20px;height: 20px;" <if condition="isset($lists[$vo['vip_grade']])">checked</if>></span>
+					<span style="font-weight: bold;">{$vo.name}</span>
+				</div>
+			</volist>
+
+			<div class="form-actions" style="padding: 20px 0px;text-align: center;background-color: #dde4e6;">
+				<button type="submit" class="btn btn-primary js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

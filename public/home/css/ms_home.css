@@ -1,0 +1,291 @@
+/* CSS Document */
+.ms-header{
+  height: 3.5rem;
+  line-height: 3.5rem;
+  background: #008062;
+  position: relative;
+}
+
+.ms-header .ms-name{
+  height: 3.5rem;
+  line-height: 3.5rem;
+}
+
+.ms-header .ms-name h1{
+  display: block;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.ms-header .ms-i .ms-pull{
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  background: url("./images/ma-menu.png") no-repeat;
+  background-size: 100%;
+  margin-top: 0.75rem;
+}
+
+.ms-header .ms-i .ms-menu{
+  position: absolute;
+  top: 3.5rem;
+  left: 0;
+  background: #fff;
+  width: 100%;
+  height: auto;
+  display: none;
+  z-index: 99;
+}
+
+/*导航*/
+.ms-nav{
+  background: #fff;
+  padding: 0.5rem 0;
+}
+
+.ms-nav ul{
+display: flex;
+flex-flow: row wrap;
+justify-content: space-around;
+}
+
+.ms-nav ul li{
+  display: block;
+  float: left;
+  font-size: 1.3rem;
+  text-align: center;
+  height: 2.6rem;
+  line-height: 2.6rem;
+}
+
+.ms-nav ul li a{
+  color: #222;
+}
+
+.ms-active-nav{
+  border-bottom: 2px solid #008062;
+  padding-bottom: 0.4rem;
+}
+
+/*幻灯*/
+.swiper-container {
+  width: 100%;
+  height: 100%;
+}
+
+.slide-img img{
+  width: 100%;
+  height: auto;
+}
+
+.slide-img .slide-text{
+  position: absolute;
+  font-size: 1.2em;
+  height: 3rem;
+  line-height: 3rem;
+  padding: 0 0.6rem;
+  color: #fafafa;
+  text-align: left;
+  bottom: 0.3rem;
+  left: 0;
+  font-weight: normal;
+  width: 100%;
+  text-shadow: 1px 1px 1px #000;
+  /* background-color: rgba(21,20,20,0.5); */
+  background-color: rgba(0,0,0,0);
+  background: -moz-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0.7));
+  background: -webkit-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0.7));
+  background: -o-linear-gradient(top,rgba(0,0,0,0),rgba(0,0,0,0.7));
+}
+
+.slide-img .slide-text span{
+  display: block;
+  width: 80%;
+}
+
+.slide-icon{
+  text-align: right;
+}
+
+/*文章列表*/
+.ms-article{
+  /*background: #fff;*/
+  padding: 1rem 0;
+}
+
+.ms-article-hot{
+  margin-bottom: 1rem;
+}
+
+.ms-article-hot ul li{
+  border-bottom: 1px solid #f5f5f5;
+  padding: 0.5rem 0;
+}
+
+.ms-article-hot ul li span{
+  font-size: 1rem;
+  margin: 0.5rem
+}
+
+.ms-article-hot ul li a{
+  display: block;
+  font-size: 1.35rem;
+  height: 1.65rem;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+
+.ms-article-hot ul li a{
+  color: #1d71da;
+}
+
+.article-list .article-title{
+  height: 3rem;
+  line-height: 3rem;
+  color: #ef6237;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.article-list h2{
+  display: block;
+  float: left;
+}
+
+.article-list .article-title i{
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  background: url("./images/new.png") no-repeat;
+  background-size: 100%;
+  margin-top: 0.8rem;
+}
+
+.article-list ul li{
+  display: block;
+  height: 1.6rem;
+  line-height: 1.6rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+
+}
+
+.article-list ul li a{
+  color: #222;
+}
+
+.article-list ul li span{
+  color: #888;
+  margin-right: 0.3rem;
+}
+
+.article-list .ms-move{
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.article-list .ms-move a{
+  display: inline-block;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 1.3rem;
+  padding: 0.6rem 2rem;
+  border: 1px solid #ccc;
+  color: #888;
+  line-height: 1.3rem;
+}
+
+.article-list .ms-move i{
+  display: inline-block;
+  width: 1.3rem;
+  height: 1.3rem;
+  background: url("./images/move.png") no-repeat;
+  background-size: 100%;
+  float: left;
+}
+
+/*底部*/
+.ms-footer{
+  text-align: center;
+  background: #008062;
+  height: 6rem;
+
+}
+
+.ms-footer .ms-f-a{
+  height: 2rem;
+  line-height: 2rem;
+  display: inline-block;
+  
+}
+
+.ms-footer .ms-f-a a{
+  display: inline-block;
+  float: left;
+  border-right: 1px solid #fff;
+  color: #fff;
+  padding: 0 1rem;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+}
+
+.ms-footer .ms-f-a a:last-child{
+  border: 0;
+}
+
+.ms-footer .ms-f-a i{
+  display: block;
+  margin-right: 0.5rem;
+  float: left;
+}
+
+.ms-footer .ms-f-a .ms-f-pc{
+  background: url("images/pc.png") no-repeat;
+  width: 1.6rem;
+  height: 1.6rem;
+  background-size: 100%;
+  margin-top: 0.5rem;
+}
+
+.ms-footer .ms-f-a .ms-f-md{
+  background: url("images/md.png") no-repeat;
+  width: 2rem;
+  height: 2rem;
+  background-size: 100%;
+  margin-top: 0.1rem;
+}
+
+.ms-footer .ms-f-copy p{
+  color: #fff;
+  font-size: 1rem;
+	
+}
+
+/*返回顶部*/
+#ms-backTop{
+  display: none;
+  background: url("images/back.png") no-repeat;
+  width: 4rem;
+  height: 4rem;
+  position: fixed;
+  bottom: 10rem;
+  right: 1rem;
+  background-size: 100%;
+  text-indent: -9999px;
+  filter:alpha(opacity=10);
+  -moz-opacity:0.3;
+  -khtml-opacity: 0.3;
+  opacity: 0.3;
+   z-index:999999999999;
+}
+
+
+
+
+
+
+
+

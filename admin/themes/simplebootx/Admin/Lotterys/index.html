@@ -1,0 +1,78 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        {:getTableMenu($_GET['menuid'],'Admin/Lotterys/index')}
+
+    </ul>
+    <form class="well form-search" method="post" action="{:U('index')}">
+        <if condition="$role_id eq 1">
+            <div class="search-box">
+                租户:
+                <select class="select_2" name="tenant_id" style="max-width: 200px;">
+                    <volist name="tenant_list" id="vo">
+                        ddd
+                        <option value="{$vo.id}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo.name}</option>
+                    </volist>
+                </select>
+            </div>
+        </if>
+        <div class="search-box">
+            游戏状态：
+            <select class="select_2" name="status">
+                <option value="" <if condition="$param.status eq ''">selected</if> >全部</option>
+                <option value="1" <if condition="$param.status eq '1'">selected</if> >启用</option>
+                <option value="0" <if condition="$param.status eq '0'">selected</if> >禁用</option>
+            </select>
+        </div>
+        <div class="search-box">
+            <input type="submit" class="btn btn-primary" value="搜索">
+        </div>
+    </form>
+
+    <form method="post" class="js-ajax-form" action="{:U('listorders')}">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th align="center">彩种名称</th>
+                <th>彩种简称</th>
+                <th>upper_id</th>
+                <th>play_id</th>
+                <th>租户</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo.play_cname}</td>
+                    <td>{$vo.play_name}</td>
+                    <td>{$vo.upper_id}</td>
+                    <td>{$vo.play_id}</td>
+                    <td>{$vo['tenant_name']}</td>
+                    <td><if condition="$vo['status'] eq 0">禁用<else/>启用</if></td>
+                    <td><a href="{:U('Lotterys/edit',array('id'=>$vo['id']))}" >编辑</a></td>
+
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/js/imgzoom/imgzoom.js"></script>
+<script>
+    new ImgZoom();
+</script>
+</body>
+</html>
+<script type="text/javascript">
+
+
+
+
+</script>

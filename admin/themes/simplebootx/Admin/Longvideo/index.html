@@ -1,0 +1,380 @@
+<admintpl file="header" />
+<style>
+	.table img{
+		max-width:100px;
+		max-height:100px;
+	}
+	.textArea textarea{
+		width:90%;padding:3%;height:80%;margin:0 auto;margin-top:30px;
+		margin-left: 2%;
+	}
+	.textArea_btn{
+		text-align: right;
+		margin-top: 30px;
+	}
+	.textArea_btn input{
+		margin-right: 30px;
+	}
+
+	 .img-zoom-wrapper .img-zoom-view{
+		 height: 500px;
+	 }
+
+</style>
+</head>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    function imgDecrypt(imgUrl) {
+        return new Promise(function (resolve, reject) {
+            axios({
+                method: 'get',
+                url: imgUrl,
+                responseType: 'arraybuffer'
+            }).then(res => {
+                try {
+                    const _arrayBufferToBase64 = (buffer) => {
+                        let binary = ''
+                        let bytes = new Uint8Array(buffer)
+                        let len = bytes.byteLength
+                        for (let i = 0; i < len; i++) {
+                            binary += String.fromCharCode(bytes[ i ])
+                        }
+                        return window.btoa(binary)
+                    }
+                    const data = res.data
+                    const dataView = new DataView(data)
+                    // 解密
+                    for (let i = 0; i < dataView.byteLength; i++) {
+                        dataView.setInt8(i, dataView.getInt8(i) ^ 123)
+                    }
+                    resolve('data:image/png;base64,' + _arrayBufferToBase64(data))
+                }catch (e) {
+                    reject('imgDecrypt Error')
+                }
+            }).catch(() => {
+                reject('imgDecrypt Error')
+            })
+        })
+    }
+
+</script>
+<body>
+<div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Longvideo/index')}
+		<!-- <li><a href="{:U('Video/add')}">视频添加</a></li> -->
+	</ul>
+
+	<form class="well form-search" method="post" action="{:U('Longvideo/index')}">
+
+		时间：
+		<input type="text" name="start_time" class="js-date date" value="{$formget.start_time}" style="width: 80px;height: 30px;" autocomplete="off">-
+		<input type="text" class="js-date date" name="end_time" value="{$formget.end_time}" style="width: 80px;height: 30px;" autocomplete="off"> &nbsp; &nbsp;
+
+	<!--	标题：
+		<input type="text" name="keyword" style="width: 150px;height: 20px;" value="{$formget.keyword}" placeholder="标题">
+-->
+		视频id：
+		<input type="text" name="id" style="width: 150px;height: 20px;" value="{$formget.id}" placeholder="视频id">
+
+		用户账号：
+		<input type="text" name="user_login" style="width: 150px;height: 20px;" value="{$formget.user_login}" placeholder="用户账号">
+
+		用户id：
+		<input type="text" name="user_id" style="width: 150px;height: 20px;" value="{$formget.user_id}" placeholder="用户ID">
+
+		分类查询：
+		<select class="select_1" name="labels" style="width: 150px;">
+			<option value="">默认</option>
+			<foreach name="labels" item="vo">
+			<option value="{$vo.label}">{$vo.label}</option>
+
+			</foreach>
+		</select>
+		审核状态：
+		<select class="" name="status" style="width: 150px;">
+			<option value="">默认</option>
+			<option value="-1" <if condition="$formget.status eq '1'">selected</if> >等待上传</option>
+			<option value="1" <if condition="$formget.status eq '1'">selected</if> >待审核</option>
+			<option value="2" <if condition="$formget.status eq '2'">selected</if> >审核通过</option>
+			<option value="3" <if condition="$formget.status eq '3'">selected</if> >审核不通过</option>
+		</select>
+		<div class="search-box">
+			用户类型：
+			<select class="select_2 width-100" name="user_type">
+				<option value="-1" <if condition="$param['user_type'] eq '-1'">selected</if>>全部</option>
+				<volist name="user_type_list" id="vo">
+					<option value="{$vo.type}" <if condition="$param['user_type'] eq $vo['type']">selected</if> >{$vo['name']}</option>
+				</volist>
+			</select>
+		</div>
+		<input type="submit" class="btn btn-primary" value="搜索">
+	</form>
+
+	<form method="post" class="js-ajax-form"action="{:U('longvideo/listorders')}" >
+
+
+		<input type="hidden" name="start_time" class="js-date date" value="{$formget.start_time}" style="width: 80px;height: 30px;" autocomplete="off">-
+		<input type="hidden" class="js-date date" name="end_time" value="{$formget.end_time}" style="width: 80px;height: 30px;" autocomplete="off"> &nbsp; &nbsp;
+		<input type="hidden" name="id" style="width: 150px;height: 20px;" value="{$formget.id}" placeholder="视频id">
+		<input type="hidden" name="user_login" style="width: 150px;height: 20px;" value="{$formget.user_login}" placeholder="用户账号">
+		<input type="hidden" name="user_id" style="width: 150px;height: 20px;" value="{$formget.user_id}" placeholder="用户ID">
+		<input type="hidden" name="labels" style="width: 150px;height: 20px;" value="{$formget.labels}" >
+		<input type="hidden" name="status" style="width: 150px;height: 20px;" value="{$formget.status}" >
+		<input type="hidden" name="user_type" style="width: 150px;height: 20px;" value="{$formget.user_type}" >
+
+		<div class="table-actions">
+			<button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+			<button class="tn btn-success btn-small js-ajax-submit" type="submit" data-action="{:U('Longvideo/batchPass',$formget)}" data-subcheck="true" data-msg="确认通过">批量审核通过</button>
+			<button class="btn btn-warning btn-small js-ajax-submit" type="submit" data-action="{:U('Longvideo/batchFail',$formget)}" data-subcheck="true" data-msg=确认不通过>批量不通过</button>
+			<button class="btn btn-danger btn-small js-ajax-submit" type="submit" data-action="{:U('Longvideo/batchDel',$formget)}" data-subcheck="true" data-msg="确认删除">批量删除</button>
+
+		</div>
+		<table class="table table-hover table-bordered table-list">
+			<thead>
+			<tr>
+				<th width="45"><input style="margin-bottom: 5px" type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x">全选</th>
+
+				<th>排序</th>
+				<th align="center">ID</th>
+				<th style="max-width: 250px;">标题/分类</th>
+				<th style="max-width: 250px;">视频信息</th>
+				<th>静面封面</th>
+				<th>动面封面</th>
+				<th>作者</th>
+				<th>上传时间</th>
+				<th>审核时间</th>
+				<th>是否上传完毕</th>
+				<th align="center">{:L('ACTIONS')}</th>
+			</tr>
+			</thead>
+			<tbody>
+			<php>$isdel=array("0"=>"上架","1"=>"下架");$status=array("-1"=>"上传中","0"=>"待审核","1"=>"通过","2"=>"不通过");</php>
+			<foreach name="lists" item="vo">
+				<tr>
+					<td><input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]" value="{$vo.id}"></td>
+					<td>
+						<input type="text" size="3"  name="sort[{$vo['id']}]" value="{$vo['sort']}" class="input input-order" >
+					</td>
+					<td align="center">{$vo.id}</td>
+					<td style="max-width: 250px;">
+						标题:{$vo['title']}<br/><br/>
+						标签：{$vo['label']}
+					</td>
+					<td>时长:{$vo['duration']}<br/>
+						播放次数:{$vo['watchtimes']}<br/>
+						喜欢数量:{$vo['likes']}<br/>
+						评论数量:{$vo['comments']}<br/></td>
+					<td class="thumb_{$key}" data-imgload="{$vo['thumb']}" data-origin="{$vo['origin']}"></td>
+					<td class="thumb_gif_{$key}" data-gif-imgload="{$vo['thumb']}" data-gif-origin="{$vo['origin']}"></td>
+					<td style="max-width: 300px;">
+						来源：{$vo['origin_name']}<br>
+						作者：{$vo['user_nicename']}<br/>
+						用户名：{$vo['user_login']}<br/>
+					</td>
+					<td>{$vo.create_date}</td>
+					<td>{$vo.check_date}</td>
+					<td>
+						<if condition="$vo['is_downloadable'] eq '0' ">
+							<span style="color: red">未完成</span>
+						</if>
+						<if condition="$vo['is_downloadable'] eq '4' ">
+							<span style="color: red">未完成</span>
+						</if>
+						<if condition="$vo['is_downloadable'] eq '2' ">
+							<span style="color: red">上传失败</span>
+						</if>
+
+						<if condition="$vo['is_downloadable'] eq '1'">
+							<span style="color: green">已完成</span>
+						</if>
+
+					</td>
+					<td class="align-center-i" data-filestorekey="{$vo.filestorekey}">
+						<if condition="$vo['status'] eq '-1'">
+							上传中<br/>
+						</if>
+						<if condition="$vo['is_downloadable'] eq '1' && $vo['status'] eq '1'">
+							等待审核<br/>
+							<!--							   <a href="javascript:void (0)" onclick="commentlists({$vo['id']})" >审核通过</a>-->
+							<a href="{:U('Longvideo/pass',array('id'=>$vo['id'],'pass'=>2))}" class="cust-js-ajax" data-msg="您确定审核通过吗？">审核通过</a>
+						</if>
+						<if condition="$vo['status'] eq '2'">
+							审核已通过<br/>
+							<!--							 <a href="javascript:void (0)" onclick="del({$vo['id']})" >审核不通过</a>-->
+							<a href="{:U('Longvideo/pass',array('id'=>$vo['id'],'pass'=>3))}"class="cust-js-ajax" data-msg="您确定审核不通过吗？">审核不通过</a>
+						</if>
+						<if condition="$vo['status'] eq '3'">
+							审核不通过<br/>
+							<!--							 <a href="javascript:void (0)" onclick="del({$vo['id']})" >审核不通过</a>-->
+						</if>
+						<if condition="$vo['href']  ">
+							<div  style="color: blue" onclick="videoZoom('{$vo[\'href\']}')" src="{$vo['href']}"  class="video-zoom"  width="25" height="25" >预览</div>
+						</if>
+						<a href="{:U('Longvideo/add_address',array('id'=>$vo['id']))}">编辑</a>
+
+						<a href="{:U('Longvideo/del_viode',array('id'=>$vo['id']))}" class="cust-js-ajax del_color" confirm="您确定要删除吗？">删除</a>
+					</td>
+				</tr>
+			</foreach>
+			</tbody>
+		</table>
+		<div class="pagination">{$page}</div>
+			<button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/layer/layer.js"></script>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="__PUBLIC__/js/imgzoom/imgzoom.js"></script>
+<script src="//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.2.0.js" charset="utf-8"></script>
+
+<script src="__PUBLIC__/js/common.js"></script>
+<script>
+    new ImgZoom();
+</script>
+<script type="text/javascript">
+
+
+	var del_status=0;
+
+	function del(id){
+		var p={$p};
+
+		layer.open({
+			type: 1,
+			title:"是否确定将该视频删除",
+			skin: 'layui-layer-rim', //加上边框
+			area: ['30%', '30%'], //宽高
+			content: '<div class="textArea"><textarea id="del_reason" maxlength="50" placeholder="请输入删除原因,最多50字" /> </div><div class="textArea_btn" ><input type="button" id="delete" value="删除" onclick="del_submit('+id+','+p+')" /><input type="button" id="cancel" onclick="layer.closeAll();" value="取消" /></div>'
+		});
+	}
+
+	function del_submit(id,p){
+
+		var reason=$("#del_reason").val();
+
+		if(del_status==1){
+			return;
+		}
+
+		del_status=1;
+
+		$.ajax({
+			url: '/index.php?g=Admin&m=Video&a=del',
+			type: 'POST',
+			dataType: 'json',
+			data: {id:id,reason: reason},
+			success:function(data){
+				var code=data.code;
+				if(code!=0){
+					layer.msg(data.msg);
+					return;
+				}
+
+				del_status=0;
+				//设置按钮不可用
+				$("#delete").attr("disabled",true);
+				$("#cancel").attr("disabled",true);
+
+				layer.msg("删除成功",{icon: 1,time:1000},function(){
+					layer.closeAll();
+					location.reload();
+				});
+			},
+			error:function(e){
+				$("#delete").attr("disabled",false);
+				$("#cancel").attr("disabled",false);
+			}
+		});
+
+
+	}
+
+	/*获取视频评论列表*/
+	function commentlists(videoid){
+		layer.open({
+			type: 2,
+			title: '视频评论列表',
+			shadeClose: true,
+			shade: 0.8,
+			area: ['60%', '90%'],
+			content: '/index.php?g=Admin&m=Video&a=commentlists&videoid='+videoid
+		});
+	}
+</script>
+
+<script type="text/javascript">
+	function videoListen(id){
+		layer.open({
+			type: 2,
+			title: '观看视频',
+			shadeClose: true,
+			shade: 0.8,
+			area: ['500px', '750px'],
+			content: '/index.php?g=Admin&m=Video&a=video_listen&id='+id
+		});
+	}
+
+    $(function(){
+
+        $('td[data-imgload]').each(function (item,i) {
+
+
+            var url = $(i).attr('data-imgload');
+            var origin = $(i).attr('data-origin');
+
+
+            if (origin != '3'){
+                imgDecrypt(url).then(res => {
+                    var img  = '<img src="'+res+'">'
+                    $('.thumb_'+item).append(img);
+                })
+            }else {
+                var img  = '<img src="'+url+'">'
+                $('.thumb_'+item).append(img);
+            }
+
+        })
+
+        $('td[data-gif-imgload]').each(function (gif_item,gif_i) {
+
+
+            var gif_url = $(gif_i).attr('data-gif-imgload');
+            var gif_origin = $(gif_i).attr('data-gif-origin');
+
+
+            if (gif_origin != '3'){
+                imgDecrypt(gif_url).then(gif_res => {
+                    var gif_img  = '<img src="'+gif_res+'">'
+                    $('.thumb_gif_'+gif_item).append(gif_img);
+                })
+            }else {
+                var gif_img  = '<img src="'+gif_url+'">'
+                $('.thumb_gif_'+gif_item).append(gif_img);
+            }
+
+        })
+
+    })
+
+    function videoZoom(url){
+        let dom = $('<div class="img-zoom-wrapper"><div class="img-zoom-view" style="transform: translate(-50%, -50%) scale(1);"><div id="id_test_video" style="height:auto;margin:auto;"></div></div></div>')
+        $(document.body).append(dom)
+        dom.click(function(el){
+
+            this === el.target && $(this).remove()
+            player = null
+        })
+        var player = new TcPlayer('id_test_video', {
+            "m3u8": url,
+            "height": '420',//视频的显示高度，请尽量使用视频分辨率高度
+            'margin': 'auto',
+            'width': '1200'
+        });
+    }
+</script>
+</body>
+</html>

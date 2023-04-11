@@ -1,0 +1,93 @@
+<admintpl file="header" />
+</head>
+<style>
+	input{
+		width: 500px;
+	}
+	label{
+		width: 200px !important;
+	}
+	.controls{
+		margin-left: 220px !important;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li><a href="{:U('Task/index')}">任务管理</a></li>
+			<li><a href="{:U('Task/add_task')}">新增任务</a></li>
+			<li><a href="{:U('Task/classification')}">分类管理</a></li>
+			<li><a href="{:U('Task/user_task')}">任务领取记录</a></li>
+			<li><a href="{:U('Task/reward_log')}">奖励明细</a></li>
+			<li class="active"><a href="{:U('Task/login_reward')}">登录赠送</a></li>
+			<li><a href="{:U('Task/first_recharge')}">首充活动</a></li>
+			<li><a href="{:U('Task/share')}">分享活动</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Agent/rebate_conf')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('rebate_conf')}">
+			<fieldset>
+                <div class="control-group">
+                    <label class="control-label"></label>
+                    <div class="controls">
+                        <span class="color-remark">各级代理获得的返佣金额 （点赞，购买视频，任务）</span>
+                    </div>
+                </div>
+				<for start="1" end="$config['agent_sum']+1" >
+
+					<div class="control-group">
+						<label class="control-label">上{$i}级比例（%）</label>
+						<div class="controls">
+							<input type="text" name="level[{$i}]" value="{$proportion[$i]['rate']}"  required min="0"    onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" placeholder="请输入">
+							&nbsp;&nbsp;<span></span>
+						</div>
+					</div>
+				</for>
+
+
+			<!--	<div class="control-group">
+					<label class="control-label">上一级比例（%）</label>
+					<div class="controls">
+						<input type="text" name="one_profit" value="{$info.one_profit}" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">上二级比例（%）</label>
+					<div class="controls">
+						<input type="text" name="two_profit" value="{$info.two_profit}" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">上三级比例（%）</label>
+					<div class="controls">
+						<input type="text" name="three_profit" value="{$info.three_profit}" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">上四级比例（%）</label>
+					<div class="controls">
+						<input type="text" name="four_profit" value="{$info.four_profit}" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">上五级比例（%）</label>
+					<div class="controls">
+						<input type="text" name="five_profit" value="{$info.five_profit}" required min="0" max="9999" required oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+						&nbsp;&nbsp;<span></span>
+					</div>
+				</div>-->
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

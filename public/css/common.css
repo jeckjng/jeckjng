@@ -1,0 +1,204 @@
+.search-box{
+    display: inline-block;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+.form-search select{
+    color: #606266 !important;
+    border: 1px solid #b7b9bb !important;
+}
+.form-search input[type="text"]{
+    color: #606266 !important;
+    border: 1px solid #b7b9bb !important;
+}
+/****  颜色  ****/
+.color-white{
+    color: white;
+}
+.color-white-i{
+    color: white !important;
+}
+.color-red{
+    color: red;
+}
+.color-green{
+    color: green;
+}
+.color-gray{
+    color: gray;
+}
+.color-blue{
+    color: blue;
+}
+.color-blue-i{
+    color: blue !important;
+}
+.color-lightgray{
+    color: lightgray;
+}
+.color-remark{
+ color: #AAAAAA;
+}
+.color-black{
+     color: black;
+}
+.color-yellow{
+    color: yellow;
+}
+.color-orange{
+    color: orange;
+}
+/****  背景颜色  ****/
+.bg-color-white{
+    background-color: white;
+}
+/******* margin-top *******/
+.mar-top-15{
+    margin-top: 15px;
+}
+.mar-top-15-i{
+    margin-top: 15px !important;
+}
+/******* margin-right *******/
+.mar-right-5{
+    margin-right: 5px;
+}
+.mar-right-10{
+    margin-right: 10px;
+}
+.mar-right-15{
+    margin-right: 15px;
+}
+.mar-left-15{
+    margin-left: 15px;
+}
+.mar-left-17{
+    margin-left: 17px;
+}
+.mar-left-20{
+    margin-left: 20px;
+}
+.mar-left-5{
+    margin-left: 5px;
+}
+/******* margin-top *******/
+.mar-top-5{
+    margin-top: 5px;
+}
+.mar-top-5-i{
+    margin-top: 5px !important;
+}
+/******* margin-bottom *******/
+.mar-bottom-5{
+    margin-bottom: 5px;
+}
+.mar-bottom-15{
+    margin-bottom: 15px;
+}
+/******* width **********/
+.width-50{
+    width: 50px;
+}
+.width-50-i{
+    width: 50px !important;
+}
+.width-80{
+    width: 80px;
+}
+.width-80i{
+    width: 80px !important;
+}
+.width-100{
+    width: 100px;
+}
+.width-120{
+    width: 120px;
+}
+.width-140{
+    width: 140px;
+}
+.width-160{
+     width: 160px;
+ }
+.width-180{
+    width: 160px;
+}
+.width-200{
+    width: 200px;
+}
+.width-300{
+    width: 300px;
+}
+.width-400{
+    width: 400px;
+}
+.width-500{
+    width: 500px;
+}
+.width-600{
+    width: 600px;
+}
+/******* height **********/
+.height-20{
+    height: 20px;
+}
+.height-80{
+    height: 80px;
+}
+.height-80i{
+    width: 80px !important;
+}
+.height-120{
+    width: 120px;
+}
+.height-200{
+    width: 200px;
+}
+/******* other **********/
+.well{
+    padding: 15px;
+}
+/****  text-align  ****/
+.text-center{
+    text-align: center;
+}
+/******** 菜单是否显示 ********/
+.auth_access_show{
+    display: inline-block !important;
+}
+.auth_access_hidden{
+    display: none !important;
+}
+/******** 是否显示 ********/
+.auth_access_show{
+    display: inline-block !important;
+}
+.element_hidden{
+    display: none;
+}
+/******** text-align **********/
+.align-left {
+    text-align: left;
+}
+.align-center {
+    text-align: center;
+}
+.align-right {
+    text-align: right;
+}
+.align-left-i {
+    text-align: left !important;
+}
+.align-center-i {
+    text-align: center !important;
+}
+.align-right-i {
+    text-align: right !important;
+}
+/******** overflow **********/
+.overflow-x-auto{
+    overflow-x: auto;
+}
+.overflow-y-auto{
+    overflow-y: auto;
+}

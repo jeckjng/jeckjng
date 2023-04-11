@@ -1,0 +1,117 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/ProfitShare/auth')}
+		</ul>
+		<form class="well form-search" name="form1" method="post" action="">
+			<div class="search-box">
+				时间：
+				<input type="text" name="start_time" class="js-date date" value="{$param.start_time}" style="width: 80px;" autocomplete="off">-
+				<input type="text" class="js-date date" name="end_time" value="{$param.end_time}" style="width: 80px;" autocomplete="off">
+			</div>
+			<if condition="$role_id eq 1">
+				<div class="search-box">
+					租户:
+					<select class="select_2" name="tenant_id" style="width: 120px;">
+						<option value="" <if condition="$param['tenant_id'] eq ''">selected</if> >全部</option>
+						<volist name="tenant_list" id="vo">
+							<option value="{$vo.id}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo.name}</option>
+						</volist>
+					</select>
+				</div>
+			</if>
+			<div class="search-box">
+				会员(ID)：
+				<input type="text"  name="uid" value="{$param.uid}" style="width: 80px;" autocomplete="off">
+			</div>
+			<div class="search-box">
+				<input type="button" class="btn btn-primary" value="搜索" onclick="form1.action='{:U('auth')}';form1.submit();"/>
+			</div>
+			<div class="search-box">
+				<input type="button" class="btn btn-primary {:showHidden(U('exportauth'))}" style="background-color: #1dccaa;" value="导出" onclick="form1.action='{:U('exportauth')}';form1.submit();"/>
+			</div>
+		</form>	
+		
+		<form method="post" class="js-ajax-form" >
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th align="center" class="th_1">ID</th>
+						<th class="th_2">用户名</th>
+						<th class="th_3">时间</th>
+						<th class="th_4">总收益</th>
+						<th class="th_5">当日时长</th>
+						<th class="th_6">彩票分成</th>
+						<th class="th_7">礼物分成</th>
+						<th class="th_8">底薪结算</th>
+						<th class="th_9">时长任务</th>
+						<th class="th_10">礼物任务</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td align="center">{$vo.uid}</td>
+						<td align="center">{$vo.user_login}</td>
+						<td align="center">{$vo.collet_day}</td>
+						<td>{$vo['tatal_money']}</td>
+						<td>{$vo['hour_total']}</td>
+						<td>{$vo['bet_money']}</td>
+						<td>{$vo['gift_money']}</td>
+						<td>{$vo['money']}</td>
+						<td>{$vo['hour_limit']}</td>
+						<td>{$vo['gift_limit']}</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+		<table class="table table-hover table-bordered">
+			<tbody>
+				<tr>
+					<td align="center" class="td_1">本页合计</td>
+					<td align="center" class="td_2"></td>
+					<td align="center" class="td_3"></td>
+					<td class="td_4">{$pagesum['tatal_money']}</td>
+					<td class="td_5">{$pagesum['hour_total']}</td>
+					<td class="td_6">{$pagesum['bet_money']}</td>
+					<td class="td_7">{$pagesum['gift_money']}</td>
+					<td class="td_8">{$pagesum['money']}</td>
+					<td class="td_9">{$pagesum['hour_limit']}</td>
+					<td class="td_10">{$pagesum['gift_limit']}</td>
+				</tr>
+				<tr>
+					<td align="center" class="td_1">总合计</td>
+					<td align="center" class="td_2"></td>
+					<td align="center" class="td_3"></td>
+					<td class="td_4">{$totalsum['tatal_money']}</td>
+					<td class="td_5">{$totalsum['hour_total']}</td>
+					<td class="td_6">{$totalsum['bet_money']}</td>
+					<td class="td_7">{$totalsum['gift_money']}</td>
+					<td class="td_8">{$totalsum['money']}</td>
+					<td class="td_9">{$totalsum['hour_limit']}</td>
+					<td class="td_10">{$totalsum['gift_limit']}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>
+<script>
+	$(document).ready(function () {
+		$("td.td_1").css('width',$("th.th_1").width());
+		$("td.td_2").css('width',$("th.th_2").width());
+		$("td.td_3").css('width',$("th.th_3").width());
+		$("td.td_4").css('width',$("th.th_4").width());
+		$("td.td_5").css('width',$("th.th_5").width());
+		$("td.td_6").css('width',$("th.th_6").width());
+		$("td.td_7").css('width',$("th.th_7").width());
+		$("td.td_8").css('width',$("th.th_8").width());
+		$("td.td_9").css('width',$("th.th_9").width());
+		$("td.td_10").css('width',$("th.th_10").width());
+	});
+</script>

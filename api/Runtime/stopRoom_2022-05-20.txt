@@ -1,0 +1,7 @@
+2022-05-20 20:17:08 提交参数信息 info:false
+2022-05-20 20:17:19 提交参数信息 info:false
+2022-05-20 20:18:21 提交参数信息 info:{"uid":"1185267","showid":"1653049012","starttime":"1653049012","title":"","province":"","city":"\u597d\u50cf\u5728\u706b\u661f","stream":"1185267_1653049012","lng":"0","lat":"0","type":"0","type_val":"","liveclassid":"0","tenant_id":"26","game_user_id":"100042"}
+2022-05-20 20:18:21 提交参数信息 result:"8"
+2022-05-20 20:20:33 提交参数信息 info:false
+2022-05-20 20:20:59 提交参数信息 info:{"uid":"1185267","showid":"1653049177","starttime":"1653049177","title":"","province":"","city":"\u597d\u50cf\u5728\u706b\u661f","stream":"1185267_1653049177","lng":"0","lat":"0","type":"0","type_val":"","liveclassid":"0","tenant_id":"26","game_user_id":"100042"}
+2022-05-20 20:20:59 提交参数信息 result:"9"

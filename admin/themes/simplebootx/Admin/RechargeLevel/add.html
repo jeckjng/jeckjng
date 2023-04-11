@@ -1,0 +1,85 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li ><a href="{:U('Vip/index')}">列表</a></li>
+        <li class="active"><a >添加</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/RechargeLevel/add')}
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('RechargeLevel/add')}">
+        <fieldset>
+
+
+            <div class="control-group">
+                <label class="control-label">名称</label>
+                <div class="controls">
+                    <input type="text" required name="name" value="">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">充值范围</label>
+                <div class="controls">
+                    <input type="text" required name="min_amount" onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" maxlength="9">-
+                    <input type="text"  required name="max_amount" onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" maxlength="9">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">单日提现次数</label>
+                <div class="controls">
+                    <input type="text"  name="every_day_count" onkeyup="this.value= this.value.match(/\d+/) ? this.value.match(/\d+/)[0] : ''" maxlength="9">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">单次最高提现金额</label>
+                <div class="controls">
+                    <input type="text" name="every_day_amount" onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" maxlength="9">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">状态</label>
+                <div class="controls">
+                    启用 <input type="radio" checked="checked" name="status" value="1"  maxlength="9">  &nbsp;&nbsp;
+                    禁用 <input type="radio" name="status" value="2" maxlength="9">  &nbsp;&nbsp;
+                </div>
+            </div>
+
+            <p style="margin-left: 80px ;font-size: 18px;color: red"> 选择充值渠道:</p>
+            <div style="border: 1px solid silver">
+                <foreach name="channelList" item="vo">
+                <div class="control-group">
+                    <label class="control-label">{$vo.channel_name}:</label>
+                    <div class="controls">
+                        <foreach name="accountChannelList" item="account">
+                            <if condition="$account.channel_id eq $vo['id']">
+                           <input type="checkbox" name="account_id[]" value="{$account['id']}"  maxlength="9"> {$account.name} &nbsp;&nbsp;
+                            </if>
+                        </foreach>
+                        <foreach name="offlinePay" item="offlinePayValue">
+                            <if condition="$offlinePayValue.channel_id eq $vo['id']">
+                                <input type="checkbox" name="offlinepay_id[]" value="{$offlinePayValue['id']}"  maxlength="9"> {$offlinePayValue.name} &nbsp;&nbsp;
+                            </if>
+                        </foreach>
+                    </div>
+                </div>
+                </foreach>
+            </div>
+            <div class="control-group" style="margin-top: 20px">
+                <label class="control-label">备注</label>
+                <div class="controls">
+                    <textarea type="text" name="des"></textarea>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+            <a class="btn" href="{:U('RechargeLevel/index')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

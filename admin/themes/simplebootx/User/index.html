@@ -1,0 +1,494 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'User/Indexadmin/index')}
+			<!--<li class="active"><a href="{:U('User/indexadmin/index')}">本站会员</a></li>
+			<li><a href="{:U('User/indexadmin/add')}">新增会员</a></li>
+			<li><a href="{:U('Admin/Userauth/index')}">身份认证</a></li>
+			<li><a href="{:U('User/Indexadmin/bandcard')}">会员银行卡</a></li>
+			<li><a href="{:U('Admin/Impression/index')}">会员标签</a></li>
+			<li><a href="{:U('Admin/Impression/add')}">添加会员标签</a></li>-->
+		</ul>
+
+		<form class="well form-search"  enctype="multipart/form-data" name="form1" method="post" action="{:U('indexadmin/index')}">
+
+			<div>
+				<div class="search-box">
+					<input type="text" name="start_time" class="js-date date" id="start_time" value="{$param.start_time}" style="width: 80px;" autocomplete="off" placeholder="注冊时间">
+				</div>
+				<div class="search-box">
+					<input type="button" data-time_type="today" class="btn btn-primary cust-time-select {:$param['time_type']=='today' ? '' : 'bg-color-white color-black'}" value="今日" data-time_start="{:explode(' ',$time_se['today_start'])[0]}" data-time_end="{:explode(' ',$time_se['today_end'])[0]}" />
+				</div>
+				<div class="search-box">
+					<input type="button" data-time_type="tweek" class="btn btn-primary cust-time-select {:$param['time_type']=='tweek' ? '' : 'bg-color-white color-black'}" value="本周" data-time_start="{:explode(' ',$time_se['tweek_start'])[0]}" data-time_end="{:explode(' ',$time_se['tweek_end'])[0]}" />
+				</div>
+				<div class="search-box">
+					<input type="button" data-time_type="tmonth" class="btn btn-primary cust-time-select {:$param['time_type']=='tmonth' ? '' : 'bg-color-white color-black'}" value="本月" data-time_start="{:explode(' ',$time_se['tmonth_start'])[0]}" data-time_end="{:explode(' ',$time_se['tmonth_end'])[0]}" />
+				</div>
+				<if condition="$role_id == 1">
+					<div class="search-box">
+						<select class="select_2 " name="tenant_id" id="tenant_id" style="max-width: 190px;">
+							<option value="" <if condition="$param['tenant_id'] eq ''">selected</if> >全部（租户）</option>
+							<volist name="tenant_list" id="vo">
+								<option value="{$vo['id']}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo['name']}</option>
+							</volist>
+						</select>
+					</div>
+				</if>
+				<div class="search-box">
+					<select class="select_2 width-140" name="user_type">
+						<option value="">全部（用户类型）</option>
+						<option value="2" <if condition="$param.user_type eq '2'">selected</if> >真实用户</option>
+						<option value="3" <if condition="$param.user_type eq '3'">selected</if> >虚拟用户</option>
+						<option value="4" <if condition="$param.user_type eq '4'">selected</if> >游客用户</option>
+						<option value="5" <if condition="$param.user_type eq '5'">selected</if> >包装用户</option>
+						<option value="6" <if condition="$param.user_type eq '6'">selected</if> >代管账号</option>
+						<option value="7" <if condition="$param.user_type eq '7'">selected</if> >测试账号</option>
+					</select>
+				</div>
+				<div class="search-box">
+					<select class="select_2 width-160" name="iszombie">
+						<option value="">全部（僵尸粉开关）</option>
+						<option value="1" <if condition="$param.iszombie eq '1'">selected</if> >开启</option>
+						<option value="0" <if condition="$param.iszombie eq '0'">selected</if> >关闭</option>
+					</select>
+				</div>
+				<div class="search-box">
+					<select class="select_2 width-140" name="iszombiep">
+						<option value="">全部（僵尸粉）</option>
+						<option value="1" <if condition="$param.iszombiep eq '1'">selected</if> >是</option>
+						<option value="0" <if condition="$param.iszombiep eq '0'">selected</if> >否</option>
+					</select>
+				</div>
+				<div class="search-box">
+					<select class="select_2 width-120" name="isban">
+						<option value="">全部（禁用）</option>
+						<option value="0" <if condition="$param.isban eq '0'">selected</if> >是</option>
+						<option value="1" <if condition="$param.isban eq '1'">selected</if> >否</option>
+					</select>
+				</div>
+				<div class="search-box">
+					<select class="select_2 width-120" name="ishot">
+						<option value="">全部（热门）</option>
+						<option value="1" <if condition="$param.ishot eq '1'">selected</if> >是</option>
+						<option value="0" <if condition="$param.ishot eq '0'">selected</if> >否</option>
+					</select>
+				</div>
+
+				<div class="search-box">
+					<select class="select_2 width-120" name="vip_grade">
+						<option value="">全部会员（vip查询）</option>
+						<volist name="vip_grade" id="vo">
+							<option value="{$vo['vip_grade']}" <if condition="$param['vip_grade'] eq $vo['vip_grade']">selected</if> >{$vo['name']}</option>
+						</volist>
+					</select>
+				</div>
+
+			</div>
+			<div>
+				<div class="search-box">
+					<input type="text" class="js-date date" name="end_time" id="end_time" value="{$param.end_time}" style="width: 80px;" autocomplete="off" placeholder="注冊时间">
+				</div>
+				<div class="search-box">
+					<input type="button" data-time_type="ytoday" class="btn btn-primary cust-time-select {:$param['time_type']=='ytoday' ? '' : 'bg-color-white color-black'}" value="昨日" data-time_start="{:explode(' ',$time_se['ytoday_start'])[0]}" data-time_end="{:explode(' ',$time_se['ytoday_end'])[0]}" />
+				</div>
+				<div class="search-box">
+					<input type="button" data-time_type="yweek" class="btn btn-primary cust-time-select {:$param['time_type']=='yweek' ? '' : 'bg-color-white color-black'}" value="上周" data-time_start="{:explode(' ',$time_se['yweek_start'])[0]}" data-time_end="{:explode(' ',$time_se['yweek_end'])[0]}" />
+				</div>
+				<div class="search-box">
+					<input type="button" data-time_type="ymonth" class="btn btn-primary cust-time-select {:$param['time_type']=='ymonth' ? '' : 'bg-color-white color-black'}" value="上月" data-time_start="{:explode(' ',$time_se['ymonth_start'])[0]}" data-time_end="{:explode(' ',$time_se['ymonth_end'])[0]}" />
+				</div>
+				<div class="search-box">
+					<select class="select_2 width-120" name="issuper">
+						<option value="">全部（超管）</option>
+						<option value="1" <if condition="$param.issuper eq '1'">selected</if> >是</option>
+						<option value="0" <if condition="$param.issuper eq '0'">selected</if> >否</option>
+					</select>
+				</div>
+				<div class="search-box">
+					<select class="select_2 width-140" name="source">
+						<option value="">全部（注册设备）</option>
+						<option value="pc" <if condition="$param.source eq 'pc'">selected</if> >PC</option>
+						<option value="android" <if condition="$param.source eq 'android'">selected</if> >安卓APP</option>
+						<option value="ios" <if condition="$param.source eq 'ios'">selected</if> >苹果APP</option>
+					</select>
+				</div>
+				<div class="search-box">
+					<input type="text" name="id" style="width: 160px;" value="{$param.id}" placeholder="会员ID,多个id请用'|'隔开">
+				</div>
+				<div class="search-box">
+					<input type="text" name="user_login" style="width: 140px;" value="{$param.user_login}" placeholder="请输入用户账号">
+				</div>
+				<div class="search-box">
+					<input type="text" name="game_user_id" style="width: 140px;" value="{$param.game_user_id}" placeholder="请输入游戏会员ID">
+				</div>
+				<div class="search-box">
+					<input type="text" name="pid" style="width: 140px;" value="{$param.pid}" placeholder="请输入上级用户id">
+				</div>
+				<div class="search-box">
+					<input type="text" name="mobile" style="width: 140px;" value="{$param.mobile}" placeholder="请输入注册手机号">
+				</div>
+				<div class="search-box">
+					<input type="hidden" name="time_type" id="time_type" value="{$param['time_type']}"/>
+				</div>
+				<div class="search-box">
+					<input type="submit" class="btn btn-primary" value="搜索">
+					<input type="file" name="file" class="{:showHidden(U('import'))}" style="width: 180px;">
+					<input type="button" class="btn btn-primary {:showHidden(U('import'))}" style="background-color: #1dccaa;" value="导入" onclick="form1.action='/User/Indexadmin/import';form1.submit();">
+					<input type="button" class="btn btn-primary exports {:showHidden(U('export'))}" style="background-color: #1dccaa;" value="下载模板" onclick="form1.action='/User/Indexadmin/export';form1.submit();">
+					<input type="button" class="btn btn-primary exports {:showHidden(U('userexport'))}" style="background-color: #1dccaa;" value="导出" onclick="form1.action='{:U('Indexadmin/userexport')}';form1.submit({timeout:18000});"/>
+				</div>
+			</div>
+            <div>
+				<div class="search-box">
+					 会员数量： {$count}
+				</div>
+			</div>
+		</form>
+
+		<form method="post" class="js-ajax-form" style="white-space: nowrap;overflow-x: auto;">
+			<php>if($_SESSION["role_id"] == '4'){</php>
+			<div class="table-actions">
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('indexadmin/zombiepbatch',array('iszombiep'=>'1'))}" data-subcheck="true">批量设置为僵尸粉</button>
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('indexadmin/zombiepbatch',array('iszombiep'=>'0'))}" data-subcheck="true">批量取消僵尸粉</button>
+
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('indexadmin/zombieall',array('iszombie'=>'1'))}" >一键开启僵尸粉</button>
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('indexadmin/zombieall',array('iszombie'=>'0'))}" >一键关闭僵尸粉</button>
+				<!-- <button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('indexadmin/recordall',array('isrecord'=>'1'))}" >一键开启录播</button>
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit" data-action="{:U('indexadmin/recordall',array('isrecord'=>'0'))}" >一键关闭录播</button> -->
+			</div>
+			<php>}</php>
+
+			<div class="table-actions">
+				<button class="btn btn-success btn-small cust-filter-column" data-table_id="list_content" data-page_name="{:U('index')}" type="button">列展示</button>
+			</div>
+			<table class="table table-hover table-bordered" id="list_content">
+				<thead>
+					<tr>
+						<th data-field="checkbox" width="15"><label><input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x"></label></th>
+						<th data-field="user" style="text-align: center;">用户</th>
+						<th data-field="avatr" style="text-align: center;">头像</th>
+						<th data-field="balance" style="text-align: center;">余额</th>
+						<th data-field="cumulative_consumption" >累计消费</th>
+						<th data-field="cumulative_votes" >累计映票</th>
+						<th data-field="integral" >积分</th>
+						<th data-field="vip" style="text-align: center;">VIP</th>
+						<!--<th data-field="like_deposit" style="text-align: center;">点赞保证金</th>-->
+						<th data-field="handsel_wahtch" style="text-align: center;">赠送观影</th>
+						<th data-field="watchtime" >观看时长</th>
+						<th data-field="code" >邀请码</th>
+						<th data-field="pid" >上级用户ID</th>
+						<th data-field="fans" >粉丝</th>
+						<th data-field="follows" >关注</th>
+						<th data-field="likes" >作品点赞数</th>
+						<th data-field="recharge_total" >累计充值</th>
+						<th data-field="user_level_title" >层级</th>
+                        <th data-field="is_certification" >是否蓝标认证</th>
+						<th data-field="certification_name" >蓝标名称</th>
+						<th data-field="game_user_id" >彩票会员ID</th>
+						<th data-field="create_time" style="text-align: center;">VIP等级</th>
+						<th data-field="create_time" style="text-align: center;">注册/登录/IP/设备（版本号）</th>
+						<th data-field="user_status_name" >状态</th>
+						<th data-field="tenant_name" >所属租户</th>
+						<th data-field="action" align="center">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr data-chatserver="{$vo.chatserver}" data-socket_type="{$vo.socket_type}">
+						<td data-field="checkbox" ><input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]" value="{$vo.id}" title="ID:{$vo.id}"></td>
+						<td data-field="user" >
+							ID: {$vo.id}<br>
+							账号: {$vo.user_login}<br>
+							昵称: {$vo.user_nicename}<br>
+							类型: {$vo.user_type_name}<br>
+						</td>
+						<td data-field="avatr" ><img class="img-zoom" width="25" height="25" src="{$vo['avatar']}" /></td>
+						<td data-field="balance" >
+							可提现: {$vo.coin}<br>
+							不可提现: {$vo.nowithdrawable_coin}<br>
+							余额宝: {$vo.yeb_balance}
+						</td>
+						<td data-field="cumulative_consumption" class="align-center-i">{$vo.consumption}</td>
+						<td data-field="cumulative_votes" class="align-center-i">{$vo.votestotal}</td>
+						<td data-field="integral" class="align-center-i">{$vo.integral}</td>
+						<td data-field="vip" >
+							等级: {$vo.user_vip_level_name}<br>
+							保证金: {$vo.vip_margin}
+						</td>
+						<!--<td data-field="like_deposit" class="align-center-i">{$vo.like_deposit}</td>-->
+						<td data-field="handsel_wahtch" >赠送次数: {$vo.watch_num}<br>赠送时长: {$vo.watch_time}</td>
+						<td data-field="watchtime" class="align-center-i">{$vo.watchtime}</td>
+						<td data-field="code" class="align-center-i">{$vo.agent_code}</td>
+						<td data-field="pid" class="align-center-i"><if condition="$vo.pid gt 0">{$vo.pid}</if></td>
+						<td data-field="fans" class="align-center-i">{$vo.fans}</td>
+						<td data-field="follows" class="align-center-i">{$vo.follows}</td>
+						<td data-field="likes" class="align-center-i">{$vo.likes}</td>
+						<td data-field="recharge_total" class="align-center-i">{$vo.recharge_total}</td>
+						<td data-field="user_level_title" class="align-center-i">{$vo.user_level_title}</td>
+						<td data-field="is_certification" class="align-center-i">
+							<if condition="$vo.is_certification eq 1">
+								<span class="color-green">是</span>
+							<else/>
+								<span class="color-red">否</span>
+							</if>
+						</td>
+						<td data-field="certification_name" class="align-center-i">{$vo.certification_name}</td>
+						<td data-field="game_user_id" class="align-center-i">{$vo.game_user_id}</td>
+						<td data-field="game_user_id" class="align-center-i">{$vo.userlevel_name}</td>
+						
+						<td data-field="create_time" >
+							注册时间: {$vo.ctime|date="Y-m-d H:i:s",###}<br>
+							注册设备: {$vo.source}<br>
+							最后登录时间: {$vo.last_login_time}<br>
+							最后登录设备: {$vo.client}（{$vo.version}）<br>
+							最后登录IP: {$vo['last_login_ip']}</td>
+						<td data-field="user_status_name" class="align-center-i">{$vo['user_status_name']}</td>
+						<td data-field="tenant_name" class="align-center-i">{$vo.tenant_name}</td>
+						<td data-field="action">
+							<div class="mar-bottom-5">
+								<a href="{:U('edit',array('id'=>$vo['id']))}" class=" mar-right-10 auth_access" data-auth_access="{:U('edit')}">编辑</a>
+								<if condition="$vo.user_status eq '1'">
+									<a href="{:U('ban',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('ban')}" data-msg="{:L('BLOCK_USER_CONFIRM_MESSAGE')}">禁用</a>
+									<else/>
+									<a href="{:U('cancelban',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('cancelban')}" data-msg="{:L('ACTIVATE_USER_CONFIRM_MESSAGE')}">{:L('ACTIVATE_USER')}</a>
+								</if>
+								<if condition="$vo.issuper eq '1'">
+									<a href="{:U('cancelsuper',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('cancelsuper')}" data-msg="您确定要取消超管吗？">取消超管</a>
+									<else/>
+									<a href="{:U('super',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('super')}" data-msg="您确定要设置超管吗？">设置超管</a>
+								</if>
+								<a href="{:U('add_consumption',array('id'=>$vo['id'],'user_login'=>$vo['user_login'],'consumption'=>$vo['consumption']))}" class="cust-iframe-pop mar-right-10 auth_access" data-auth_access="{:U('add_consumption')}" title="改变累计消费" data-iframe="{width:500px,height:250px,top:10%,left:none;}">改变累计消费</a>
+								<a href="{:U('del',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('del')}" data-msg="您确定要删除此用户吗？">删除</a>
+							</div>
+
+							<div class="mar-bottom-5">
+								<if condition="$vo.isjurisdiction eq 1 ">
+									<a href="{:U('jurisdiction',array('id'=>$vo['id'],'status'=>0))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('jurisdiction')}" data-msg="禁止创建聊天室？">禁止创建聊天室 </a>
+									<else/>
+									<a href="{:U('jurisdiction',array('id'=>$vo['id'],'status'=>1))}"  class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('jurisdiction')}" data-msg="允许创建聊天室？">允许创建聊天室</a>
+								</if>
+								<a href="{:U('add_bank_card',array('id'=>$vo['id']))}" class=" mar-right-10 auth_access" data-auth_access="{:U('add_bank_card')}">添加银行卡</a>
+								<if condition="$vo.iszombie eq '1'">
+									<a href="{:U('cancelzombie',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('cancelzombie')}" data-msg="您确定要关闭僵尸粉吗？">关闭僵尸粉</a>
+									<else/>
+									<a href="{:U('zombie',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('zombie')}" data-msg="您确定要开启僵尸粉吗？">开启僵尸粉</a>
+								</if>
+								<if condition="$vo.iszombiep eq '1'">
+									<a href="{:U('cancelzombiep',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('cancelzombiep')}" data-msg="您确定要取消设置僵尸粉吗？">取消设置僵尸粉</a>
+									<else/>
+									<a href="{:U('zombiep',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('zombiep')}" data-msg="您确定要设置为僵尸粉吗？">设置为僵尸粉</a>
+								</if>
+							</div>
+
+							<div class="mar-bottom-5">
+								<if condition="$vo.isshutup eq 1">
+									<a href="{:U('shutup',array('id'=>$vo['id'],'status'=>0))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('shutup')}" data-msg="您确定要取消设置禁言吗？">取消禁言</a>
+									<else/>
+									<a href="{:U('shutup',array('id'=>$vo['id'],'status'=>1))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('shutup')}" data-msg="您确定要设置为禁言吗？">禁言</a>
+								</if>
+								<if condition="$vo.isforbidlive eq 1">
+									<a href="{:U('forbidlive',array('id'=>$vo['id'],'status'=>0))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('forbidlive')}" data-msg="您确定要取消禁播吗？">取消禁播</a>
+									<else/>
+									<a href="{:U('forbidlive',array('id'=>$vo['id'],'status'=>1))}" data-uid="{$vo['id']}"  class="closelive mar-right-10 auth_access" data-auth_access="{:U('forbidlive')}" data-msg="您确定要设置为禁播吗？">禁播</a>
+								</if>
+								<if condition="$vo.isrecommend eq '1'">
+									<a href="{:U('cancelrecommend',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('cancelrecommend')}" data-msg="您确定要取消推荐吗？">取消推荐</a>
+									<else/>
+									<a href="{:U('recommend',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('recommend')}" data-msg="您确定要推荐此用户吗？">推荐</a>
+								</if>
+								<if condition="$vo.isshare eq '1'">
+									<a href="{:U('cancelshare',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('cancelshare')}" data-msg="您确定要取消设置公共主播吗？">取消设置公共主播</a>
+									<else/>
+									<a href="{:U('share',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('share')}" data-msg="您确定要设置为公共主播吗？">设置为公共主播</a>
+								</if>
+								<a href="{:U('edits',array('id'=>$vo['id']))}" class=" mar-right-10 auth_access" data-auth_access="{:U('edits')}">开播房间权限</a>
+								<if condition="$vo.ishot eq '1'">
+									<a href="{:U('cancelhot',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('cancelhot')}" data-msg="您确定要取消热门吗？">取消热门</a>
+									<else/>
+									<a href="{:U('hot',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('hot')}" data-msg="您确定要设置热门吗？">热门</a>
+								</if>
+							</div>
+
+							<div class="mar-bottom-5">
+								<if condition="$vo.is_allow_post eq '1'">
+									<a href="{:U('bar',array('id'=>$vo['id'],'status'=>0,'field'=>'is_allow_post' ))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('bar')}" data-msg="禁止发帖？">禁止发帖</a>
+									<else/>
+									<a href="{:U('bar',array('id'=>$vo['id'],'status'=>1,'field'=>'is_allow_post'))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('bar')}" data-msg="允许发帖">允许发帖</a>
+								</if>
+								<if condition="$vo.is_allow_comment eq '1'">
+									<a href="{:U('bar',array('id'=>$vo['id'],'status'=>0,'field'=>'is_allow_comment'))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('bar')}" data-msg="禁止评论？">禁止评论</a>
+									<else/>
+									<a href="{:U('bar',array('id'=>$vo['id'],'status'=>1,'field'=>'is_allow_comment'))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('bar')}" data-msg="允许评论">允许评论</a>
+								</if>
+								<if condition="$vo.is_allow_seeking_slice eq '1'">
+									<a href="{:U('bar',array('id'=>$vo['id'],'status'=>0,'field'=>'is_allow_seeking_slice'))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('bar')}" data-msg="禁止求片？">禁止求片</a>
+									<else/>
+									<a href="{:U('bar',array('id'=>$vo['id'],'status'=>1,'field'=>'is_allow_seeking_slice'))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('bar')}" data-msg="允许发帖">允许求片</a>
+								</if>
+								<if condition="$vo.is_allow_push_slice eq '1'">
+									<a href="{:U('bar',array('id'=>$vo['id'],'status'=>0,'field'=>'is_allow_push_slice'))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('bar')}" data-msg="禁止推片？">禁止推片</a>
+									<else/>
+									<a href="{:U('bar',array('id'=>$vo['id'],'status'=>1,'field'=>'is_allow_push_slice'))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('bar')}" data-msg="允许推片">允许推片</a>
+								</if>
+								<if condition="$vo.issendred eq '1'">
+									<a href="{:U('cancelsendred',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('cancelsendred')}" data-msg="您确定要取消设置允许发红包吗？">取消设置允许发红包</a>
+									<else/>
+									<a href="{:U('sendred',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('sendred')}" data-msg="您确定要设置为允许发红包吗？">设置允许发红包</a>
+								</if>
+								<if condition="$vo.isprivatemsg eq '1'">
+									<a href="{:U('cancelprivatemsg',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('cancelprivatemsg')}" data-msg="您确定要取消设置允许私信吗？">取消设置允许私信</a>
+									<else/>
+									<a href="{:U('privatemsg',array('id'=>$vo['id']))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('privatemsg')}" data-msg="您确定要设置为允许私信吗？">设置为允许私信</a>
+								</if>
+							</div>
+
+							<div class="mar-bottom-5">
+								<if condition="$vo.upload_video_profit_status eq '1'">
+									<a href="{:U('upload_video_profit_status',array('id'=>$vo['id'],'val'=>0))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('upload_video_profit_status')}" data-msg="禁止发帖？">关闭上传视频收益</a>
+									<else/>
+									<a href="{:U('upload_video_profit_status',array('id'=>$vo['id'],'val'=>1))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('upload_video_profit_status')}" data-msg="允许发帖">开启上传视频收益</a>
+								</if>
+								<if condition="$vo.grab_red_packet_status eq '1'">
+									<a href="{:U('grab_red_packet_status',array('id'=>$vo['id'],'val'=>0))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('grab_red_packet_status')}" data-msg="禁止评论？">关闭抢红包</a>
+									<else/>
+									<a href="{:U('grab_red_packet_status',array('id'=>$vo['id'],'val'=>1))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('grab_red_packet_status')}" data-msg="允许评论">开启抢红包</a>
+								</if>
+								<if condition="$vo.rebate_status eq '1'">
+									<a href="{:U('rebate_status',array('id'=>$vo['id'],'val'=>0))}" class="cust-js-ajax mar-right-10 del_color auth_access" data-auth_access="{:U('rebate_status')}" data-msg="禁止求片？">关闭代理返点</a>
+									<else/>
+									<a href="{:U('rebate_status',array('id'=>$vo['id'],'val'=>1))}" class="cust-js-ajax mar-right-10 auth_access" data-auth_access="{:U('rebate_status')}" data-msg="允许发帖">开启代理返点</a>
+								</if>
+							</div>
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/md5/jquery.md5.js"></script>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script src="__PUBLIC__/js/socket.io.js"></script>
+<script src="__PUBLIC__/js/imgzoom/imgzoom.js"></script>
+<script type="text/javascript">
+
+	$(document).ready(function (){
+		// 筛选列，是否有隐藏的，如果有则隐藏不显示
+		var cust_filter_column_obj = $('.cust-filter-column');
+		var cust_filter_column_key = "cust-filter-column-" + $.md5($(cust_filter_column_obj).attr('data-page_name'));
+		var checked_no_json = window.localStorage.getItem(cust_filter_column_key)
+		if(checked_no_json){
+			checked_no_list = JSON.parse(checked_no_json);
+			var table_id = $(cust_filter_column_obj).attr('data-table_id');
+			$.each(checked_no_list, function (index, val){
+				data_field = val
+				$('#'+table_id).children('thead').find("[data-field='" + data_field + "']").addClass('filter-checked-no').removeClass('filter-checked-yes').css('display', 'none');
+				$('#'+table_id).children('tbody').find("[data-field='" + data_field + "']").addClass('filter-checked-no').removeClass('filter-checked-yes').css('display', 'none');
+			})
+		}
+
+		// 根据菜单权限是否显示按钮
+		var auth_access_json = '{$auth_access_json}';
+		var role_id = '{$role_id}';
+		var auth_access_list = JSON.parse(auth_access_json)
+		$(".auth_access").each(function (index,val){
+			var rule_name = $(this).attr('data-auth_access');
+			rule_name = rule_name.replace(/^\//g, '').toLowerCase();
+			var hash_key = $.md5(role_id+rule_name+'admin_url');
+			if(auth_access_list.hasOwnProperty(hash_key) == true){
+				$(this).css('display','');
+			}else{
+				$(this).css('display','none');
+			}
+		});
+
+		new ImgZoom();
+	});
+
+
+	$(".exports").click(function(){
+		form1.action='/User/Indexadmin/index'
+		var count = 20;
+		var countdown = setInterval(CountDown, 2000);
+		var obj = $(this);
+		var value = $(obj).val();
+		function CountDown() {
+			$(obj).attr("disabled", true);
+			$(obj).val("请等待 " + count + " 秒!");
+			if (count == 0) {
+				$(obj).val(value).removeAttr("disabled");
+				clearInterval(countdown);
+			}
+			count--;
+		}
+	});
+	$(".closelive").on('click',function (event){
+		event.preventDefault();
+		var href = $(this).attr('href');
+		var obj = $(this);
+		custconfirm($(this).attr('confirm'),function (){
+			$.get(href, {}, function(res) {
+				var waittime = waittime ? waittime : (res.wait ? Number(res.wait)*1000 : 2000);
+				if(res.status == 1){
+					custshowmsg(res.info.msg, 5000)
+					closelive(obj);// 关闭直播间
+					if(res.info.stopRoomUrl){
+						setTimeout(function (){
+							$.get(href+'/acttype/amdin_stop', {}, function(res) {});
+							setTimeout(function (){
+								if(res.referer){
+									location.href = res.referer;
+								}else{
+									location.reload();
+								}
+							},2000)
+						},5000);
+					}else{
+						setTimeout(function (){
+							if(res.referer){
+								location.href = res.referer;
+							}else{
+								location.reload();
+							}
+						},waittime)
+					}
+				}else{
+					if(res.info.msg){
+						custalert(res.info.msg)
+					}else{
+						custalert(res.info)
+					}
+				}
+			});
+		},true)
+	});
+
+	function closelive(obj){
+		var uid = $(obj).attr('data-uid');
+		var socket_url = $(obj).parent().parent().attr('data-chatserver');
+		var socket_type = $(obj).parent().parent().attr('data-socket_type');
+		if(socket_type == 1 || socket_type == 2) {
+			var socket = io(socket_url);
+			socket.emit('closelive', '{"uid":' + uid + '}')
+			socket.on('broadcastingListen', function (msg) {
+				console.log('connection succ open');
+			});
+		}else if(socket_type == 3){
+			$.ajax({
+				url:"{:u('forbidlive')}",
+				data:{"uid": uid, "golang_event":1},
+				type:'POST',
+				dataType:'json',
+				success:function(data){
+					console.log(data);
+				}
+			})
+		}
+	}
+</script>

@@ -1,0 +1,54 @@
+<admintpl file="header" />
+</head>
+<style>
+	input,textarea{
+		width: 500px;
+	}
+</style>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Chatroom/setting')}
+	</ul>
+	<form method="post" class="form-horizontal cust-js-ajax-form" action="">
+		<fieldset>
+			<!--<div class="control-group">
+				<label class="control-label">进群提示消息</label>
+				<div class="controls">
+					<textarea cols="30" rows="3" name="enter_msg" placeholder="请输入">{$info.enter_msg}</textarea>
+				</div>
+			</div>-->
+
+			<div class="control-group">
+				<label class="control-label">会员数量限制</label>
+				<div class="controls">
+					<input type="number" name="num" value="{$info.num}" min="1" max="9999" oninput="if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+					&nbsp;人
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">聊天记录保存条数</label>
+				<div class="controls">
+					<input type="number" name="recordnum" value="{$info.recordnum}" min="0" max="999999999" oninput="if(this.value.length>4)this.value=this.value.slice(0,9)" placeholder="请输入">
+					&nbsp;条（不限数量则输入0）
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">聊天记录保存时间</label>
+				<div class="controls">
+					<input type="number" name="exptime" value="{$info.exptime}" min="0" max="999999" oninput="if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入">
+					&nbsp;天（不限时间则输入0）
+				</div>
+			</div>
+		</fieldset>
+		<div class="form-actions">
+			<input type="hidden" name="id" value="{$info.id}">
+			<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+		</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+</script>

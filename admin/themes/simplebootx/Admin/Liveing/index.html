@@ -1,0 +1,324 @@
+<admintpl file="header" />
+<style>
+	table td{
+		min-width: 70px;
+	}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li class="active"><a >直播记录</a></li>
+			<li><a href="{:U('Liveing/add')}">新增直播</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Liveing/index')}
+		</ul>
+		
+		<form class="well form-search" method="post" action="{:U('Liveing/index')}">
+			<div>
+				<div class="search-box">
+					<input type="text" name="start_time" class="js-date date" value="{$param.start_time}" style="width: 80px;" autocomplete="off" placeholder="开播时间">
+				</div>
+				<if condition="$role_id eq 1">
+					<div class="search-box">
+						<select class="select_2" name="tenant_id" style="max-width: 200px;">
+							<option value="" <if condition="$param['tenant_id'] eq ''">selected</if> >全部（租户）</option>
+							<volist name="tenant_list" id="vo">
+								<option value="{$vo.id}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo.name}</option>
+							</volist>
+						</select>
+					</div>
+				</if>
+				<div class="search-box">
+					<input type="text" name="uid" style="width: 140px;" value="{$param.uid}" class="mar-right-15" placeholder="请输入会员id">
+				</div>
+				<div class="search-box">
+					<input type="text" name="game_user_id" style="width: 140px;" value="{$param.game_user_id}" class="mar-right-15" placeholder="请输入彩票会员ID">
+				</div>
+				<div class="search-box">
+					<select class="select_2" name="islive" style="width: 140px;">
+						<option value="" <if condition="$param.islive eq ''">selected</if> >全部（直播状态）</option>
+						<option value="1" <if condition="$param.islive eq '1'">selected</if> >直播中</option>
+						<option value="0" <if condition="$param.islive eq '0'">selected</if> >直播结束</option>
+						<option value="2" <if condition="$param.islive eq '2'">selected</if> >暂停中</option>
+					</select>
+				</div>
+			</div>
+			<div>
+				<div class="search-box">
+					<input type="text" class="js-date date" name="end_time" value="{$param.end_time}" style="width: 80px;" autocomplete="off" placeholder="开播时间">
+				</div>
+				<div class="search-box">
+					<select class="select_2" name="ishot" style="width: 120px;">
+						<option value="" <if condition="$param.ishot eq ''">selected</if> >全部（上热门）</option>
+						<option value="1" <if condition="$param.ishot eq '1'">selected</if> >是</option>
+						<option value="0" <if condition="$param.ishot eq '0'">selected</if> >否</option>
+					</select>
+				</div>
+				<div class="search-box">
+					<select class="select_2" name="isrecommend" style="width: 140px;">
+						<option value="" <if condition="$param.isrecommend eq ''">selected</if> >全部（上推荐）</option>
+						<option value="1" <if condition="$param.isrecommend eq '1'">selected</if> >是</option>
+						<option value="0" <if condition="$param.isrecommend eq '0'">selected</if> >否</option>
+					</select>
+				</div>
+				<div class="search-box">
+					<select class="select_2" name="top" style="width: 140px;">
+						<option value="" <if condition="$param.top eq ''">selected</if> >全部（置顶）</option>
+						<option value="1" <if condition="$param.top eq '1'">selected</if> >是</option>
+						<option value="0" <if condition="$param.top eq '0'">selected</if> >否</option>
+					</select>
+				</div>
+				<div class="search-box">
+					<select class="select_2" name="ly_recommend" style="width: 140px;">
+						<option value="" <if condition="$param.ly_recommend eq ''">selected</if> >全部（光年推荐）</option>
+						<option value="1" <if condition="$param.ly_recommend eq '1'">selected</if> >是</option>
+						<option value="0" <if condition="$param.ly_recommend eq '0'">selected</if> >否</option>
+					</select>
+				</div>
+				<div class="search-box">
+					<select class="select_2" name="game_recommend" style="width: 140px;">
+						<option value="" <if condition="$param.game_recommend eq ''">selected</if> >全部（游戏推荐）</option>
+						<option value="1" <if condition="$param.game_recommend eq '1'">selected</if> >是</option>
+						<option value="0" <if condition="$param.game_recommend eq '0'">selected</if> >否</option>
+					</select>
+				</div>
+			</div>
+			<div>
+				<div class="search-box">
+					<input type="submit" class="btn btn-primary mar-right-15" value="搜索">
+				</div>
+			</div>
+		</form>
+		<form method="post" class="js-ajax-form" action="{:U('Liveing/listorders')}">
+			<div class="table-actions">
+				<button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+			</div>
+
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th>排序</th>
+						<th align="center">会员ID<br>会员昵称<br>彩票会员ID</th>
+						<th>直播ID</th>
+						<th>直播<if condition="$_SESSION['role_id'] == '1'"><br>租户</if></th>
+						<th>封面</th>
+						<th>标题</th>
+						<th>房间类型<br>直播分类</th>
+						<th>密码/价格</th>
+						<th>直播开始时间</th>
+						<th>暂停时长</th>
+						<th>视频类型<br>直播状态</th>
+						<th>在线人数<br>打赏人数</th>
+						<th>本场收益</th>
+						<th>人均打赏</th>
+						<th>推拉流线路<br>播流地址</th>
+						<th style="min-width: 80px;">操作</th>
+						<th>热门操作</th>
+						<th>推荐操作</th>
+						<th>置顶操作</th>
+						<th>光年推荐</th>
+						<th>游戏推荐</th>
+					</tr>
+				</thead>
+				<tbody>
+				<php>$islive=array("0"=>'<span style="color:red;">直播结束</span>',"1"=>'<span style="color:#1abc9c;">直播中</span>',"2"=>'<span style="color:#f78400;">暂停中</span>');$type=array("0"=>"普通房间","1"=>"密码房间","2"=>"门票房间","3"=>"计时房间");</php>
+					<foreach name="lists" item="vo">
+					<tr data-chatserver="{$vo.chatserver}" data-socket_type="{$vo.socket_type}">
+						<td><input name="listorders[{$vo['uid']}]" type="text" size="3" value="{$vo['hotorderno']}" class="input input-order"></td>
+						<td>{$vo.uid}<br>{$vo['userinfo']['user_nicename']}<br>{$vo['game_user_id']}</td>
+						<td>{$vo['showid']}</td>
+						<td>
+							<if condition="$vo['isshare']==1">公共直播<else/>私有直播</if>
+							<if condition="$_SESSION['role_id'] == '1'"><br>{$vo['tenant_name']}</if>
+						</td>
+						<td><img class="img-zoom" width="25" height="25" src="{$vo['thumb']}" /></td>
+						<td title="点击显示全部内容" data-ori="{$vo['title']}" onclick="showall(this)" style="word-wrap:break-word;min-width:100px;max-width:130px;">{$vo['cuttitle']}</td>
+						<td>{$type[$vo['type']]}<br>{$liveclass[$vo['liveclassid']]}</td>
+						<td>{$vo['type_val']}</td>
+						<td style="min-width:120px;">{$vo.starttime|date="Y-m-d H:i:s",###}</td>
+						<td>{$vo['stop_time']}</td>
+						<td data-disconnect="{$vo['disconnect']}"><if condition="$vo['anyway'] eq 0">竖屏<else/>横屏</if><br>{$islive[$vo['islive']]}</td>
+                        <td>{$vo['nums']}<br>{$vo['total_nums']}</td>
+                        <td>{$vo['totalcoin']}</td>
+                        <td>{$vo['total_average']}</td>
+                        <td data-flv="{$vo['flvpull']}" data-m3u8="{$vo['m3u8pull']}"  title="点击显示全部内容" data-ori="{$vo['pushpull_name']}<br>{$vo['pull']}" onclick="showall(this)" style="word-wrap:break-word;min-width:320px;max-width:350px;">{$vo['pushpull_name']}<br>{$vo['cutpull']}</td>
+
+						<td>
+							<a href="{:U('Liveing/editroomtype',array('uid'=>$vo['uid']))}" >编辑房间类型</a><br>
+							<if condition="$vo['isvideo']==1">
+								<a href="{:U('Liveing/edit',array('uid'=>$vo['uid']))}" >编辑</a>
+
+							</if>
+							<a href="{:U('Liveing/editlabel',array('uid'=>$vo['uid']))}" >彩种标签设置</a><br>
+							<a href="{:U('Liveing/adminstoplive',array('id'=>$vo['uid'],'status'=>1))}" data-uid="{$vo['uid']}"  class="closelive del_color" data-msg="您确定要结束该直播吗？">结束直播</a>
+
+						</td>
+
+						<td>
+							<if condition="$vo['ishot']==1" >
+								<a href="{:U('Liveing/updatehot',array('uid'=>$vo['uid'],'ishot'=>0))}" class="cust-js-ajax" confirm="您确定要取消上热门吗？" style="color:red;">取消上热门</a>
+								<else/>
+								<a href="{:U('Liveing/updatehot',array('uid'=>$vo['uid'],'ishot'=>1))}" class="cust-js-ajax" confirm="您确定要上热门吗？">上热门</a>
+							</if>
+						</td>
+						<td>
+							<if condition="$vo['isrecommend']==1" >
+								<a href="{:U('Liveing/updatehot',array('uid'=>$vo['uid'],'isrecommend'=>0))}" class="cust-js-ajax" confirm="您确定取消上推荐吗？" style="color:red;">取消上推荐</a>
+								<else/>
+								<a href="{:U('Liveing/updatehot',array('uid'=>$vo['uid'],'isrecommend'=>1))}" class="cust-js-ajax" confirm="您确定上推荐吗？">上推荐</a>
+							</if>
+						</td>
+						<td>
+							<if condition="$vo['top']==0" >
+								<a href="{:U('Liveing/updatehot',array('uid'=>$vo['uid'],'top'=>1))}" class="cust-js-ajax" confirm="您确定置顶吗？">置顶</a>
+								<else/>
+								<a href="{:U('Liveing/updatehot',array('uid'=>$vo['uid'],'top'=>0))}" class="cust-js-ajax" confirm="您确定取消置顶吗？" style="color:red;">取消置顶</a>
+							</if>
+						</td>
+						<td>
+							<if condition="$vo['ly_recommend']==1" >
+								<a href="{:U('Liveing/updatehot',array('uid'=>$vo['uid'],'ly_recommend'=>0))}" class="cust-js-ajax" confirm="您确定取消推荐吗？" style="color:red;">取消推荐</a>
+								<else/>
+								<a href="{:U('Liveing/updatehot',array('uid'=>$vo['uid'],'ly_recommend'=>1))}" class="cust-js-ajax" confirm="您确定光年推荐吗？">光年推荐</a>
+							</if>
+						</td>
+						<td>
+							<if condition="$vo['game_recommend']==1" >
+								<a href="{:U('Liveing/updatehot',array('uid'=>$vo['uid'],'game_recommend'=>0))}" class="cust-js-ajax" confirm="您确定取消推荐吗？" style="color:red;">取消推荐</a>
+								<else/>
+								<a href="{:U('Liveing/updatehot',array('uid'=>$vo['uid'],'game_recommend'=>1))}" class="cust-js-ajax" confirm="您确定游戏推荐吗？">游戏推荐</a>
+							</if>
+						</td>
+					</tr>
+					</foreach>
+					<input type="hidden" value="{$httporigin}" id="origins" />
+					<input type="hidden" value="{$hostaddress}" id="hostaddress" />
+					<input type="hidden" value="{$propellingserver}" id="propellingserver" />
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+	<script src="__PUBLIC__/js/imgzoom/imgzoom.js"></script>
+	<script>
+		new ImgZoom();
+	</script>
+</body>
+</html>
+<script type="text/javascript">
+
+	function getids(obj){
+		var id  =obj;
+		if(!id){
+			alert("操作项id不能为空");
+			return !1;
+		}
+		var origins = $(" #origins ").val();
+		var hostaddress = $("#hostaddress").val();
+		var wsServer = $("#propellingserver").val();
+
+		//var wsServer = 'wss://livedev.jxmm168.com/php-socket-test/';//测试环境
+		//var wsServer = 'wss://live-php.meibocms.com';  //预生产
+
+		var data2 = '{"type":"recommend_room","token":"1234567","id":'+id+',"status":"1","origins":'+'"'+origins+'"'+',"hostaddress":'+'"'+hostaddress+'"'+'}';
+		console.log(data2);
+		var websocket = new WebSocket(wsServer);
+		websocket.onopen = function (evt) {
+			console.log("Connected to WebSocket server.");
+			websocket.send(data2);
+		};
+		websocket.onmessage = function (evt) {
+			console.log('Retrieved data from server: ' + evt.data);
+		};
+	}
+
+	/*
+	* 显示全部内容
+	* */
+	function showall(obj){
+		var ct = $(obj).attr('data-ori');
+		$(obj).html(ct);
+	}
+
+	/*
+	* 显示全部内容
+	* */
+	function showallpull(obj){
+		var ct = $(obj).attr('data-ori');
+		$(obj).html(ct);
+	}
+
+</script>
+<script src="__PUBLIC__/js/socket.io.js"></script>
+<script type="text/javascript">
+
+	$(".closelive").on('click',function (event){
+		event.preventDefault();
+		var href = $(this).attr('href');
+		var obj = $(this);
+		custconfirm($(this).attr('confirm'),function (){
+			$.get(href, {}, function(res) {
+				var waittime = waittime ? waittime : (res.wait ? Number(res.wait)*1000 : 2000);
+				if(res.status == 1){
+					custshowmsg(res.info.msg, 5000)
+					closelive(obj);// 关闭直播间
+					if(res.info.stopRoomUrl){
+						setTimeout(function (){
+							$.get(href+'/acttype/amdin_stop', {}, function(res) {});
+							setTimeout(function (){
+								if(res.referer){
+									location.href = res.referer;
+								}else{
+									location.reload();
+								}
+							},2000)
+						}, 5000);
+					}else{
+						setTimeout(function (){
+							if(res.referer){
+								location.href = res.referer;
+							}else{
+								location.reload();
+							}
+						},waittime)
+					}
+				}else{
+					if(res.info.msg){
+						custalert(res.info.msg)
+					}else{
+						custalert(res.info)
+					}
+				}
+			});
+		},true)
+	});
+
+	function closelive(obj){
+		var uid = $(obj).attr('data-uid');
+		var socket_url = $(obj).parent().parent().attr('data-chatserver');
+		var socket_type = $(obj).parent().parent().attr('data-socket_type');
+		if(socket_type == 1 || socket_type == 2) {
+			var socket = io(socket_url);
+			socket.emit('closelive', '{"uid":'+uid+'}')
+			// socket.emit('servercloselive', '{"uid":'+uid+'}')
+			console.log(socket_url);
+			socket.on('broadcastingListen', function (msg) {
+				console.log('connection succ open');
+			});
+		}else if(socket_type == 3){
+			$.ajax({
+				url:"{:u('adminstoplive')}",
+				data:{"uid": uid, "golang_event":1},
+				type:'POST',
+				dataType:'json',
+				success:function(data){
+					console.log(data);
+				}
+			})
+		}
+	}
+
+
+</script>

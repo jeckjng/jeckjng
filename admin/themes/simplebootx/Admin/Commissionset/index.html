@@ -1,0 +1,93 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li class="active"><a >提现记录</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Commissionset/index')}
+		</ul>
+		<form class="well form-search" name="form1" method="post" action="{:U('index')}">
+			<if condition="$role_id eq 1">
+				<div class="search-box">
+					<select class="select_2" name="tenant_id" style="width: 120px;">
+						<option value="" <if condition="$param['tenant_id'] eq ''">selected</if> >全部（租户）</option>
+						<volist name="tenant_list" id="vo">
+							<option value="{$vo.id}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo.name}</option>
+						</volist>
+					</select>
+				</div>
+			</if>
+			<div class="search-box">
+				会员ID：
+				<input type="text" name="uid" style="width: 200px;" value="{$param.uid}" placeholder="请输入会员ID">
+			</div>
+			<div class="search-box">
+				彩票会员ID：
+				<input type="text" name="game_user_id" style="width: 200px;" value="{$param.game_user_id}" placeholder="请输入彩票会员ID">
+			</div>
+			<div class="search-box">
+				<input type="submit" class="btn btn-primary" value="搜索">
+			</div>
+		</form>	
+		
+		<form method="post" class="js-ajax-form" >
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th align="center">编号</th>
+						<th>会员 ( ID )</th>
+						<th>彩票会员ID</th>
+						<th>家族打赏佣金</th>
+						<th>主播打赏佣金</th>
+						<th>家族彩票佣金</th>
+						<th>主播彩票佣金</th>
+						<if condition="$admin_type neq 1" >
+						<th>时薪</th>
+						<th>时长要求</th>
+						<th>礼物要求</th>
+						</if>
+						<th>时间</th>
+						<th data-field="tenant_name" >所属租户</th>
+						<th>操作人</th>
+						<th align="center">{:L('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<foreach name="lists" item="vo">
+					<tr>
+						<td align="center">{$vo.id}</td>
+						<td align="center">{$vo.user_name}({$vo.uid})</td>
+						<td>{:$vo['game_user_id'] ? $vo['game_user_id'] : ''}</td>
+						<td>{$vo.anchor_profit_ratio}%</td>
+						<td>{$vo.anchor_commission}%</td>
+						<td>{$vo.anchor_platform_ratio}%</td>
+						<td>{$vo.anchor_betcommission}%</td>
+						<if condition="$admin_type neq 1" >
+						<td>{$vo.hour_money}</td>
+						<td>{$vo.hour_limit}</td>
+						<td>{$vo.gift_limit}</td>
+						</if>
+						<td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+						<td>{$vo['tenant_name']}</td>
+						<td>{$vo.operate_name}</td>
+						<td align="center">
+
+									<a href="{:U('Commissionset/edit',array('id'=>$vo['id']))}" >编辑</a>
+
+							<a href="{:U('Commissionset/del',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn del_color" data-msg="您确定要删除吗？">删除</a>
+						</td>
+
+
+
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<admintpl file="header" />
+</head>
+<style>
+	table th,td{
+		text-align: center !important;
+		vertical-align: middle !important;
+		max-width: 300px;
+		word-wrap: break-word;
+	}
+	table td a{
+		display: inline-block;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Keywordset/index')}
+
+		</ul>
+		<form class="well form-search" method="post" action="{:U('Keywordset/index')}">
+			<if condition="$role_id eq 1">
+				<div class="search-box">
+					租户:
+					<select class="select_2" name="tenant_id" style="max-width: 200px;">
+						<option value="" <if condition="$param['tenant_id'] eq ''">selected</if> >全部</option>
+						<volist name="tenant_list" id="vo">
+							<option value="{$vo.id}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo.name}</option>
+						</volist>
+					</select>
+				</div>
+			</if>
+			<div class="search-box">
+				会员(ID)：
+				<input type="text" name="uid" value="{$param.uid}" style="width: 100px;" autocomplete="off" placeholder="请输入会员(ID)">
+			</div>
+			<div class="search-box">
+				关键词：
+				<input type="text" name="content" value="{$param.content}" style="width: 200px;" autocomplete="off" placeholder="请输入关键词">
+			</div>
+
+			<div class="search-box">
+				<input type="submit" class="btn btn-primary" value="搜索">
+			</div>
+		</form>
+		<form method="post" class="js-ajax-form" action="{:U('Vip/user_listorders')}">
+			<table class="table table-hover table-bordered">
+				<thead>
+				<tr>
+					<th>会员 ( ID )</th>
+					<th>内容</th>
+					<th>发送时间</th>
+					<th>累计禁言触发次数</th>
+					<th>累计踢出房间触发次数</th>
+					<th>租户</th>
+					<th>编辑</th>
+				</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td>{$vo['user_name']}({$vo['uid']})</td>
+						<td>{$vo['content']}</td>
+						<td>{$vo['addtime']}</td>
+						<td>{$vo['shut_times']}</td>
+						<td>{$vo['outroom_times']}</td>
+						<td>{$vo['tenant_name']}</td>
+						<td align="center">
+							<if condition="($vo['shut_times'] gt 0 && $vo['shut_times'] egt $vo['set_shut_times']) || ($vo['outroom_times'] gt 0 && $vo['outroom_times'] egt $vo['set_outroom_times'])">
+								<a href="{:U('Keywordset/cancelshut',array('uid'=>$vo['uid']))}" class="cust-js-ajax" >解除禁言和踢出房间</a>
+							</if>
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

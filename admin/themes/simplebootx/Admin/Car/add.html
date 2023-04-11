@@ -1,0 +1,126 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li ><a href="{:U('Car/index')}">列表</a></li>
+			<li class="active"><a >添加</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Car/add')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('Car/add_post')}">
+			<fieldset>
+				<if condition="$role_id == 1">
+					<div class="control-group">
+						<label class="control-label">*租户</label>
+						<div class="controls">
+							<select name="tenant_id" >
+								<volist name="tenant_list" id="vo">
+									<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+								</volist>
+							</select>
+							<span class="form-required"></span>
+						</div>
+					</div>
+				</if>
+				<div class="control-group">
+					<label class="control-label">序号</label>
+					<div class="controls">
+						<input type="text" name="orderno" value="0" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">名称</label>
+					<div class="controls">
+						<input type="text" name="name" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">所需{$configpub['name_coin']}</label>
+					<div class="controls">
+						<input type="text" name="needcoin"  maxlength="9" required> /月
+						<span class="form-required">*</span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">图片</label>
+					<div class="controls">
+						<div class="img_div">
+							<input type="hidden" name="thumb" required>
+							<span class="upload_btn cust-upload-img" data-name="thumb" data-showimgclass="thumb_img_show" data-progress="1" data-url="{:U('Upload/img_upload')}">
+							<img src="__TMPL__Public/assets/images/default-thumbnail.png" alt="" class="thumb_img_show" width="135" style="max-height: 135px;max-width: 135px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;">
+						</span>
+						</div>
+						<span class="form-required"></span>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">动画（SVGA）</label>
+					<div class="controls">
+						<div class="img_div">
+							<input type="hidden" name="swf" required>
+							<span class="upload_btn cust-upload-img" data-name="swf" data-accept="*" data-showimgclass="swf_img_show" data-progress="1" data-url="{:U('Upload/img_upload')}">
+							<img src="__TMPL__Public/assets/images/default-thumbnail.png" alt="" data-changefunc="check_imfsrc" class="swf_img_show" width="135" style="max-height: 135px;max-width: 135px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;">
+						</span>
+						</div>
+						<span class="form-required"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">动画时长</label>
+					<div class="controls">
+						<input type="text" name="swftime" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">进场话术</label>
+					<div class="controls">
+						<input type="text" name="words" required>注：实际效果为 用户昵称+进场话术
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">贵族专属</label>
+					<div class="controls">
+						<label class="radio inline"><input type="radio" value="1" name="type" required>是</label>
+						<label class="radio inline"><input type="radio" value="0" name="type" required>否</label>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('ADD')},waittime:1000}">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>
+<script src="__PUBLIC__/js/svgaplayerweb/svga.min.js"></script>
+<script>
+	function check_imfsrc(obj){
+		var src = $(obj).attr('src');
+		var class_name = $(obj).attr('class');
+		var arr = src.split('.');
+		var end_str = arr[arr.length - 1];
+		var html = '<div id="'+class_name+'" width="135" style="max-height: 235px;max-width: 135px;cursor: pointer;padding: 0px;margin: 0px 0px 0px 0px;"></div>';
+		$("#"+class_name).remove();
+		if(end_str.toLowerCase() == 'svga'){
+			$(obj).after(html);
+			var player =new SVGA.Player('#'+class_name);
+			var parser =new SVGA.Parser('#'+class_name);
+			parser.load(src, function(videoItem) {
+				player.setVideoItem(videoItem);
+				player.startAnimation();
+			})
+		}else {
+			$(obj).parent().parent().children("input[name='swf']").val('');
+		}
+		return;
+	}
+</script>

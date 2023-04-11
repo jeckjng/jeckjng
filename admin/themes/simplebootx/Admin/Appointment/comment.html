@@ -1,0 +1,120 @@
+<admintpl file="header" />
+
+<body>
+
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+
+    </ul>
+    <div class="top-nav well" style="text-align: center;">
+        <span class="cust-title" style="">{$param.title}</span>
+        <span class="" style="float: right;cursor: pointer;" onclick="$('#cust-js-iframe',window.parent.document).toggle();">
+				<i class="fa fa-times" aria-hidden="true"></i>
+			</span>
+    </div>
+    <form class="well form-search" method="post" action="{:U('comment')}" enctype="multipart/form-data"  name="form1">
+        <div style="">
+            <div class="search-box">
+                <input type="text" name="start_time" class="js-date date" id="start_time" value="{$param.start_time}" style="width: 80px;" autocomplete="off">
+            </div>
+            <div class="search-box">
+                <input type="button" data-time_type="today" class="btn btn-primary cust-time-select {:$param['time_type']=='today' ? '' : 'bg-color-white color-black'}" value="今日" data-time_start="{:explode(' ',$time_se['today_start'])[0]}" data-time_end="{:explode(' ',$time_se['today_end'])[0]}" />
+            </div>
+            <div class="search-box">
+                <input type="button" data-time_type="tweek" class="btn btn-primary cust-time-select {:$param['time_type']=='tweek' ? '' : 'bg-color-white color-black'}" value="本周" data-time_start="{:explode(' ',$time_se['tweek_start'])[0]}" data-time_end="{:explode(' ',$time_se['tweek_end'])[0]}" />
+            </div>
+            <div class="search-box">
+                <input type="button" data-time_type="tmonth" class="btn btn-primary cust-time-select {:$param['time_type']=='tmonth' ? '' : 'bg-color-white color-black'}" value="本月" data-time_start="{:explode(' ',$time_se['tmonth_start'])[0]}" data-time_end="{:explode(' ',$time_se['tmonth_end'])[0]}" />
+            </div>
+
+            <div class="search-box">
+                用户昵称：
+                <input type="text" name="user_nicename" class="width-120 " value="{$param.user_nicename}" placeholder="名称">
+            </div>
+
+        </div>
+        <div style="">
+            <div class="search-box">
+                <input type="text" class="js-date date" name="end_time" id="end_time" value="{$param.end_time}" style="width: 80px;" autocomplete="off">
+            </div>
+            <div class="search-box">
+                <input type="button" data-time_type="ytoday" class="btn btn-primary cust-time-select {:$param['time_type']=='ytoday' ? '' : 'bg-color-white color-black'}" value="昨日" data-time_start="{:explode(' ',$time_se['ytoday_start'])[0]}" data-time_end="{:explode(' ',$time_se['ytoday_end'])[0]}" />
+            </div>
+            <div class="search-box">
+                <input type="button" data-time_type="yweek" class="btn btn-primary cust-time-select {:$param['time_type']=='yweek' ? '' : 'bg-color-white color-black'}" value="上周" data-time_start="{:explode(' ',$time_se['yweek_start'])[0]}" data-time_end="{:explode(' ',$time_se['yweek_end'])[0]}" />
+            </div>
+            <div class="search-box">
+                <input type="button" data-time_type="ymonth" class="btn btn-primary cust-time-select {:$param['time_type']=='ymonth' ? '' : 'bg-color-white color-black'}" value="上月" data-time_start="{:explode(' ',$time_se['ymonth_start'])[0]}" data-time_end="{:explode(' ',$time_se['ymonth_end'])[0]}" />
+            </div>
+
+
+
+            <input type="hidden" name="id" value="{$param['id']}">
+
+            <div class="search-box">
+                <input type="hidden" name="time_type" id="time_type" value="{$param['time_type']}"/>
+            </div>
+            <div class="search-box">
+
+                <input type="submit" class="btn btn-primary" value="搜索">
+                <button  href="{:U('Appointment/addcomment',array('id'=>$param['id']))}" class="cust-iframe-pop" data-iframe="{width:600px,height:650px,top:20%,left:none;}" data-msg="">新增</button>
+
+
+            </div>
+        </div>
+    </form>
+
+    <form method="post" class="js-ajax-form" action="{:U('Appointment/listorders')}">
+
+        <table class="table table-hover table-bordered table-list">
+            <thead>
+            <tr>
+
+                <th align="center">编号</th>
+                <th style="max-width: 300px;">会员昵称</th>
+                <th style="max-width: 300px;">类型</th>
+                <th>评论时间</th>
+                <th>详细描述</th>
+                <th>操作</th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="lists" item="vo">
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$user_list[$vo['uid']]['user_nicename']}</td>
+                    <td>
+                        <if condition="$vo.type eq '1'">
+                            用户评论
+                            <else/>
+                            系统生成
+                        </if>
+                    </td>
+                    <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+                    <td>{$vo.desc}</td>
+
+                    <td>
+                        <a  href="{:U('Appointment/editcomment',array('id'=>$vo['id']))}" class="cust-iframe-pop" data-iframe="{width:600px,height:650px,top:20%,left:none;}" data-msg="">编辑</a>
+                        <a href="{:U('Appointment/delcomment',array('id'=>$vo['id']))}" class="cust-js-ajax del_color" confirm="您确定要删除吗？">删除</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+        <div class="table-actions">
+            <button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="__PUBLIC__/js/imgzoom/imgzoom.js"></script>
+<script src="//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.2.0.js" charset="utf-8"></script>
+
+
+</body>
+</html>

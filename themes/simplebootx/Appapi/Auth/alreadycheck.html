@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <tc_include file="Appapi/Public/head" />
+    <?php  if($_GET['language_id']){?>
+    <title>Identity Information</title>
+    <?php }else{ ?>
+    <title>身份信息</title>
+    <?php }?>
+    <style type="text/css">
+        *{margin: 0;padding: 0;font-family: Helvetica;}
+        .title2{color: #526165;font-size: 1.0em;text-align: center;margin-top: 4%;}
+        img{width: 18%;margin: 30% 41% 9%;}
+        p{font-size: 0.9em;color: #B4C1C7;text-align: left;margin-left: 23%;line-height: 150%}
+        .alink{color:#00D8C9;text-decoration:underline; }
+    </style>
+</head>
+<body>
+<div class="title2">
+    <?php  if($_GET['language_id']){?>
+    You have passed the verification, please do not repeat the operation!
+    <?php }else{ ?>
+    你已经通过验证,请勿重复操作！
+    <?php }?>
+
+</div>
+
+<tc_include file="Appapi/Public/footer" />
+</body>
+</html>

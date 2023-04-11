@@ -1,0 +1,109 @@
+<admintpl file="header" />
+</head>
+<style>
+	.controls input{
+		width: 120px;
+	}
+	label{
+		width: 310px !important;
+	}
+	.controls{
+		margin-left: 325px !important;
+	}
+	.cust input{
+		width: 120px;
+	}
+	.cust label{
+		width: auto !important;
+	}
+	.cust{
+		margin-left: 15px;
+	}
+	.cust .controls{
+		display: inline-block;
+		margin-left: 15px !important;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Activity/share')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('Activity/share')}">
+			<fieldset>
+
+				<div class="control-group">
+					<label class="control-label">推荐奖励首充最低充值金额</label>
+					<div class="controls">
+						<input type="text" name="recom_frmin" value="{$list.0.recom_frmin}" data-oval="{$list.0.recom_frmin}" onblur="check_isnumber(this)" required required placeholder="最低充值金额">
+						&nbsp;&nbsp;<span></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">奖励金额类型</label>
+
+					<div class="controls">
+						<label style="width: auto!important;" class="radio inline"><input type="radio"style="width: auto !important;" <if condition="$config['share_award_amount_type'] eq 1">checked</if> name="share_award_amount_type" value="1" >可提现 </label>
+						<label style="width: auto!important;" class="radio inline"><input type="radio"style="width: auto !important;" <if condition="$config['share_award_amount_type'] eq 2">checked</if>  name="share_award_amount_type"  value="2" >不可提现</label>
+					</div>
+
+				</div>
+				<volist name="list" id="vo" offset="0" length='7'>
+				<div class="control-group">
+					<input type="hidden" name="data[{$key}][id]" value="{$vo.id}">
+					<input type="hidden" name="data[6][is_over]" value="0">
+					<label class="control-label">推荐首充
+						<input type="number" name="data[{$key}][per_num]" value="{$vo.per_num}" required min="0" max="999999" style="width: 60px;">
+						人&nbsp;&nbsp;&nbsp;&nbsp;奖励金额</label>
+					<div class="cust" style="display: inline-block">
+						<input type="text" name="data[{$key}][reward]" value="{$vo.reward}" data-oval="{$vo.reward}" onblur="check_isnumber(this)" required required placeholder="赠送金额">
+					</div>
+					<div class="cust" style="display: inline-block">
+						<label class="control-label">赠送观影次数</label>
+						<div class="controls">
+							<input type="number" name="data[{$key}][watnum]" value="{$vo.watnum}" style="width: 60px;" required min="0" max="999999" required  placeholder="赠送观影次数">
+						</div>
+					</div>
+					<div class="cust" style="display: inline-block">
+						<label class="control-label">赠送观影时长</label>
+						<div class="controls" style="">
+							<input type="number" name="data[{$key}][wattime]" value="{$vo.wattime}" style="width: 60px;" required min="0" max="999999" required  placeholder="赠送观影时长">
+						</div>
+						&nbsp;<span>分钟</span>
+					</div>
+				</div>
+				</volist>
+<!--				<div class="control-group">-->
+<!--					<input type="hidden" name="data[6][id]" value="{$list.6.id}">-->
+<!--					<input type="hidden" name="data[6][is_over]" value="1">-->
+<!--					<label class="control-label">推荐奖励[推荐首充超过-->
+<!--						<input type="number" name="data[6][per_num]" value="{$list.6.per_num}" required min="0" max="999999" style="width: 60px;">-->
+<!--						人]-奖励金额</label>-->
+<!--					<div class="cust" style="display: inline-block">-->
+<!--						<input type="text" name="data[6][reward]" value="{$list.6.reward}" data-oval="{$list.0.reward}" onblur="check_isnumber(this)" required required placeholder="赠送金额">-->
+<!--					</div>-->
+<!--					<div class="cust" style="display: inline-block">-->
+<!--						<label class="control-label">赠送观影次数</label>-->
+<!--						<div class="controls">-->
+<!--							<input type="number" name="data[6][watnum]" value="{$list.6.watnum}" style="width: 60px;" required min="0" max="999999" required  placeholder="赠送观影次数">-->
+<!--						</div>-->
+<!--					</div>-->
+<!--					<div class="cust" style="display: inline-block">-->
+<!--						<label class="control-label">赠送观影时长</label>-->
+<!--						<div class="controls" style="">-->
+<!--							<input type="number" name="data[6][wattime]" value="{$list.6.wattime}" style="width: 60px;" required min="0" max="999999" required  placeholder="赠送观影时长">-->
+<!--						</div>-->
+<!--						&nbsp;<span>分钟</span>-->
+<!--					</div>-->
+<!--				</div>-->
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+				</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

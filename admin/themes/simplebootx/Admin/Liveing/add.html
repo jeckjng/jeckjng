@@ -1,0 +1,326 @@
+<admintpl file="header" />
+</head>
+<style>
+	.img_div{
+		display: inline-block;
+		width: 609px;
+		border: 2px solid #dce4ec;
+		height: 36px;
+		line-height: 36px;
+		border-radius: 3px;
+		padding: 0px 2px;
+	}
+	.img_div input{
+		float: left;
+		width: 550px;
+		vertical-align: middle;
+		background: none;
+		border: 0px;
+	}
+	.img_div .upload_btn{
+		padding: 1px 14px;
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid gray;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<!--<li ><a href="{:U('Liveing/index')}">列表</a></li>
+			<li class="active"><a >添加</a></li>-->
+			{:getTableMenu($_GET['menuid'],'Admin/Liveing/add')}
+		</ul>
+		<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('add_post')}">
+			<fieldset>
+				<if condition="$role_id == 1">
+					<div class="control-group">
+						<label class="control-label">*租户</label>
+						<div class="controls">
+							<select name="tenant_id" onchange="change_tenant_id(this)">
+								<volist name="tenant_list" id="vo">
+									<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+								</volist>
+							</select>
+							<span class="form-required"></span>
+						</div>
+					</div>
+				</if>
+				<div class="control-group">
+					<label class="control-label">ID类型</label>
+					<div class="controls">
+						<select name="id_type">
+							<option value="1" selected>直播会员ID</option>
+							<option value="2">彩票会员ID</option>
+						</select>
+						<span class="form-required" style="vertical-align: middle;">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">用户ID</label>
+					<div class="controls" style="display: inline-block;margin-left: 20px;">
+						<input type="text" name="uid" value="{$live['uid']}" required>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+                <div class="control-group">
+					<label class="control-label">直播分类</label>
+					<div class="controls">
+						<select name="liveclassid">
+						    <option value="0">默认分类</option>
+						   <volist name="liveclass" id="vo">
+							     <option value="{$vo['id']}">{$vo['name']}</option>
+							 </volist>			
+							 
+						</select>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<label class="control-label">房间类型</label>
+					<div class="controls" id="cdn">				
+						<label class="radio inline"><input type="radio" value="0" name="type" checked="checked">普通房间</label>
+						<label class="radio inline"><input type="radio" value="1" name="type">密码房间</label>
+						<label class="radio inline"><input type="radio" value="2" name="type">门票房间</label>
+						<label class="radio inline"><input type="radio" value="3" name="type">计时房间</label>
+					</div>
+				</div>
+				<div>
+					<div id="cdn_switch_1" class="hide">
+						<div class="control-group">
+							<label class="control-label">密码/价格</label>
+							<div class="controls">				
+								<input type="text" name="type_val" value="{$live['type_val']}" id="type_val">
+								&nbsp;&nbsp;<span id="type_val_notice"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<div id="cdn_switch_3" class="hide">
+						<div class="control-group">
+							<label class="control-label">试看时间</label>
+							<div class="controls">
+								<input type="text" readonly value="{$trywatchtime}" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" id="tryWatchTime">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">足球直播</label>
+					<div class="controls" id="is_football" style="display: inline-block;margin-left: 20px;">
+						<label class="radio inline"><input type="radio" value="0" name="is_football" checked="checked" onclick="is_football_live(this)">否</label>
+						<label class="radio inline"><input type="radio" value="1" name="is_football" onclick="is_football_live(this)">是</label>
+					</div>
+					<div class="football_live_list" style="display: none;height: 25px;vertical-align: middle;">
+						<label class="control-label">足球视频直播比赛</label>
+						<div class="controls">
+							<select class="football_live_list_select" onchange="change_football_live_match_id(this)" style="width: auto;min-width: 140px;">
+							</select>
+							<span class="form-required" style="vertical-align: middle;">*</span>
+						</div>
+					</div>
+				</div>
+				<div class="control-group football_live_match_id" style="display: none;">
+					<label class="control-label">足球视频直播比赛ID</label>
+					<div class="controls">
+						<input type="text" name="football_live_match_id" value="{$live['football_live_match_id']}" style="width: 800px;" >
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">播流地址（App端）</label>
+					<div class="controls">
+						<input type="text" name="pull" value="{$live['pull']}" style="width: 800px;" required>
+						<span class="form-required">*</span> 视频格式：MP4，M3U8，rtmp *
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">视频地址（H5端）</label>
+					<div class="controls">
+						<input type="text" name="flvpull" value="{$live['flvpull']}" style="width: 800px;">
+						<span class="form-required">*</span> 选填，视频格式：flv *
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">视频地址（H5端）</label>
+					<div class="controls">
+						<input type="text" name="m3u8pull" value="{$live['m3u8pull']}" style="width: 800px;">
+						<span class="form-required">*</span> 选填，视频格式：m3u8 *
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">直播标题</label>
+					<div class="controls">
+						<input type="text" name="title" value="{$live['title']}" required style="width: 800px;">
+						<span class="form-required">*</span>
+					</div>
+				</div>
+				<!--<div class="control-group">
+					<label class="control-label">封面</label>
+					<div class="controls">
+						<a href="javascript:void(0);" id="swftype_bd_1">
+							<input type="file" name="thumb">
+						</a><span class="form-required"></span>
+					</div>
+				</div>-->
+				<!--<div class="control-group">-->
+					<!--<label class="control-label">封面类型</label>-->
+					<!--<div class="controls" id="cdns">-->
+						<!--<label class="radio inline"><input type="radio" value="0" name="thumbtype" checked="checked">本地上传</label>-->
+						<!--<label class="radio inline"><input type="radio" value="1" name="thumbtype">网络文件</label>-->
+
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="control-group" id="thumb_host">-->
+					<!--<label class="control-label">本地封面111</label>-->
+					<!--<div class="controls">-->
+						<!--<a href="javascript:void(0);" id="swftype_bd_1">-->
+							<!--<input type="file" name="thumb" required>-->
+						<!--</a><span class="form-required"></span>-->
+					<!--</div>-->
+
+				<!--</div>-->
+				<div class="control-group">
+					<label class="control-label">封面</label>
+					<div class="controls">
+						<div class="img_div">
+							<input type="text" name="thumb" value="" placeholder="请上传" required>
+							<span class="upload_btn cust-upload-img" data-name="thumb" data-showimgclass="img_show_thumb" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+						</div>
+						<img src="" alt="" class="img_show_thumb" style="max-height: 70px;max-width: 100px;min-height: 50px;min-height: 50px;padding: 0px;margin: 0px 0px 0px 15px;">
+					</div>
+				</div>
+				<div>
+					<div id="cdns_switch_1" class="hide">
+						<div class="control-group">
+							<label class="control-label"></label>
+							<div class="controls">
+								<input type="text" name="thumb" value="" id="thumb">
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="control-group">
+					<label class="control-label">视频类型</label>
+					<div class="controls">				
+						<label class="radio inline"><input type="radio" value="1" name="anyway" checked="checked">横屏</label>
+						<label class="radio inline"><input type="radio" value="0" name="anyway">竖屏</label>
+						
+					</div>
+				</div>
+
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,waittime:1000}">{:L('ADD')}</button>
+				<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script>
+    function change_tenant_id(obj) {
+        var tenant_id = $(obj).val();
+        window.location.href = "{:U('add',array('menuid'=>$param['menuid']))}/tenant_id/"+tenant_id;
+    }
+    (function(){
+        $("#cdn label.radio").on('click',function(){
+            var v=$("input",this).val();
+            var b=$("#cdn_switch_1");
+            if(v==0){
+                b.hide();
+                $("#type_val").val('');
+                $("#type_val_notice").text('')
+            }else{
+                b.show();
+                if(v == 2){
+                    $("#type_val_notice").text('价格范围： {$tickets_limit_min} - {$tickets_limit_max}')
+                }else{
+                    $("#type_val_notice").text('')
+                }
+            }
+        })
+    })();
+
+    (function(){
+        $("#cdns label.radio").on('click',function(){
+            var v=$("input",this).val();
+            var b=$("#cdns_switch_1");
+            var t=$("#thumb_host");
+            if(v==0){
+                b.hide();
+                t.show();
+                $("#thumb").val('');
+            }else{
+                b.show();
+                t.hide();
+            }
+        })
+    })();
+
+    (function(){
+        $("#cdn label.radio").on('click',function(){
+            var v=$("input",this).val();
+            var t=$("#cdn_switch_3");
+            if(v==0){
+                t.hide();
+                $("#tryWatchTime").val('{$trywatchtime}');
+            }else{
+                t.show();
+            }
+        })
+    })();
+
+
+    var football_live_list = [];
+    function is_football_live(obj) {
+        var is_football_val = $(obj).val();
+       	if(is_football_val == 1){
+            $(".football_live_list_select").html('<option ></option>');
+            $(".football_live_list").css('display', 'inline-block');
+            $(".football_live_match_id").css('display', 'block');
+            $.get("{:get_protocal()}://{:$_SERVER['HTTP_HOST']}/Api/FootballLive/getFootballLiveList?tenant_id={$tenant_id}", {}, function(res) {
+                console.log(res);
+                var html = '<option ></option>';
+                $.each(res.data, function (index,val) {
+                    var vs_name = val.vs_name ? ' （' + val.vs_name + '）' : '';
+                    html += '<option value="'+val.match_id+'" >'+ val.match_id + vs_name + '</option>';
+                });
+                $(".football_live_list_select").html(html);
+                football_live_list = res.data
+            });
+	   	}else{
+       	    $(".football_live_list").css('display', 'none');
+       	    $(".football_live_match_id").css('display', 'none');
+
+            $("input[name='football_live_match_id']").val('');
+            $("input[name='pull']").val('');
+            $("input[name='flvpull']").val('');
+            $("input[name='m3u8pull']").val('');
+		}
+    }
+
+    function change_football_live_match_id(obj) {
+        var match_id = $(obj).val();
+        console.log(football_live_list);
+        $.each(football_live_list, function (index,val) {
+            if(match_id == val.match_id){
+                $("input[name='football_live_match_id']").val(val.match_id);
+                $("input[name='pull']").val(val.pull);
+                $("input[name='flvpull']").val(val.flvpull);
+                $("input[name='m3u8pull']").val(val.m3u8pull);
+                $("input[name='title']").val(val.vs_name);
+                // $("input[name='thumb']").val(val.league_pic);
+                // $(".img_show_thumb").attr('src', val.league_pic);
+			}
+        })
+    }
+</script>

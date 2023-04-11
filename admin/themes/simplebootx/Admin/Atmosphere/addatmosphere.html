@@ -1,0 +1,179 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Atmosphere/addatmosphere')}
+		<!--<li class="active"><a >直播氛围添加</a></li>-->
+	</ul>
+	<form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('Atmosphere/add_atmosphere')}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">规则名称</label>
+				<div class="controls">
+					<input type="text" name="rulename" required>
+					<span class="form-required">*</span>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">租户选择</label>
+				<div class="controls">
+					<select name="tenamtinfo" id="tenamtinfo">
+						<foreach name="tenant_list" item="vo">
+							<option value="{$vo.id}_{$vo.game_tenant_id}_{$vo.name}">{$vo.name}</option>
+						</foreach>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">类型</label>
+				<div class="controls">
+					<select name="type" onchange="change_type(this)">
+						<option value="1" >单个直播间</option>
+						<option value="2" selected>租户所有直播间</option>
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">主播ID</label>
+				<div class="controls">
+					<input type="text" name="uid" id="uid">
+					<span class="form-required">类型选择"单个直播间"时必填</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">用户选择</label>
+				<div class="controls">
+					<input type="text" name="num" required>
+					<span class="form-required">*虚拟用户人数选择</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">动作选择</label>
+				<div class="controls">
+					<input type="text"  readonly="readonly" value="进入直播">
+					<input type="text"  readonly="readonly" value="赠送礼物">
+					<input type="text"  readonly="readonly" value="留言">
+					<input type="text"  readonly="readonly" value="退出直播">
+					<input type="text"  readonly="readonly" value="中奖和跟投">
+					<input type="text"  readonly="readonly" value="推荐直播间">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">时间设置</label>
+				<div class="controls">
+					<input type="text"  onkeyup = "value=value.replace(/[^\d]/g,'')" name="enterroom"  value="" required>
+					<input type="text" onkeyup = "value=value.replace(/[^\d]/g,'')" name="sendgift" value="">
+					<input type="text"  onkeyup = "value=value.replace(/[^\d]/g,'')" name="sendbarrage" value="" required>
+					<input type="text" onkeyup = "value=value.replace(/[^\d]/g,'')"  name="logout" value="" required>
+					<input type="text" onkeyup = "value=value.replace(/[^\d]/g,'')"  name="timebet" value="" required>
+					<input type="text" onkeyup = "value=value.replace(/[^\d]/g,'')"  name="recommend" value="" required>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">进入直播</label>
+				<div class="controls">
+					并行数量: <input type="number" name="enterroomparallelnum" min="0" max="100" required style="width: 100px;margin-right: 15px;">
+					概率: <input type="number" name="enterroomrate" min="1" max="100" required style="width: 100px;margin-right: 15px;">
+					间隔时间: <input type="number" name="enterroommininterval" min="1" max="999999" required style="width: 100px;">-
+					<input type="number" name="enterroommaxinterval" min="1" max="999999" required style="width: 100px;">（单位：秒）
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">离开直播</label>
+				<div class="controls">
+					并行数量: <input type="number" name="leaveroomparallelnum" min="0" max="100" required style="width: 100px;margin-right: 15px;">
+					概率: <input type="number" name="leaveroomrate" min="1" max="100" required style="width: 100px;margin-right: 15px;">
+					间隔时间: <input type="number" name="leaveroommininterval" min="1" max="999999" required style="width: 100px;">-
+					<input type="number" name="leaveroommaxinterval" min="1" max="999999" required style="width: 100px;">（单位：秒）
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">赠送礼物</label>
+				<div class="controls">
+					并行数量: <input type="number" name="givegiftparallelnum" min="0" max="100" required style="width: 100px;margin-right: 15px;">
+					概率: <input type="number" name="givegiftrate" min="1" max="100" required style="width: 100px;margin-right: 15px;">
+					间隔时间: <input type="number" name="givegiftmininterval" min="1" max="999999" required style="width: 100px;">-
+					<input type="number" name="givegiftmaxinterval" min="1" max="999999" required style="width: 100px;">（单位：秒）
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">发言</label>
+				<div class="controls">
+					并行数量: <input type="number" name="autotalkingparallelnum" min="0" max="100" required style="width: 100px;margin-right: 15px;">
+					概率: <input type="number" name="autotalkingrate" min="1" max="100" required style="width: 100px;margin-right: 15px;">
+					间隔时间: <input type="number" name="autotalkingmininterval" min="1" max="999999" required style="width: 100px;">-
+					<input type="number" name="autotalkingmaxinterval" min="1" max="999999" required style="width: 100px;">（单位：秒）
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">跟投和中奖</label>
+				<div class="controls">
+					并行数量: <input type="number" name="timebetparallelnum" min="0" max="100" required style="width: 100px;margin-right: 15px;">
+					概率: <input type="number" name="timebetrate"  min="1" max="100" required style="width: 100px;margin-right: 15px;">
+					间隔时间: <input type="number" name="timebetmininterval" min="1" max="999999" required style="width: 100px;">-
+					<input type="number" name="timebetmaxinterval" min="1" max="999999" required style="width: 100px;">（单位：秒）
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">推荐直播间</label>
+				<div class="controls">
+					并行数量: <input type="number" name="recomparallelnum" min="0" max="100" required style="width: 100px;margin-right: 15px;">
+					概率: <input type="number" name="recomrate" min="1" max="100" required style="width: 100px;margin-right: 15px;">
+					间隔时间: <input type="number" name="recommininterval" min="1" max="999999" required style="width: 100px;">-
+					<input type="number" name="recommaxinterval" min="1" max="999999" required style="width: 100px;">（单位：秒）
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label"></label>
+				<div class="controls">
+					<span class="form-required" style="color:red;">单位为秒，登录最少30秒，请勿设置时间太短</span>
+				</div>
+			</div>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}">{:L('ADD')}</button>
+			<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+
+	function change_type(obj){
+		if($(obj).val() == "1"){
+			$("#uid").attr("required","required")
+		}else{
+			$("#uid").removeAttr("required")
+		}
+	}
+
+
+	$(function(){
+		$("input[name='video_upload_type']").click(function(){
+			var val=$("input[name='video_upload_type']:checked").val();
+			console.log(val);
+			if(val==0){
+				$(".video_url_area").show();
+				$(".upload_video_area").hide();
+			}else{
+				$(".video_url_area").hide();
+				$(".upload_video_area").show();
+				$("input[name='href']").val('');
+			}
+		});
+
+		$("input[name='owner']").on("click",function(){
+			var val=$(this).val();
+			if(val==1){ //所有者为用户
+				$("#owner_uid").show();
+			}else{
+				$("#owner_uid").hide();
+			}
+		});
+
+	});
+</script>
+</body>
+</html>

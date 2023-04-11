@@ -1,0 +1,1 @@
+ALTER TABLE cmf_video_watch_record ADD `addtime` int (11) DEFAULT '0' COMMENT '1:添加时间';

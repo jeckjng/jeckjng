@@ -1,0 +1,127 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- Set render engine for 360 browser -->
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="__PUBLIC__/home/aliplayer/aliplayer-min-2.9.19.css" />
+	<style>
+		/* 当没有加载出来直播时，声音和全屏图标会跑到上面去，加上两个css就显示在右下角了 */
+		.live_ct .prism-controlbar{
+			display: block;
+			position: absolute;
+			left: 0px;
+			bottom: 0px;
+		}
+		.live_ct .prism-controlbar .prism-fullscreen-btn,
+		.live_ct .prism-controlbar .prism-fullscreen-btn,
+		.live_ct .prism-controlbar .prism-volume{
+			float: right;
+			margin-right: 10px;
+			margin-top: 10px;
+		}
+	</style>
+</head>
+<body style="margin: 0px;padding: 0px;overflow-x:hidden;overflow-y: hidden;">
+	<div class="live_ct" data-uid="{$info['uid']}" data-flvpull="{$info['flvpull']}" data-reflesh="0" data-key="{$key}" id="live_{$info['uid']}" style="width: 100%;height: 100%;">
+
+	</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/home/aliplayer/aliplayer-min-2.9.19.js"></script>
+<script>
+
+	playlive("{$info['uid']}","{$info['flvpull']}");
+
+	function playlive(uid,flvpull){
+		console.log("list 使用aliplayer, uid: "+uid+" , flvpull: "+flvpull);
+		player = new Aliplayer({
+			id: "live_"+uid,
+			source: flvpull,
+			width: "100%",
+			height: "100%",
+			"autoplay": true,
+			"isLive": true,
+			"rePlay": false,
+			"playsinline": true,
+			"preload": true,
+			"enableStashBufferForFlv": true,
+			"stashInitialSizeForFlv": 32,
+			"controlBarVisibility": "always",
+			"useH5Prism": true,
+			"skinLayout": [
+				{
+					"name": "errorDisplay",
+					"align": "tlabs",
+					"x": 0,
+					"y": 0
+				},
+				{
+					"name": "infoDisplay"
+				},
+				{
+					"name": "controlBar",
+					"align": "blabs",
+					"x": 0,
+					"y": 0,
+					"children": [
+						{
+							"name": "fullScreenButton",
+							"align": "tr",
+							"x": 10,
+							"y": 10
+						},
+						{
+							"name": "volume",
+							"align": "tr",
+							"x": 5,
+							"y": 10
+						}
+					]
+				}
+			]
+		}, function (player) {
+			console.log("The player is created");
+			player.setVolume(0);
+			player.play();
+		});
+	}
+
+	// 如果存在定时器，则先清除定时器
+	var refeshlive_interval_id = "refeshlive_interval_id_{$info['uid']}";
+	if(window.localStorage.getItem(refeshlive_interval_id)){
+		clearInterval(window.localStorage.getItem(refeshlive_interval_id));
+	}
+	// 定时器，定时查看列表是否有直播没有加载出来，如果出现报错，则重新加载一次
+	var interval_id = setInterval(function () {
+		setTimeout(function () {
+			var obj = $(".live_ct");
+			var errormsg_display =	$(obj).children('.prism-ErrorMessage').css('display');
+			// console.log('key: '+$(obj).attr('data-key')+' , errormsg_display: '+errormsg_display)
+			if(errormsg_display && errormsg_display == 'block') {
+				var reflesh = $(obj).attr('data-reflesh');
+				if(reflesh == '0'){
+					var uid = $(obj).attr('data-uid');
+					var flvpull = $(obj).attr('data-flvpull');
+					console.log(uid + ' ,  errormsg_display: ' + errormsg_display+' , will reflesh');
+					$(obj).attr('data-reflesh','1');
+					$(obj).html('');
+					playlive(uid, flvpull);
+				}
+			}
+		},1);
+		setTimeout(function () {
+			$("script[type='text/javascript']").each(function (i,v) {
+				var src = $(this).attr('src');
+				if(src && src.split('://')[1] == 'g.alicdn.com/de/prismplayer/2.9.19/flv/aliplayer-flv-min.js'){
+					// console.log('remove: ' + $(this).prop('outerHTML'));
+					$(this).remove();
+				}
+			});
+		},1);
+	},1000);
+	/* 记录定时器id */
+	window.localStorage.setItem(refeshlive_interval_id, interval_id);
+</script>

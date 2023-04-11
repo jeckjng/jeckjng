@@ -1,0 +1,136 @@
+<admintpl file="header" />
+<style>
+    .table img{
+        max-width:100px;
+        max-height:100px;
+    }
+    .textArea textarea{
+        width:90%;padding:3%;height:80%;margin:0 auto;margin-top:30px;
+        margin-left: 2%;
+    }
+    .textArea_btn{
+        text-align: right;
+        margin-top: 30px;
+    }
+    .textArea_btn input{
+        margin-right: 30px;
+    }
+    .img-zoom-wrapper .img-zoom-view{
+        height: 500px;
+    }
+
+     .img_div{
+         display: inline-block;
+         width: 506px;
+         border: 2px solid #dce4ec;
+         height: 36px;
+         line-height: 36px;
+         border-radius: 3px;
+         padding: 0px 2px;
+     }
+    .img_div input{
+        float: left;
+        width: 447px;
+        vertical-align: middle;
+        background: none;
+        border: 0px;
+    }
+    .img_div .upload_btn {
+        padding: 1px 14px;
+        background-color: rgba(245, 245, 245, 1);
+        border: 1px solid gray;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .divHidden{
+        display:none;
+
+    }
+</style>
+</head>
+<body>
+
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+
+        {:getTableMenu($_GET['menuid'],'Admin/Turntable/index')}
+    </ul>
+
+    <form class="well form-search" method="post" action="{:U('index')}" enctype="multipart/form-data"  name="form1">
+        <div>注意
+            <li> 如奖品设置为碎片，每次奖励数量请设置为1</li>
+            <li> 如设置谢谢惠顾，每次奖励数量及完成数量请设为0</li>
+        </div>
+
+    </form>
+
+    <form method="post" class="js-ajax-form" action="{:U('Turntable/index')}">
+
+        <table class="table table-hover table-bordered table-list">
+            <thead>
+            <tr>
+
+                <th align="center">编号</th>
+                <th style="max-width: 300px;">奖品名称</th>
+                <th style="max-width: 300px;">奖品类型</th>
+                <th>奖品图片</th>
+                <th>每次奖励数量</th>
+                <th>累计碎片数量</th>
+                <th>状态</th>
+
+                <th align="center">{:L('ACTIONS')}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="lists" item="vo">
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>
+                        <input name="name_{$vo['id']}" value="{$vo['name']}">
+                    </td>
+                    <td>
+                        <input name="type_{$vo['id']}" type="radio"   value="1" <if condition="$vo['type'] eq 1">checked</if> >钻石
+                        <input name="type_{$vo['id']}" type="radio"  value="2" <if condition="$vo['type'] eq 2">checked</if>> 碎片
+                    </td>
+                    <td>
+                        <div class="controls" id="addimg_{$vo['id']}">
+                            <div class="img_div">
+                                <input type="text"  data-timenum="{$vo['id']}"  value="{$vo['img']}" name="img_{$vo['id']}" placeholder="请上传" >
+                                <span class="upload_btn cust-upload-img" data-name="img_{$vo['id']}" data-timenum="{$vo['id']}"  data-showimgclass="img_show_img"
+                                      data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+                            </div>
+                            <img src="{$vo['img']}" alt="" data-showimgclassnum="{$vo['id']}" class="img_show_img" style="max-height: 70px;max-width: 100px;padding: 0px;margin: 0px 0px 0px 15px;">
+
+                        </div>
+                    </td>
+                    <td> <input name="number_{$vo['id']}" style="width: 60px" value="{$vo['number']}"></td>
+                    <td>
+                        <input name="exchangenumber_{$vo['id']}"  style="width: 60px"  value="{$vo['exchange_number']}">
+                    </td>
+                    <td>
+                        <input name="status_{$vo['id']}" type="radio"  value="1" <if condition="$vo['status'] eq 1">checked</if> > 启用
+                        <input name="status_{$vo['id']}" type="radio" value="2"  <if condition="$vo['status'] eq 2">checked</if>>禁用
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+        <div class="table-actions">
+            <input type="hidden" name="number" value="1">
+            <button class="btn btn-primary btn-small js-ajax-submit" type="submit">保存</button>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="__PUBLIC__/js/imgzoom/imgzoom.js"></script>
+<script src="//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.2.0.js" charset="utf-8"></script>
+
+
+</body>
+</html>

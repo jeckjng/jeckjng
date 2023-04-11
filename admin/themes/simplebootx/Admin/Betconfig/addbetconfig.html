@@ -1,0 +1,60 @@
+<admintpl file="header" />
+</head>
+<body>
+<style>
+	input,textarea{
+		width: 600px;
+	}
+</style>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Betconfig/addbetconfig')}
+		<!--<li class="active"><a >添加彩种</a></li>-->
+	</ul>
+	<form method="post" class="form-horizontal js-ajax-form" action="{:U('Betconfig/add_betconfig')}">
+		<fieldset>
+			<if condition="$role_id == 1">
+				<div class="control-group">
+					<label class="control-label">租户</label>
+					<div class="controls">
+						<select name="tenant_id" >
+							<volist name="tenant_list" id="vo">
+								<option value="{$vo.id}" <if condition="$tenant_id eq $vo['id']">selected</if> >{$vo.name}</option>
+							</volist>
+						</select>
+						<span class="form-required">*</span>
+					</div>
+				</div>
+			</if>
+			<div class="control-group">
+				<label class="control-label">彩种名称</label>
+				<div class="controls">
+					<input type="text" name="name">
+					<span class="form-required">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">彩种配置</label>
+				<div class="controls">
+					<textarea rows="10" cols="80" name="playname"></textarea>
+					<span class="form-required">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">彩种赔率</label>
+				<div class="controls">
+					<input type="text" name="loss_rate" value="1">
+					<span class="form-required">*，多个赔率用英文逗号 , 隔开</span>
+				</div>
+			</div>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+			<a class="btn" href="{:U('betconfig/index')}">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+
+</body>
+</html>

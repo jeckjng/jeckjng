@@ -1,0 +1,22 @@
+<admintpl file="header" />
+<style>
+.home_info li em {
+	float: left;
+	width: 120px;
+	font-style: normal;
+}
+li {
+	list-style: none;
+}
+</style>
+<link href="__PUBLIC__/simpleboot/css/admin.css"  rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div class="admin_index mar-top-15-i">
+		<span class="mar-right-15">当前ip地址: </span>
+		<span>{:get_client_ip()}</span>
+	</div>
+	<div style="display: none">{:json_encode($_SERVER, JSON_UNESCAPED_UNICODE)}</div>
+</body>
+</html>
+<script src="__PUBLIC__/js/common.js"></script>

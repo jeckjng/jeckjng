@@ -1,0 +1,174 @@
+<admintpl file="header" />
+<style>
+	.table img{
+		max-width:100px;
+		max-height:100px;
+	}
+	.textArea textarea{
+		width:90%;padding:3%;height:80%;margin:0 auto;margin-top:30px;
+		margin-left: 2%;
+	}
+	.textArea_btn{
+		text-align: right;
+		margin-top: 30px;
+	}
+	.textArea_btn input{
+		margin-right: 30px;
+	}
+</style>
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/Atmosphere/index')}
+		<!--<li class="active"><a >直播氛围列表</a></li>
+		<li><a href="{:U('Atmosphere/addatmosphere')}">添加直播氛围</a></li>-->
+	</ul>
+
+	<form class="well form-search" method="post" action="{:U('index')}">
+		<div>
+			<if condition="$role_id eq 1">
+				<div class="search-box">
+					租户:
+					<select class="select_2" name="tenant_id" style="max-width: 200px;">
+						<volist name="tenant_list" id="vo">
+							<option value="{$vo.id}" <if condition="$param['tenant_id'] eq $vo['id']">selected</if> >{$vo.name}</option>
+						</volist>
+					</select>
+				</div>
+			</if>
+			<div class="search-box">
+				状态：
+				<select class="select_2" name="status">
+					<option value="" <if condition="$param.status eq ''">selected</if> >全部</option>
+					<option value="1" <if condition="$param.status eq '1'">selected</if> >启用</option>
+					<option value="2" <if condition="$param.status eq '2'">selected</if> >停用</option>
+				</select>
+			</div>
+			<div class="search-box">
+				<input type="submit" class="btn btn-primary mar-right-15" value="搜索">
+			</div>
+		</div>
+	</form>
+
+	<form method="post" class="js-ajax-form">
+		<table class="table table-hover table-bordered">
+			<thead>
+			<tr>
+				<th>ID</th>
+				<th>租户</th>
+				<th>类型</th>
+				<th>主播ID</th>
+				<th>添加时间</th>
+				<th>启用时间</th>
+				<th>中止时间</th>
+				<th>规则名称</th>
+				<th>状态</th>
+				<th align="center">{:L('ACTIONS')}</th>
+			</tr>
+			</thead>
+			<tbody>
+			<php>$status=array("0"=>"等待","1"=>"启用", "2"=>"停用", "3"=>"删除");</php>
+			<foreach name="lists" item="vo">
+				<tr>
+					<td>{$vo['id']}<br/></td>
+					<td align="center">{$vo.tenant_name}</td>
+					<td>{$vo['type_name']}</td>
+					<td>{$vo['uid']}</td>
+					<td>{$vo['addtime']}<br/></td>
+					<td><if condition="$vo['starttime'] eq ''" >
+
+						<else/>
+						{$vo.starttime|date="Y-m-d H:i:s",###}
+					</if></td>
+					<td><if condition="$vo['endtime'] eq ''" >
+
+						<else/>
+						{$vo.endtime|date="Y-m-d H:i:s",###}
+					</if></td>
+					<td>{$vo['rulename']}</td>
+					<td>{$status[$vo['status']]}</td>
+					<td align="center" data-propellingserver="{$vo.propellingserver}" data-socket_type="{$vo.socket_type}">
+						<a href="{:U('Atmosphere/edit',array('id'=>$vo['id']))}" >编辑</a>
+						<if condition="$vo['status'] eq '0'" >
+							<a href="{:U('Atmosphere/updatestatus',array('id'=>$vo['id'],'status'=>2))}" data-value="{$vo['id']}" data-status="2" class="open_close_autosend" confirm="您确定停用该任务吗？" data-onclick="closework({$vo['id']});"> 停用</a>
+							<a href="{:U('Atmosphere/updatestatus',array('id'=>$vo['id'],'status'=>1))}" data-value="{$vo['id']}" data-status="1" class="open_close_autosend" confirm="您确定启用该任务吗？" data-onclick="getids({$vo['id']});">启用</a>
+						</if>
+
+						<if condition="$vo['status'] eq '1'" >
+							<a href="{:U('Atmosphere/updatestatus',array('id'=>$vo['id'],'status'=>2))}" data-value="{$vo['id']}" data-status="2" class="open_close_autosend" confirm="您确定停用该任务吗？" data-onclick="closework({$vo['id']});" >停用</a>
+						</if>
+
+						<if condition="$vo['status'] eq '2'" >
+							<a href="{:U('Atmosphere/updatestatus',array('id'=>$vo['id'],'status'=>1))}" data-value="{$vo['id']}" data-status="1" class="open_close_autosend" confirm="您确定启用该任务吗？" data-onclick="getids({$vo['id']});">启用</a>
+						</if>
+						    <a href="{:U('Atmosphere/updatestatus',array('id'=>$vo['id'],'status'=>3))}"  data-value="{$vo['id']}" data-status="2" class="open_close_autosend del_color" confirm="您确定删除该任务吗？" data-onclick="closework({$vo['id']});">删除</a>
+					</td>
+				</tr>
+				<input type="hidden" value="{$vo.site}" id="site_{$vo.id}" />
+			</foreach>
+
+			</tbody>
+		</table>
+		<div class="pagination">{$page}</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/socket.io.js"></script>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+<script src="__PUBLIC__/layer/layer.js"></script>
+<script src='https://cdn.bootcss.com/socket.io/1.3.7/socket.io.js'></script>
+<script type="text/javascript">
+	$(".open_close_autosend").on('click',function (event){
+		event.preventDefault();
+		var href = $(this).attr('href');
+		var obj = $(this);
+		custconfirm($(this).attr('confirm'),function (){
+			$.get(href, {}, function(res) {
+				var waittime = waittime ? waittime : (res.wait ? Number(res.wait)*1000 : 3000);
+				if(res.status == 1){
+					custshowmsg(res.info)
+					open_close_work(obj); // 开启或关闭自动推送
+					setTimeout(function (){
+						if(res.referer){
+							location.href = res.referer;
+						}else{
+							location.reload();
+						}
+					},waittime)
+				}else{
+					custalert(res.info)
+				}
+			});
+		},true)
+	});
+
+	function open_close_work(obj){
+		var id = $(obj).attr('data-value');
+		if(!id){
+			alert("操作项id不能为空"+id);
+			return !1;
+		}
+		var httporigin = $("#site_"+id).val();
+		var propellingserver = $(obj).parent().attr('data-propellingserver');
+		var socket_type =$(obj).parent().attr('data-socket_type');
+		var status = $(obj).attr('data-status');
+		var socket = io(propellingserver);
+
+		var data = '{"id":'+id+',"httporigin":"'+httporigin+'","status":"'+status+'","socket_type":"'+socket_type+'"}';
+		console.log('propellingserver: '+propellingserver);
+        console.log(data);
+
+		if(socket_type==1){
+			socket.emit('autosend', data)
+		}else {
+			socket.emit('autosend', data)
+		}
+		socket.on('broadcastingListen', function(msg){
+			console.log('connection succ open: ');
+            console.log(msg);
+		});
+	}
+
+</script>
+</body>
+</html>

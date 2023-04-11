@@ -1,0 +1,79 @@
+<admintpl file="header" />
+<style>
+    .table img{
+        max-width:100px;
+        max-height:100px;
+    }
+    .textArea textarea{
+        width:90%;padding:3%;height:80%;margin:0 auto;margin-top:30px;
+        margin-left: 2%;
+    }
+    .textArea_btn{
+        text-align: right;
+        margin-top: 30px;
+    }
+    .textArea_btn input{
+        margin-right: 30px;
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li class="active"><a >演员列表</a></li>
+        <li><a href="{:U('Performer/add')}">添加演员</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Performer/index')}
+    </ul>
+
+    <form class="well form-search" method="post" action="">
+
+    </form>
+
+    <form method="post" class="js-ajax-form">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+
+                <th align="center">演员名称</th>
+                <th style="max-width: 300px;">头像</th>
+                <th style="max-width: 300px;">标题</th>
+                <th style="max-width: 300px;">描述</th>
+                <th style="max-width: 300px;">标签</th>
+                <th>人气</th>
+                <th>年龄</th>
+                <th>国家地区</th>
+                <th>操作</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo['name']}</td>
+                    <td><img  width="150" height="20" src="{$vo['avatar']}"></td>
+                    <td>{$vo['title']}</td>
+                    <td>{$vo['desc']}</td>
+                    <td>{$vo['label_name']}</td>
+                    <td>{$vo['popularity']}</td>
+                    <td>{$vo['age']}</td>
+                    <td>{$vo['region']}</td>
+                    <td>
+                        <a href="{:U('Performer/add',array('id'=>$vo['id']))}" >编辑</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/layer/layer.js"></script>
+<script type="text/javascript">
+
+</script>
+
+<script type="text/javascript">
+</script>
+</body>
+</html>

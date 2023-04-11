@@ -1,0 +1,52 @@
+<admintpl file="header" />
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+
+			{:getTableMenu($_GET['menuid'],'Admin/Regurl/index')}
+		</ul>
+
+		<form action="{:U('Rbac/listorders')}" method="post">
+			<table class="table table-hover table-bordered">
+				<thead>
+					<tr>
+						<th width="30">ID</th>
+						<th align="left">域名</th>
+						<th align="left">Key</th>
+						<th width="40" align="left">{:L('STATUS')}</th>
+						<th width="120">{:L('ACTIONS')}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td>{$vo.id}</td>
+						<td>{$vo.reg_url}</td>
+						<td>{$vo.reg_key}</td>
+						<td>
+							<if condition="$vo['status'] eq 1">
+								启用
+							<else /> 
+								禁用
+							</if>
+						</td>
+						<td>
+							<if condition="$vo['status'] eq 1">
+								<a href="{:U('Regurl/upstatus',array('id'=>$vo['id'],'status'=> 2))}">设为禁用</a>
+							<else />
+								<a href="{:U('Regurl/upstatus',array('id'=>$vo['id'],'status'=> 1))}">设为启用</a>
+								<!-- <a href="javascript:open_iframe_dialog('{:U('rbac/member',array('id'=>$vo['id']))}','成员管理');">成员管理</a>| -->
+
+							</if>
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

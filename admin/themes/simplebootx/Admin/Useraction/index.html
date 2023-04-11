@@ -1,0 +1,136 @@
+<admintpl file="header" />
+</head>
+{:isset($bootstrap_select_css) && $bootstrap_select_css ? $bootstrap_select_css : ''}
+<style>
+	.selectpicker > div{
+		border: 1px solid gray !important;
+	}
+	.action_type_select{
+		display: inline-block;
+	}
+	.action_type_select ul{
+		background-color: white !important;
+	}
+	.action_type_select ul>li>a:hover{
+		color: white !important;
+	}
+	.action_type_select ul a{
+		color: #95a5a6 !important;
+	}
+	.action_type_select>div>div{
+		background-color: white !important;
+	}
+	table th,td{
+		text-align: center !important;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Useraction/index')}
+			<!--<li class="active"><a href="{:U('Useraction/index')}">用户行为分析</a></li>
+			<li><a href="{:U('Useraction/integral_config')}">积分配置</a></li>-->
+		</ul>
+		<form class="well form-search" method="post" action="{:U('Useraction/index')}">
+			用户ID：
+			<input type="text" name="uid" value="{$param.uid}" style="width: 200px;" autocomplete="off" placeholder="请输入">
+			用户账号：
+			<input type="text" name="user_login" value="{$param.user_login}" style="width: 200px;" autocomplete="off" placeholder="请输入">
+			VIP等级：
+			<select name="vip" style="width: 96px;">
+				<option value="">全部</option>
+				<volist name="vip_list" id="vo" key="k">
+					<option value="{$vo.vip_grade}" <if condition="$param.vip eq $vo['vip_grade']">selected</if> >{$vo.name}</option>
+				</volist>
+			</select>
+			行为选择：
+			<div class="action_type_select"> <!--onchange="change_type_change(this)"-->
+				<select name="" class="selectpicker" multiple title="全部" data-hide-disabled="true" data-size="12" data-selected-text-format="count > 100"> <!--data-actions-box="true"-->
+					<option value="0">全部</option>
+					<volist name="actionType" id="vo" key="k">
+						<option value="{$k}">{$vo}</option>
+					</volist>
+				</select>
+			</div>
+			<input type="hidden" name="action_type" value="{$param.action_type}" style="width: 80px;" autocomplete="off">
+			<input type="submit" class="btn btn-primary" value="搜索">
+		</form>
+		<form method="post" class="js-ajax-form" action="{:U('Vip/user_listorders')}">
+			<table class="table table-hover table-bordered">
+				<thead>
+				<tr>
+					<th>编号</th>
+					<th>用户ID</th>
+					<th>用户账号</th>
+					<th>VIP等级</th>
+					<th>累计积分</th>
+					<th>发生前积分</th>
+					<th>发生积分</th>
+					<th>操作后积分</th>
+					<th>行为</th>
+					<th>操作数量/观看时长</th>
+					<th>状态</th>
+					<th>发放时间</th>
+					<th>行为操作时间</th>
+				</tr>
+				</thead>
+				<tbody>
+					<foreach name="list" item="vo">
+					<tr>
+						<td>{$vo['id']}</td>
+						<td>{$vo['uid']}</td>
+						<td>{$vo['user_login']}</td>
+						<td>{$vo['name']}</td>
+						<td>{$vo['addup_integral']}</td>
+						<td>{$vo['start_integral']}</td>
+						<td>{$vo['change_integral']}</td>
+						<td>{$vo['end_integral']}</td>
+						<td>{$vo['action_type']}</td>
+						<td>{$vo['action_time']}</td>
+						<td>{$vo['status']}</td>
+						<td>{$vo.giveout_time|date="Y-m-d H:i:s",###}</td>
+						<td>{$vo.ctime|date="Y-m-d H:i:s",###}</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+			<div class="pagination">{$page}</div>
+		</form>
+	</div>
+<!--	<script src="__PUBLIC__/js/common.js"></script>-->
+</body>
+</html>
+{:isset($bootstrap_select_js) && $bootstrap_select_js ? $bootstrap_select_js : ''}
+<script type="text/javascript">
+	var action_type_json = '{$param.action_type_json}';
+	// console.log(action_type_json)
+	var action_type_arr = new Array();
+	if(action_type_json){
+		action_type_arr = JSON.parse(action_type_json)
+	}
+	$('.selectpicker').selectpicker('val',action_type_arr);
+
+	$(".action_type_select").find(".inner").on('click','li a',function (e, retainActive){
+		var $this = $(this);
+		var index = $this.parent().index();
+		var data = $('.selectpicker').val();
+
+		if(data){
+			if(index=='0'){
+				data = '0';
+				$('.selectpicker').selectpicker('val',['0']);
+			}else{
+				if(data[0]=='0'){
+					data.splice(0,1)
+					$('.selectpicker').selectpicker('val',data);
+				}
+				data = data.join(',');
+
+			}
+		}else{
+			data = '';
+		}
+		$("input[name='action_type']").val(data);
+	})
+
+</script>

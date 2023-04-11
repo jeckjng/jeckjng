@@ -1,0 +1,131 @@
+<admintpl file="header" />
+<style>
+input{
+    width:500px;
+}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a >编辑</a></li>
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('Usersbasic/edit_post')}">
+		   <input type="hidden" name="id" value="{$cash['id']}">
+
+			<fieldset>
+
+
+                <div class="control-group">
+					<label class="control-label">提现金额</label>
+					<div class="controls">
+						<input type="text" name="money" disabled value="{$cash['money']}">
+						<span class="form-required" style="color: red;"></span>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">选择银行</label>
+					<div class="controls">
+						<select name="bankaccount" class="bankaccount">
+							<option value="">请选择银行</option>
+							<foreach name="bankaccount" item="vo">
+								<option value="{$vo.bankname}">{$vo.bankname}</option>
+							</foreach>
+						</select>
+
+
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">银行号码</label>
+					<div class="controls">
+						<select name="banknumber" id="banknumber">
+							<option value="">请查看</option>
+						</select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">备注</label>
+					<div class="controls">
+						<input type="text" name="mark"  value="" autocomplete="off">
+						<span class="form-required" ></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">状态</label>
+					<div class="controls">
+<!--						<label class="radio inline" for="status_2"><input type="radio" name="status" value="2" id="status_2" <if condition="$cash['status'] eq '2'">checked</if>>拒绝</label>-->
+						<label class="radio inline" for="status_1"><input type="radio" name="status" value="1" id="status_1" <if condition="$cash['status'] eq '1'">checked</if>>成功</label>
+					</div>
+				</div>
+
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary js-ajax-submit">{:L('EDIT')}</button>
+				<a class="btn" href="{:U('Usersbasic/index')}">{:L('BACK')}</a>
+			</div>
+		</form>
+
+	</div>
+
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+	$(function () {
+		$('.bankaccount').change(function () {
+			$("#banknumber").empty();
+			$('#banknumber').append("<option>"+'请查看'+"</option>");
+
+			var bankaccount = $(this).val();
+			$.ajax({
+				url: '/index.php?g=Admin&m=Usershare&a=getclassify',
+				type: 'POST',
+				dataType: 'json',
+				data: {bankaccount: bankaccount},
+				success:function(data){
+					console.log(data);
+					var code = data.code;
+					if(code==0){
+						var arrayinfo = data.info;
+						for(var i=0;i<arrayinfo.length;i++){
+							$('#banknumber').append("<option value="+arrayinfo[i]['banknumber'] +">"+arrayinfo[i]['banknumber']+"</option>");
+						}
+					}else {
+						alert(data.msg);
+					}
+				},
+				error:function(e){
+					alert('hhhhhh');
+				}
+			});
+
+		})
+	});
+	$(function(){
+
+		$("input[name='video_upload_type']").click(function(){
+			var val=$("input[name='video_upload_type']:checked").val();
+			console.log(val);
+			if(val==0){
+				$(".video_url_area").show();
+				$(".upload_video_area").hide();
+			}else{
+				$(".video_url_area").hide();
+				$(".upload_video_area").show();
+				$("input[name='href']").val('');
+			}
+		});
+
+		$("input[name='owner']").on("click",function(){
+			var val=$(this).val();
+			if(val==1){ //所有者为用户
+				$("#owner_uid").show();
+			}else{
+				$("#owner_uid").hide();
+			}
+		});
+
+	});
+</script>
+</body>

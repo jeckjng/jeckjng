@@ -1,0 +1,81 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        <!--<li ><a href="{:U('Performer/index')}">演员列表</a></li>
+        <li class="active"><a>添加演员</a></li>-->
+        {:getTableMenu($_GET['menuid'],'Admin/Performer/add')}
+    </ul>
+    <form method="post" class="form-horizontal js-ajax-form" action="{:U('Performer/add_post')}">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">演员名称:</label>
+                <div class="controls">
+                    <input type="text" name="name" value="{$performer['name']}">
+                    <span class="form-required">*</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">演员头像:</label>
+                <div class="controls">
+                    <input type="file" name="avatar" id="avatar" value="{$performer['avatar']}">
+                    <if condition="$performer['avatar'] neq ''">
+                        <input type="hidden" name="avatar_edit" value="{$performer['avatar']}">
+                    </if>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">标题:</label>
+                <div class="controls">
+                    <input type="text" name="title" id="title" value="{$performer['title']}">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">描述:</label>
+                <div class="controls">
+                    <textarea style="width: 400px;height: 50px" type="text" name="desc" id="desc" >{$performer['desc']}</textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">标签</label>
+                <div class="controls">
+                    <select name="label">
+                        <foreach name="label" item="vo">
+                            <option value="{$vo.id}" <if condition="$vo.id eq $performer['label']">selected</if>>{$vo.label}</option>
+                        </foreach>
+                    </select>
+
+
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">人气:</label>
+                <div class="controls">
+                    <input type="text" name="popularity" id="popularity" value="{$performer['popularity']}">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">年龄:</label>
+                <div class="controls">
+                    <input type="text" name="age" id="age" value="{$performer['age']}">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">国家地区:</label>
+                <div class="controls">
+                    <input type="text" name="region" id="region" value="{$performer['region']}">
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <input type="hidden" name="id" value="{$id}">
+            <button type="submit" class="btn btn-primary js-ajax-submit">提交</button>
+            <a class="btn" href="{:U('Performer/index')}">{:L('BACK')}</a>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

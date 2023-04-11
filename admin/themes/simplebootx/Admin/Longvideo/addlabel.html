@@ -1,0 +1,73 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+	<ul class="nav nav-tabs">
+		<!--<li><a href="{:U('Longvideo/label')}">长视频标签列表</a></li>
+		<li class="active"><a href="{:U('Longvideo/addlabel')}">长视频标签添加</a></li>
+		<li><a href="{:U('Longvideo/classify')}">分类列表</a></li>
+		<li><a href="{:U('Longvideo/addclassify')}">添加分类</a></li>-->
+		{:getTableMenu($_GET['menuid'],'Admin/Longvideo/addlabel')}
+	</ul>
+	<form method="post" class="form-horizontal js-ajax-form" action="{:U('Longvideo/add_label')}">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">请输入主分类名称</label>
+				<div class="controls">
+					<input type="text" name="label" value="{$info['label']}">
+					<span class="form-required">*</span>
+				</div>
+			</div>
+
+			<!--<div class="control-group" id="uid">
+			<label class="control-label">添加书签用户id</label>
+			<div class="controls">
+				<input type="text" name="owner_uid" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');" value="{$info['uid']}">
+				<span class="form-required">* 请填写用户id</span>
+			</div>
+			</div>-->
+			<div class="control-group" id="sort">
+				<label class="control-label">排序</label>
+				<div class="controls">
+					<input type="text" name="sort" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');" value="{$info['sort']}">
+					<span class="form-required"></span>
+				</div>
+			</div>
+		<div class="form-actions">
+			<input type="hidden" name="id" value="{$info['id']}" >
+			<button type="submit" class="btn btn-primary js-ajax-submit">{:L('ADD')}</button>
+			<a class="btn" href="{:U('Longvideo/label')}">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+<script type="text/javascript">
+	$(function(){
+
+		$("input[name='video_upload_type']").click(function(){
+			var val=$("input[name='video_upload_type']:checked").val();
+			console.log(val);
+			if(val==0){
+				$(".video_url_area").show();
+				$(".upload_video_area").hide();
+			}else{
+				$(".video_url_area").hide();
+				$(".upload_video_area").show();
+				$("input[name='href']").val('');
+			}
+		});
+
+		$("input[name='owner']").on("click",function(){
+			var val=$(this).val();
+			if(val==1){ //所有者为用户
+				$("#owner_uid").show();
+			}else{
+				$("#owner_uid").hide();
+			}
+		});
+
+	});
+</script>
+</body>
+</html>

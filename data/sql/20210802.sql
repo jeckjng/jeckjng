@@ -1,0 +1,1 @@
+ALTER TABLE cmf_tenant  ADD   `live_jurisdiction` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1开启，0关闭';

@@ -1,0 +1,338 @@
+<admintpl file="header" />
+</head>
+<style>
+	.outertable>tbody>tr>td{
+		padding: 0px;
+	}
+	.innertable{
+		margin-top: 0px !important;
+		margin-bottom: 0px;
+		border: 1px solid transparent;
+	}
+	.innertable td{
+		padding: 4px 4px 4px 0;
+		border: 1px solid transparent;
+	}
+</style>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Useraction/integral_config')}
+			<!--<li><a href="{:U('Useraction/index')}">用户行为分析</a></li>
+			<li class="active"><a href="{:U('Useraction/integral_config')}">积分配置</a></li>-->
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form" action="{:U('Useraction/integral_config')}">
+			<div style="margin-bottom: 15px;">
+				<div class="form-actions" style="display: inline-block;padding: 0px;margin: 0px;">
+					<button type="submit" class="btn btn-primary js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+				</div>
+				<input type="button" class="btn btn-primary" onclick="vip_level()" value="添加VIP等级">
+				<input type="button" class="btn btn-primary" onclick="multi_set()" value="批量设置">
+			</div>
+			<table class="table table-hover table-bordered outertable">
+				<thead>
+					<tr>
+						<th width="80" style="text-align: center;">会员等级</th>
+						<th colspan="3" style="text-align: center;">名称/行为/奖励积分</th>
+					</tr>
+				</thead>
+				<tbody>
+					<foreach name="lists" item="vo">
+					<tr>
+						<td style="text-align: center;font-weight: bold;">{$vo.vip_name}</td>
+						<td>
+							<table class="table table-bordered innertable">
+								<tbody>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="0" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr style="">
+										<volist  name="vo.val" id="v"  offset="3" length='3'>
+											<td style="text-align: right;border-bottom: 1px solid #ddd;">{$v.name}</td>
+											<td style="text-align: left;border-bottom: 1px solid #ddd;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+
+									<tr>
+										<volist  name="vo.val" id="v"  offset="6" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="9" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="12" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="15" length='1'>
+											<td style="text-align: right;border-bottom: 1px solid #ddd;">{$v.name}</td>
+											<td style="text-align: left;border-bottom: 1px solid #ddd;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+										<td style="text-align: right;border-bottom: 1px solid #ddd;"></td>
+										<td style="text-align: left;border-bottom: 1px solid #ddd;"></td>
+										<td style="text-align: right;border-bottom: 1px solid #ddd;"></td>
+										<td style="text-align: left;border-bottom: 1px solid #ddd;"></td>
+									</tr>
+
+									<tr>
+										<volist  name="vo.val" id="v"  offset="16" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="19" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="22" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="25" length='2'>
+											<td style="text-align: right;border-bottom: 1px solid #ddd;">{$v.name}</td>
+											<td style="text-align: left;border-bottom: 1px solid #ddd;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+										<td style="text-align: right;border-bottom: 1px solid #ddd;"></td>
+										<td style="text-align: left;border-bottom: 1px solid #ddd;"></td>
+									</tr>
+
+									<tr>
+										<volist  name="vo.val" id="v"  offset="27" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="30" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="33" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="36" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="39" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="42" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="45" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="48" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="51" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="54" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="57" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="60" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="63" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="66" length='3'>
+											<td style="text-align: right;border-bottom: 1px solid #ddd;">{$v.name}</td>
+											<td style="text-align: left;border-bottom: 1px solid #ddd;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+<!--										<td style="text-align: right;border-bottom: 1px solid #ddd;"></td>-->
+<!--										<td style="text-align: left;border-bottom: 1px solid #ddd;"></td>-->
+									</tr>
+
+									<tr>
+										<volist  name="vo.val" id="v"  offset="69" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="72" length='3'>
+											<td style="text-align: right;">{$v.name}</td>
+											<td style="text-align: left;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+									</tr>
+									<tr>
+										<volist  name="vo.val" id="v"  offset="75" length='2'>
+											<td style="text-align: right;border-bottom: 1px solid #ddd;">{$v.name}</td>
+											<td style="text-align: left;border-bottom: 1px solid #ddd;">
+												<input type="hidden" name="vip[{$vo.vip}][{$key}][k]" value="{$v.k}">
+												<input type="number" name="vip[{$vo.vip}][{$key}][val]" value="{:isset($v['val'])?$v['val']:''}" min="0" max="9999" oninput="this.value=this.value.replace(/\D/g);if(this.value.length>4)this.value=this.value.slice(0,4)" placeholder="请输入" style="width: 80px;margin-bottom: 0px;">
+											</td>
+										</volist>
+										<td style="text-align: right;border-bottom: 1px solid #ddd;"></td>
+										<td style="text-align: left;border-bottom: 1px solid #ddd;"></td>
+									</tr>
+								<tbody>
+							</table>
+						</td>
+					</tr>
+					</foreach>
+				</tbody>
+			</table>
+		</form>
+	</div>
+
+	<div id="shade" style="display:none;">
+		<style type="text/css" >
+			.popblock{width: 400px;height: 350px;top:50px;z-index: 100;position:fixed;background: #fff;}
+			.popmask{width:100%; height: 100%;left: 0;top: 0;position:fixed;  z-index:99; background: rgba(0,0,0,0.6);}
+		</style>
+		<div class="popblock" style="margin-left: 30%;">
+			<iframe width="100%" height="100%" src="{:U('Useraction/vip_level')}" className="x-iframe"></iframe>
+		</div>
+		<div class="popmask" ></div>
+	</div>
+
+	<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+	function vip_level(){
+		$(".popblock").children("iframe").attr("src","{:U('Useraction/vip_level')}");
+		$(".popblock").css({'margin-left' : '30%','width' : '400px','height' : '350px',});
+		$('#shade').toggle();
+	}
+	function multi_set(){
+		$(".popblock").children("iframe").attr("src","{:U('Useraction/multi_set')}");
+		$(".popblock").css({'margin-left' : '30%','width' : '700px','height' : '500px',});
+		$('#shade').toggle();
+	}
+</script>

@@ -1,0 +1,90 @@
+<admintpl file="header"/>
+<style>
+	.img_div{
+		display: inline-block;
+		width: 506px;
+		border: 2px solid #dce4ec;
+		height: 36px;
+		line-height: 36px;
+		border-radius: 3px;
+		padding: 0px 2px;
+	}
+	.img_div input{
+		float: left;
+		width: 447px;
+		vertical-align: middle;
+		background: none;
+		border: 0px;
+	}
+	.img_div .upload_btn{
+		padding: 1px 14px;
+		background-color: rgba(245, 245, 245, 1);
+		border: 1px solid gray;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+</style>
+
+</head>
+<body>
+<div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+		{:getTableMenu($_GET['menuid'],'Admin/usdt/edit')}
+	</ul>
+	<form class="form-horizontal cust-js-ajax-form" action="{:U('edit')}" method="post">
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">用户ID</label>
+				<div class="controls">
+					<input type="text" readonly  value="{$info['uid']}" class="width-500" />
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">用户账号</label>
+				<div class="controls">
+					<input type="text" readonly  value="{$info['user_login']}" class="width-500" />
+					<span class="form-required"></span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">USDT地址</label>
+				<div class="controls">
+					<input type="text" name="address" value="{$info['address']}" class="width-500" required />
+					<span class="form-required">*</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">网络类型</label>
+				<div class="controls">
+					<select name="network_type" >
+						<volist name="network_type_list" id="vo">
+							<option value="{$vo}" <if condition="$info.network_type eq $vo">selected</if> >{$vo}</option>
+						</volist>
+					</select>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" style="line-height: 60px !important;">二维码</label>
+				<div class="controls">
+					<div class="img_div">
+						<input type="text" name="qrcode" value="{$info['qrcode']}" placeholder="请上传" required>
+						<span class="upload_btn cust-upload-img" data-name="qrcode" data-showimgclass="img_show_qrcode" data-progress="1" data-url="{:U('Upload/img_upload')}">+</span>
+					</div>
+					<img src="{$info['qrcode']|default='__TMPL__Public/assets/images/default-thumbnail.png'}" alt="" class="img_show_qrcode" style="max-height: 70px;max-width: 100px;min-height:50px;padding: 0px;margin: 0px 0px 0px 15px;">
+				</div>
+			</div>
+
+		</fieldset>
+		<div class="form-actions">
+			<input type="hidden" name="id"  value="{$info.id}" />
+			<button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:编辑,waittime:1000}">编辑</button>
+			<a class="btn" href="javascript:history.go(-1)">{:L('BACK')}</a>
+		</div>
+	</form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+</body>
+</html>

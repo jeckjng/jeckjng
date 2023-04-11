@@ -1,0 +1,64 @@
+<admintpl file="header" />
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        {:getTableMenu($_GET['menuid'],'Admin/Turntable/program')}
+    </ul>
+    <form class="well form-search" name="form1" method="post" >
+        <button  href="{:U('Turntable/program_add')}" class="cust-iframe-pop" data-iframe="{width:600px,height:650px,top:10%,left:none;}" data-msg="">基本配置</button>
+
+    </form>
+    <form method="post" class="js-ajax-form" action="{:U('Turntable/listorders')}">
+
+
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <!-- <th>排序</th>-->
+                <th align="center">ID</th>
+                <th>方案名称</th>
+                <th>状态</th>
+                <th>添加时间</th>
+
+                <th align="center">{:L('ACTIONS')}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="lists" item="vo">
+                <tr>
+                    <td align="center">{$vo.id}</td>
+                    <td>{$vo['name']}</td>
+
+                    <td>
+                        <if condition="$vo['status'] == 1">
+                        启用
+                        <else />
+                        禁用
+                    </if>
+                    </td>
+                    <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+
+                    <td align="center">
+
+                        <a  href="{:U('Turntable/program_edit',array('id'=>$vo['id']))}" class="cust-iframe-pop" data-iframe="{width:600px,height:650px,top:10%,left:none;}" data-msg="">编辑</a>
+
+                        |
+                        <if condition="$vo['status'] == 1">
+                            <a href="{:U('Turntable/upStatus',array('id'=>$vo['id'],'status'=> 0))}" class="js-ajax-dialog-btn del_color" data-msg="您确定删除吗？">删除</a>
+                        </if>
+
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+        <!--<div class="table-actions">
+            <button class="btn btn-primary btn-small js-ajax-submit" type="submit">{:L('SORT')}</button>
+        </div>-->
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<admintpl file="header" />
+</head>
+<body>
+<style>
+input{
+  width:500px;
+}
+.form-horizontal textarea{
+ width:500px;
+}
+.nav-tabs>.current>a{
+    color: #95a5a6;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
+.nav li
+{
+	cursor:pointer
+}
+.nav li:hover
+{
+	cursor:pointer
+}
+.hide{
+	display:none;
+}
+</style>
+
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			{:getTableMenu($_GET['menuid'],'Admin/Like/index')}
+		</ul>
+		
+		<form method="post" class="form-horizontal js-ajax-form" >
+			<input type="hidden" name="post['id']" value="1">
+			<div class="js-tabs-content">
+				<div>
+						<fieldset>
+							<h3>作者收益</h3>
+							<div class="control-group">
+								<label class="control-label">作者点赞收益</label>
+								<div class="controls">
+									<input type="text" name="post[video_likes_amount]" value="{$config['video_likes_amount']}"> 金额/个
+								</div>
+							</div>
+							<h3>奖励类型</h3>
+							<div class="control-group">
+								<div class="controls">
+								<label class="radio inline"><input type="radio"  value="1" name="post[video_likes_amount_type]" <eq name="config['video_likes_amount_type']" value="1">checked="checked"</eq>>可提现 </label>
+								<label class="radio inline"><input type="radio"  value="2" name="post[video_likes_amount_type]" <eq name="config['video_likes_amount_type']" value="2">checked="checked"</eq>>不可提现</label>
+								</div>
+							</div>
+						</fieldset>
+						<div class="form-actions">
+							<button onclick="set_save()" class="btn btn-primary js-ajax-submit">{:L('SAVE')}</button>
+						</div>
+					</div>
+			</div>
+
+		</form>
+	</div>
+	<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/content_addtop.js"></script>
+	<script>
+		function set_save(){
+			// $('form').attr('action',"{:U('Admin/TenantConfig/set_post/type/"+type+"')}");
+			$('form').attr('action',"{:U('Admin/Like/set_post')}");
+		}
+	</script>
+</body>
+</html>

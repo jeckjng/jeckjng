@@ -1,0 +1,123 @@
+<admintpl file="header" />
+</head>
+<style>
+    .controls input{
+        width: 500px;
+    }
+    label{
+        width: 230px !important;
+    }
+    .controls{
+        margin-left: 250px !important;
+    }
+    .cust input{
+        width: 120px;
+    }
+    .cust label{
+        width: auto !important;
+    }
+    .cust{
+        margin-left: 10px;
+        display: inline-block;
+    }
+    .cust .controls{
+        display: inline-block;
+        margin-left: 5px !important;
+    }
+</style>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        {:getTableMenu($_GET['menuid'],'Admin/Activity/recommendFriend')}
+    </ul>
+    <form method="post" class="form-horizontal cust-js-ajax-form" action="{:U('Activity/recommendFriend')}">
+        <fieldset>
+
+            <foreach name="list" item="vo">
+                <div class="control-group reward" data-sort_num="{:($key+1)}">
+                    <input type="hidden" name="data[{$key}][sort_num]" value="{:($key+1)}">
+                    <input type="hidden" name="data[{$key}][id]" value="{$vo.id}">
+
+                    <div class="cust">
+                        <label class="control-label" style="">邀请人数{:($key+1)}</label>
+                        <div class="controls">
+                            <input type="text" name="data[{$key}][per_num]" value="{$vo.per_num}" data-oval="{$vo.per_num}" onblur="check_isnumber(this)" required required  placeholder="">
+
+                        </div>
+                    </div>
+                    <div class="cust">
+                        <label class="control-label" style="">奖励金额</label>
+                        <div class="controls">
+                            <input type="text" name="data[{$key}][reward]" value="{$vo.reward}" data-oval="{$vo.reward}" onblur="check_isnumber(this)" required required  placeholder="奖励金额">
+                        </div>
+                    </div>
+
+                    <div class="cust">
+                        <button type="button" class="btn btn-primary" onclick="remove(this)">移除</button>
+                    </div>
+                </div>
+            </foreach>
+        </fieldset>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary cust-js-ajax-submit" data-option="{confirm:true,msg:{:L('SAVE')},waittime:1000}" >{:L('SAVE')}</button>
+            <button type="button" class="btn btn-primary add-line" onclick="add(this)" style="margin-left: 15px">新增 +</button>
+        </div>
+    </form>
+</div>
+<script src="__PUBLIC__/js/common.js?v={:jsversion()}"></script>
+</body>
+</html>
+<script type="text/javascript">
+    /*
+    * 判断是否为数字或带小数点的数
+    * */
+    function check_isnum(obj) {
+        var value = obj.value;
+        // var ex = /^\.\d+$/;
+        var ex = /^(-)?\d+(\.\d+)?$/;
+        if (!ex.test(value)) {
+            var label = $(obj).parent().parent().children("label").text();
+            var msg = label ? '【'+label+'】请设置正确的值' : '请设置正确的值';
+            custalert(msg);
+            if($(obj).attr('data-oval')){
+                $(obj).val($(obj).attr('data-oval'));
+            }else{
+                $(obj).val('');
+            }
+        }
+        return false;
+    }
+
+    function add(obj){
+        var sort_num = parseInt($(obj).parent().parent().children('fieldset').children("div:last-child").data("sort_num"));
+        var length = $(obj).parent().parent().children('fieldset').children("div").length;
+        var next_sort_num = sort_num ? sort_num+1 : 1;
+        var html = '<div class="control-group reward" data-sort_num="'+next_sort_num+'">\n' +
+            '\t\t\t\t\t<input type="hidden" name="data['+next_sort_num+'][sort_num]" value="'+next_sort_num+'">\n' +
+            '\t\t\t\t\t<div class="cust">\n' +
+            '\t\t\t\t\t\t<label class="control-label" style="">邀请人数'+next_sort_num+'</label>\n' +
+            '\t\t\t\t\t\t<div class="controls">\n' +
+            '\t\t\t\t\t\t\t<input type="text" name="data['+next_sort_num+'][per_num]" value="0" data-oval="0" onblur="check_isnumber(this)" required required  placeholder="最小值">\n' +
+            '\t\t\t\t\t\t</div>\n' +
+            '\t\t\t\t\t</div>\n' +
+            '\t\t\t\t\t<div class="cust">\n' +
+            '\t\t\t\t\t\t<label class="control-label" style="">奖励金额</label>\n' +
+            '\t\t\t\t\t\t<div class="controls">\n' +
+            '\t\t\t\t\t\t\t<input type="text" name="data['+next_sort_num+'][reward]" value="0" data-oval="0" onblur="check_isnumber(this)" required required  placeholder="奖励金额">\n' +
+            '\t\t\t\t\t\t</div>\n' +
+            '\t\t\t\t\t</div>\n'
+            '\t\t\t\t\t</div>\n' +
+            '\t\t\t\t\t\t<button type="button" class="btn btn-primary" onclick="remove(this)">移除</button>\n' +
+            '\t\t\t\t\t</div>'
+        '\t\t\t\t</div>';
+        $(obj).parent().parent().children('fieldset').append(html);
+        if(length>=9){
+            $(obj).attr('disabled','disabled');
+        }
+    }
+
+    function remove(obj){
+        $(obj).parent().parent().remove();
+        $("button.add-line").removeAttr('disabled');
+    }
+</script>

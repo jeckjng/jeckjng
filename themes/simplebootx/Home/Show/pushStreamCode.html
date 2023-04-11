@@ -1,0 +1,24 @@
+<div class="dialog-tc">
+ 
+	<div class="mode">
+		<a style="display: contents;">推流码</a>
+		<span onclick="liveType.closePorp()" class="rotate"></span>
+	</div>
+	<div class="mount_title">推流地址</div>
+	<div class="mount_num" style="display:block"> 
+		<input id="pushurl"  placeholder="请填写标题" readonly value="{$pushurl}" type="text" class="minput-text">
+	</div>
+	<div class="mount_title">推流密钥</div>
+	<div class="mount_num" style="display:block">
+		<input id="pushcode"  placeholder="请填写标题" readonly value="{$pushcode}"  type="text" class="minput-text">
+	</div>
+	<div class="deal-footer">
+		<a class="mount_con" style="margin-left: 100px;" onclick="liveType.closePushStreamCode()">确定</a>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$("#mount_cancel").click(function(){
+		liveType.closePushStreamCode()
+	});
+</script>

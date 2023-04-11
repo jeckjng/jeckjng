@@ -1,0 +1,84 @@
+========================================
+用户等级：累计消费
+主播等级：累计映票
+========================================
+		定时器
+[转发的消息: 直播-运维-Dack Kngiht]
+* * * * * sleep 60;curl https://liveprod-new.jxmm168.com/admin/Videodownloadtask/uplodevideo
+* * * * * sleep 60;curl https://liveprod-new.jxmm168.com/admin/Videodownloadtask/index
+* * * * * curl -X POST -d 'service=Live.autoUpdatevotes&game_tenant_id=1' https://liveprod-new.jxmm168.com/api/public/
+* * * * * sleep 10;curl -X POST -d 'service=Live.autoUpdatevotes&game_tenant_id=1' https://liveprod-new.jxmm168.com/api/public/
+* * * * * sleep 20;curl -X POST -d 'service=Live.autoUpdatevotes&game_tenant_id=1' https://liveprod-new.jxmm168.com/api/public/
+* * * * * sleep 30;curl -X POST -d 'service=Live.autoUpdatevotes&game_tenant_id=1' https://liveprod-new.jxmm168.com/api/public/
+* * * * * sleep 40;curl -X POST -d 'service=Live.autoUpdatevotes&game_tenant_id=1' https://liveprod-new.jxmm168.com/api/public/
+* * * * * sleep 50;curl -X POST -d 'service=Live.autoUpdatevotes&game_tenant_id=1' https://liveprod-new.jxmm168.com/api/public/
+0 4 * * * curl -X POST -d 'service=Home.basicsalaryCollcet&game_tenant_id=1' https://liveprod-new.jxmm168.com/api/public/
+0 5 * * * curl -X POST -d 'service=Home.shareCollcet&game_tenant_id=1' https://liveprod-new.jxmm168.com/api/public/
+0 3 * * * curl -X POST -d 'service=Home.consumptionCollcet&game_tenant_id=1' https://liveprod-new.jxmm168.com/api/public/
+
+// 综合汇总表-定时生成数据写入数据库，每天0点执行
+https://j93wb8jt.xylkic.com/Api/ProfitShare/complex_summary_last
+========================================
+msgtype 一般都是消息定义的类型
+比方说 1 上传跟投信息
+========================================
+    ----  集成 -----
+Home.GetHot 只传tid 应该是就全部
+Home.GetHot tid,isrecommend 应该是推荐
+Home.GetHot tid,ishot 热门
+Home.GetHot tid,liveclassid 这个应该是 对应后面的那些id 分类了
+========================================
+socketio/examples/chat
+在这个目录下：
+php start.php stop  停止
+php start.php start  启动   // 调试模式 ，Ctrl +c 关闭
+php start.php start -d  启动 // 守护模式 
+php start.php restart  启动   // 调试模式，Ctrl +c 关闭
+php start.php reload  热加载，不用重启就把改变的代码加载进服务   // 守护模式
+========================================
+ 原来的文件存储（七牛云-海外）：
+TvsFdVv-pESRgB0YKJZ5j_wl5fYB79wSlxojkV-4
+TRkgHvGDoVI_g8xS9fqcS0L6v5nq6CNCuprq1PRY
+liveuatstore.51mmtuan.com
+liveuatmb
+http://upload-as0.qiniup.com
+========================================
+ 现在的文件存储（七牛云-国内）：
+TvsFdVv-pESRgB0YKJZ5j_wl5fYB79wSlxojkV-4
+TRkgHvGDoVI_g8xS9fqcS0L6v5nq6CNCuprq1PRY
+v8nnq4ihe8.alazhuren.com
+aws03-liveprod
+http://upload-z2.qiniup.com
+========================================
+ 现在的文件存储（阿里云-香港-混用）：
+LTAI5tKsRGwZuGneGt5NEQwX
+H6RLweFzLvD82l8FYqxjJ4WNPO6vV7
+dhqgga.lfgtah.cn
+liveprod-hk-1645
+oss-cn-hongkong.aliyuncs.com
+========================================
+ 现在的文件存储（阿里云-香港-直播专用）：
+endpoint：oss-cn-hongkong.aliyuncs.com
+accessKeyID：LTAI5t6NfNh4NWCfM7Jo5Lme
+accessKeySecret：mb3tgLhY96SZVzmEYy4VbEq0oUbuOS
+bucket_name:   liveprod-hk-1645-master
+域名：https://q92qzxiiq.lfgtah.cn
+========================================
+endpoint：oss-cn-hongkong.aliyuncs.com
+accessKeyID：LTAI5tH25vG7xYBffswgy5Xy
+accessKeySecret：BHHc7I89cK3SUCE37lmeUFpaG8rgVp
+bucket_name:   liveprod-hk-1645-back
+域名：https://ehqgz102a.hrgslf.cn
+
+这个作为备份的阿里云图片存储，也就是生产上一次存储两个地方，一个是正在使用的，另一个就是这个，这个只配置，不使用，作为备份
+========================================
+视频存储，阿里云旧：
+播放域名：https://jiami-video.oss-cn-beijing.aliyuncs.com
+java端返回对应字段： slave-1
+视频表绑定字段：href
+========================================
+视频存储，阿里云新：
+播放域名：https://eiqhzq8e.dazhuangip.com
+java端返回对应字段： slave-1
+视频表绑定字段：href
+========================================

@@ -1,0 +1,6 @@
+要处理的表：
+cmf_users_jurisdiction
+cmf_vip_gradecmf_vip
+cmf_vip
+
+cmf_platform_config 和 cmf_playback_address 可以把租户id28改成新站租户id

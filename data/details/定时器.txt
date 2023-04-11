@@ -1,0 +1,16 @@
+* * * * * sleep 60;curl https://6sgi225kppwb.yaoji35.com/admin/Videodownloadtask/uplodevideo
+* * * * * sleep 60;curl https://6sgi225kppwb.yaoji35.com/admin/Videodownloadtask/index
+* * * * * curl -X POST -d 'service=Live.autoUpdatevotes&game_tenant_id=1' https://6sgi225kppwb.yaoji35.com/api/public/
+* * * * * sleep 10;curl -X POST -d 'service=Live.autoUpdatevotes&game_tenant_id=1' https://6sgi225kppwb.yaoji35.com/api/public/
+* * * * * sleep 20;curl -X POST -d 'service=Live.autoUpdatevotes&game_tenant_id=1' https://6sgi225kppwb.yaoji35.com/api/public/
+* * * * * sleep 30;curl -X POST -d 'service=Live.autoUpdatevotes&game_tenant_id=1' https://6sgi225kppwb.yaoji35.com/api/public/
+* * * * * sleep 40;curl -X POST -d 'service=Live.autoUpdatevotes&game_tenant_id=1' https://6sgi225kppwb.yaoji35.com/api/public/
+* * * * * sleep 50;curl -X POST -d 'service=Live.autoUpdatevotes&game_tenant_id=1' https://6sgi225kppwb.yaoji35.com/api/public/
+0 4 * * * curl -X POST -d 'service=Home.basicsalaryCollcet&game_tenant_id=1' https://6sgi225kppwb.yaoji35.com/api/public/
+0 5 * * * curl -X POST -d 'service=Home.shareCollcet&game_tenant_id=1' https://6sgi225kppwb.yaoji35.com/api/public/
+0 3 * * * curl -X POST -d 'service=Home.consumptionCollcet&game_tenant_id=1' https://6sgi225kppwb.yaoji35.com/api/public/
+30 0 * * * curl -X POST -d 'service=User.transferToyuebaoauto&game_tenant_id=102'  https://6sgi225kppwb.yaoji35.com/api/public/
+0 6 * * * curl -X POST -d 'service=User.settlementYuebao&game_tenant_id=102' https://6sgi225kppwb.yaoji35.com/api/public/
+1 0 * * * curl https://6sgi225kppwb.yaoji35.com/admin/ConsumptionAward/index
+0 3 * * * curl -X POST -d 'service=User.goodsToshopowner&game_tenant_id=102'  https://6sgi225kppwb.yaoji35.com/api/public/
+~
